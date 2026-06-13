@@ -1,0 +1,72 @@
+logging:
+  file:
+    enable: true
+    level: INFO
+    path: logs
+    rotation: "10 MB"
+    retention: "7 days"
+  console:
+    enable: true
+    level: INFO
+
+db_meta:
+  host: localhost
+  port: 3307
+  user: didilili
+  password: dili123
+  database: meta
+
+db_dw:
+  host: localhost
+  port: 3307
+  user: didilili
+  password: dili123
+  database: dw
+
+qdrant:
+  host: localhost
+  port: 18933
+  embedding_size: 1024
+
+embedding:
+  host: localhost
+  port: 8081
+  model: BAAI/bge-large-zh-v1.5
+
+es:
+  host: localhost
+  port: 9200
+  index_name: data_agent
+
+llm:
+  model_name: deepseek-v4-flash
+  api_key: ${oc.env:LLM_API_KEY}
+  base_url: https://api.deepseek.com
+
+rag:
+  retrieval:
+    vector_weight: 0.4
+    bm25_weight: 0.4
+    exact_weight: 0.2
+    top_k: 15
+    score_threshold: 0.35
+  context:
+    max_tokens: 4096
+    history_max_tokens: 2048
+    history_max_rounds: 3
+  memory:
+    short_term_rounds: 6
+    intent_cosine_threshold: 0.65
+  chunk:
+    max_tokens: 256
+    sentence_delimiters: "[。！？\\n]"
+    comma_delimiters: "[，；、]"
+  qdrant:
+    parent_collection: doc_parent_chunks
+    sub_collection: doc_sub_chunks
+  es:
+    index_name: doc_chunks
+  reranker:
+    model: BAAI/bge-reranker-v2-m3
+    endpoint: http://localhost:8082
+    enabled: false
