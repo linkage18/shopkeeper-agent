@@ -15,7 +15,8 @@ class AuthRepository:
             return "用户名已存在"
         user = User(username=username, password_hash=hash_password(password), role=role)
         self.session.add(user)
-        await self.session.flush()
+        await self.session.commit()
+        await self.session.refresh(user)
         return user
 
     async def login(self, username: str, password: str) -> User | None:

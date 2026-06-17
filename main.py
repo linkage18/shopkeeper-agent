@@ -13,8 +13,7 @@ from fastapi import FastAPI, Request
 from app.api.lifespan import lifespan
 from app.api.routers.query_router import query_router
 from app.api.routers.rag_query_router import rag_router, file_router
-from app.auth.middleware import auth_middleware
-from app.auth.router import auth_router
+from app.auth.router import auth_router, me_router
 from app.cache.services import ensure_cache_collection
 from app.core.context import request_id_ctx_var
 from app.knowledge.router import knowledge_router
@@ -22,9 +21,6 @@ from app.reports.router import reports_router
 
 # lifespan 交给 FastAPI 管理，用于在服务启动和关闭时统一初始化与释放外部客户端
 app = FastAPI(lifespan=lifespan)
-
-# 认证路由
-app.include_router(auth_router)
 
 # 知识记忆路由
 app.include_router(knowledge_router)
@@ -41,6 +37,21 @@ app.include_router(rag_router)
 # 文件上传路由：RAG 知识库
 app.include_router(file_router)
 
+app.include_router(auth_router)
+app.include_router(me_router)
+
+
+@app.middleware("http")
+async def auth_middleware_inline(request: Request, call_next):
+    from app.auth.jwt import verify_token
+    auth_header = request.headers.get("authorization", "")
+    if auth_header.startswith("Bearer "):
+        payload = verify_token(auth_header[7:])
+        if payload:
+            request.state.user = payload
+    response = await call_next(request)
+    return response
+
 
 @app.middleware("http")
 async def add_request_id(request: Request, call_next):
@@ -52,7 +63,4 @@ async def add_request_id(request: Request, call_next):
     return response
 
 
-@app.middleware("http")
-async def auth(request: Request, call_next):
-    response = await auth_middleware(request, call_next)
-    return response
+

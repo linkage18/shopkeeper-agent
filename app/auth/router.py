@@ -1,9 +1,9 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
-from app.auth.jwt import create_token
+from app.auth.jwt import create_token, verify_token
 from app.auth.repository import AuthRepository
 from app.auth.middleware import require_user
 from app.clients.mysql_client_manager import meta_mysql_client_manager
@@ -44,6 +44,16 @@ async def login(req: LoginReq, repo: Annotated[AuthRepository, Depends(get_auth_
     return {"token": token, "user": {"id": user.id, "username": user.username, "role": user.role}}
 
 
-@auth_router.get("/me")
-async def me(user: Annotated[dict, Depends(require_user)]):
-    return {"user": user}
+me_router = APIRouter(tags=["me"])
+
+
+@me_router.get("/api/auth/me")
+async def me(request: Request):
+    from app.auth.jwt import verify_token
+    auth_header = request.headers.get("authorization", "")
+    if not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="未登录")
+    payload = verify_token(auth_header[7:])
+    if not payload:
+        raise HTTPException(status_code=401, detail="令牌无效")
+    return {"user": payload}

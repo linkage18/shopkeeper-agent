@@ -47,7 +47,7 @@ async def save_knowledge_api(data: dict, user: Annotated[dict, Depends(require_u
 
 
 @knowledge_router.delete("/delete/{title}")
-async def delete_knowledge_api(title: str, data: dict = {}, user: Annotated[dict, Depends(require_user)]):
+async def delete_knowledge_api(title: str, user: Annotated[dict, Depends(require_user)], data: dict = {}):
     is_shared = data.get("scope", "shared") == "shared"
     if is_shared and user.get("role") != "admin":
         raise HTTPException(status_code=403, detail="只有管理员可以删除共享知识")
