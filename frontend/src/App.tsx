@@ -6,9 +6,10 @@
  */
 import {
   Activity, BarChart3, BookOpen, Eraser, History, Leaf,
-  LogOut, Server,
+  LogOut, Server, TrendingUp,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AnalysisPanel } from "./components/AnalysisPanel";
 import { Composer } from "./components/Composer";
 import { EmptyState } from "./components/EmptyState";
 import { FileUpload } from "./components/FileUpload";
@@ -54,7 +55,7 @@ export default function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [activeController, setActiveController] = useState<AbortController | null>(null);
-  const [activeTab, setActiveTab] = useState<"sql" | "rag">("sql");
+  const [activeTab, setActiveTab] = useState<"sql" | "rag" | "analysis">("sql");
 
   const [sessions, setSessions] = useState<SessionListItem[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string>("new");
@@ -181,6 +182,7 @@ export default function App() {
   const clearConversation = () => { if (!isStreaming) { setMessages([]); setDraft(""); } };
 
   return (
+    activeTab === "analysis" ? <AnalysisPanel /> :
     <div className="h-dvh overflow-hidden bg-porcelain-50 text-porcelain-900">
       <div className="relative grid h-full min-h-0 overflow-hidden lg:grid-cols-[300px_minmax(0,1fr)]">
         {/* 侧边栏 — 瓷白色 */}
@@ -189,14 +191,14 @@ export default function App() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="grid h-9 w-9 place-items-center rounded-lg bg-porcelain-100 text-kinpaku">
-                  {activeTab === "sql" ? <BarChart3 className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
+                  {activeTab === "sql" ? <BarChart3 className="h-4 w-4" /> : activeTab === "rag" ? <BookOpen className="h-4 w-4" /> : <TrendingUp className="h-4 w-4" />}
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-porcelain-900">
-                    {activeTab === "sql" ? "智能问数" : "知识库"}
+                    {activeTab === "sql" ? "智能问数" : activeTab === "rag" ? "知识库" : "深度分析"}
                   </div>
                   <div className="text-xs text-porcelain-400">
-                    {activeTab === "sql" ? "Data Agent" : "RAG Agent"}
+                    {activeTab === "sql" ? "NL2SQL" : activeTab === "rag" ? "RAG" : "报告"}
                   </div>
                 </div>
               </div>
@@ -235,6 +237,16 @@ export default function App() {
               )}
             >
               知识库
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveTab("analysis"); }}
+              className={cn(
+                "flex-1 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.1em] transition",
+                activeTab === "analysis" ? "border-b-2 border-kinpaku text-kinpaku" : "text-porcelain-400 hover:text-porcelain-600",
+              )}
+            >
+              分析
             </button>
           </div>
 

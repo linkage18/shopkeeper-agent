@@ -14,6 +14,7 @@ from fastapi import Depends
 
 from app.api.dependencies import get_query_service
 from app.api.schemas.query_schema import QuerySchema
+from app.core.context import user_ctx_var
 from app.services.query_service import QueryService
 
 # 当前模块只维护查询相关接口，避免后续所有 API 都挤在 main.py 中
@@ -38,6 +39,11 @@ async def query_handler(
 ):
     """接收用户自然语言问题，并流式返回 LangGraph 工作流输出"""
 
+    # 频率限制
+    from app.cache.services import check_rate_limit
+    if not check_rate_limit("default"):
+        raise HTTPException(status_code=429, detail="请求过于频繁，请稍后再试")
+
     # 破坏性意图提前阻断：不进入 LangGraph 流程
     for pattern in _SQL_DESTRUCTIVE_PATTERNS:
         if pattern.search(query.query):
@@ -46,8 +52,11 @@ async def query_handler(
                 detail="仅支持查询操作，已自动阻断（检测到疑似数据修改意图）",
             )
 
+    user = user_ctx_var.get()
+    user_id = user.get("user_id", "") if user else ""
+
     return StreamingResponse(
         # query.query 是用户问题字符串；QueryService.query 返回异步生成器供响应逐段消费
-        query_service.query(query.query),
+        query_service.query(query.query, user_id=user_id),
         media_type="text/event-stream",
     )

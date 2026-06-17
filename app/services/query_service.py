@@ -42,11 +42,25 @@ class QueryService:
         self.metric_qdrant_repository = metric_qdrant_repository
         self.value_es_repository = value_es_repository
 
-    async def query(self, query: str):
+    async def query(self, query: str, user_id: str = ""):
         """执行一次问数工作流，并逐段产出 SSE 消息"""
 
+        # 语义缓存命中 → 直接返回
+        from app.cache.services import semantic_cache_search, exact_cache_get
+        cached = await semantic_cache_search(query) or exact_cache_get(query)
+        if cached:
+            yield f"data: {json.dumps({'type': 'result', 'data': cached, 'from_cache': True}, ensure_ascii=False)}\n\n"
+            return
+
+        # 检索知识记忆，注入上下文
+        from app.knowledge.retriever import knowledge_augmented_query
+        knowledge_ctx = await knowledge_augmented_query(query, user_id)
+        augmented_query = query
+        if knowledge_ctx:
+            augmented_query = f"[知识参考]\n{knowledge_ctx}\n\n[用户问题]\n{query}"
+
         # State 只放会被图节点读写和合并的业务数据，外部工具对象不塞进 State
-        state = DataAgentState(query=query)
+        state = DataAgentState(query=augmented_query)
         # Context 保存本次图执行需要复用的外部依赖，节点通过 runtime.context 读取
         context = DataAgentContext(
             column_qdrant_repository=self.column_qdrant_repository,
@@ -56,6 +70,7 @@ class QueryService:
             meta_mysql_repository=self.meta_mysql_repository,
             dw_mysql_repository=self.dw_mysql_repository,
         )
+        last_result = None
         try:
             # stream_mode="custom" 对应节点内部 writer(...) 写出的进度消息
             async for chunk in graph.astream(
@@ -63,7 +78,13 @@ class QueryService:
             ):
                 # SSE 要求每条消息以 data: 开头，并以两个换行符结束
                 # ensure_ascii=False 保留中文进度文案，default=str 兜底处理日期等非 JSON 类型
+                if chunk.get("type") == "result":
+                    last_result = chunk.get("data")
                 yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"
+            # 缓存结果
+            if last_result:
+                from app.cache.services import exact_cache_set
+                exact_cache_set(query, last_result)
         except Exception as e:
             # 流式接口已经开始返回后不能再改 HTTP 状态码，因此把异常也包装成一条 SSE 消息
             err_msg = str(e)
