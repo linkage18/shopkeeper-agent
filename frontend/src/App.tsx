@@ -2,19 +2,23 @@
  * 前端应用主组件
  * 支持 NL2SQL（问数）和 RAG（知识库）两个 Tab
  * RAG 支持多 Session 切换与管理
- * Impeccable 设计体系 — 金箔金 + 铜绿 + 暖黑漆器
+ * 瓷白色设计体系
  */
 import {
   Activity, BarChart3, BookOpen, Eraser, History, Leaf,
-  Server,
+  LogOut, Server,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Composer } from "./components/Composer";
 import { EmptyState } from "./components/EmptyState";
 import { FileUpload } from "./components/FileUpload";
+import { KnowledgeManager } from "./components/KnowledgeManager";
+import { LoginPage } from "./components/LoginPage";
 import { MessageBubble } from "./components/MessageBubble";
 import { SessionList } from "./components/SessionList";
+import { SessionSearch } from "./components/SessionSearch";
 import { streamQuery } from "./lib/agentApi";
+import { getToken, getUser, removeToken, removeUser } from "./lib/authApi";
 import { streamRagQuery, listSessions, getSession, deleteSession } from "./lib/ragApi";
 import { cn, summarizeResult } from "./lib/format";
 import type { AgentEvent, ChatMessage, SessionListItem, StepState } from "./types/agent";
@@ -46,6 +50,7 @@ function upsertStep(steps: StepState[] = [], event: Extract<AgentEvent, { type: 
 }
 
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(!!getToken());
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [activeController, setActiveController] = useState<AbortController | null>(null);
@@ -65,6 +70,16 @@ export default function App() {
     () => messages.filter((m) => m.role === "assistant" && m.status === "done").length,
     [messages],
   );
+
+  const user = getUser();
+
+  const handleLogout = () => {
+    removeToken();
+    removeUser();
+    setLoggedIn(false);
+  };
+
+  if (!loggedIn) return <LoginPage onLogin={() => setLoggedIn(true)} />;
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -166,34 +181,47 @@ export default function App() {
   const clearConversation = () => { if (!isStreaming) { setMessages([]); setDraft(""); } };
 
   return (
-    <div className="h-dvh overflow-hidden bg-[#f5f0eb] text-gray-900">
+    <div className="h-dvh overflow-hidden bg-porcelain-50 text-porcelain-900">
       <div className="relative grid h-full min-h-0 overflow-hidden lg:grid-cols-[300px_minmax(0,1fr)]">
-        {/* 侧边栏 — 暖黑漆器 */}
-        <aside className="hidden min-h-0 border-r border-gray-800 bg-lacquer lg:flex lg:flex-col">
-          <div className="border-b border-gray-800 px-5 py-5">
-            <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center bg-kinpaku/15 text-kinpaku">
-                {activeTab === "sql" ? <BarChart3 className="h-5 w-5" /> : <BookOpen className="h-5 w-5" />}
-              </div>
-              <div>
-                <div className="text-base font-semibold tracking-[0.02em] text-gray-100">
-                  {activeTab === "sql" ? "智能问数" : "知识库"}
+        {/* 侧边栏 — 瓷白色 */}
+        <aside className="hidden min-h-0 border-r border-porcelain-200 bg-white lg:flex lg:flex-col">
+          <div className="border-b border-porcelain-200 px-5 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="grid h-9 w-9 place-items-center rounded-lg bg-porcelain-100 text-kinpaku">
+                  {activeTab === "sql" ? <BarChart3 className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
                 </div>
-                <div className="text-xs text-gray-500">
-                  {activeTab === "sql" ? "Data Agent" : "RAG Agent"}
+                <div>
+                  <div className="text-sm font-semibold text-porcelain-900">
+                    {activeTab === "sql" ? "智能问数" : "知识库"}
+                  </div>
+                  <div className="text-xs text-porcelain-400">
+                    {activeTab === "sql" ? "Data Agent" : "RAG Agent"}
+                  </div>
                 </div>
               </div>
+              {user && (
+                <button onClick={handleLogout} className="rounded p-1 text-porcelain-400 hover:text-porcelain-600" title="退出登录">
+                  <LogOut className="h-3.5 w-3.5" />
+                </button>
+              )}
             </div>
+            {user && (
+              <div className="mt-2 flex items-center gap-2 text-xs text-porcelain-500">
+                <span className="rounded bg-porcelain-100 px-1.5 py-0.5">{user.username}</span>
+                <span className="rounded bg-porcelain-100 px-1.5 py-0.5">{user.role}</span>
+              </div>
+            )}
           </div>
 
           {/* Tab 切换 */}
-          <div className="flex border-b border-gray-800">
+          <div className="flex border-b border-porcelain-200">
             <button
               type="button"
               onClick={() => { setActiveTab("sql"); clearConversation(); }}
               className={cn(
-                "flex-1 py-3 text-center text-xs font-semibold uppercase tracking-[0.12em] transition",
-                activeTab === "sql" ? "border-b-2 border-kinpaku text-kinpaku" : "text-gray-500 hover:text-gray-300",
+                "flex-1 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.1em] transition",
+                activeTab === "sql" ? "border-b-2 border-kinpaku text-kinpaku" : "text-porcelain-400 hover:text-porcelain-600",
               )}
             >
               问数
@@ -202,19 +230,28 @@ export default function App() {
               type="button"
               onClick={() => { setActiveTab("rag"); clearConversation(); handleNewSession(); }}
               className={cn(
-                "flex-1 py-3 text-center text-xs font-semibold uppercase tracking-[0.12em] transition",
-                activeTab === "rag" ? "border-b-2 border-kinpaku text-kinpaku" : "text-gray-500 hover:text-gray-300",
+                "flex-1 py-2.5 text-center text-xs font-semibold uppercase tracking-[0.1em] transition",
+                activeTab === "rag" ? "border-b-2 border-kinpaku text-kinpaku" : "text-porcelain-400 hover:text-porcelain-600",
               )}
             >
               知识库
             </button>
           </div>
 
-          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 py-4">
+          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
+            {activeTab === "rag" && (
+              <SessionSearch sessions={sessions} onSearch={(q) => {
+                if (q) {
+                  const found = sessions.find((s) => s.id === q);
+                  if (found) handleSessionSelect(found.id);
+                }
+              }} />
+            )}
             {activeTab === "rag" && (
               <>
                 <SessionList sessions={sessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
                 <FileUpload />
+                <KnowledgeManager />
               </>
             )}
 
@@ -223,7 +260,7 @@ export default function App() {
                 type="button"
                 onClick={clearConversation}
                 disabled={isStreaming}
-                className="flex h-11 w-full items-center justify-center gap-2 bg-lacquer-light text-sm font-semibold text-gray-200 transition hover:brightness-125 disabled:cursor-not-allowed disabled:opacity-35"
+                className="flex h-10 w-full items-center justify-center gap-2 rounded-md border border-porcelain-200 bg-white text-sm font-medium text-porcelain-600 transition hover:bg-porcelain-100 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <History className="h-4 w-4" aria-hidden="true" />
                 新查询
@@ -231,18 +268,18 @@ export default function App() {
             )}
 
             <section>
-              <div className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+              <div className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-[0.12em] text-porcelain-400">
                 <History className="h-3.5 w-3.5" aria-hidden="true" />
                 样例
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {examples.map((example) => (
                   <button
                     key={example}
                     type="button"
                     disabled={isStreaming || loadingSession}
                     onClick={() => startQuery(example)}
-                    className="w-full border border-gray-700 bg-white/[0.06] px-3 py-3 text-left text-sm leading-5 text-gray-400 transition hover:border-patina/40 hover:bg-white/[0.10] disabled:cursor-not-allowed disabled:opacity-40"
+                    className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2.5 text-left text-xs leading-5 text-porcelain-600 transition hover:border-kinpaku/30 hover:bg-porcelain-50 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     {example}
                   </button>
@@ -251,8 +288,8 @@ export default function App() {
             </section>
           </div>
 
-          <div className="border-t border-gray-800 p-4">
-            <div className="grid gap-1.5 text-xs text-gray-500">
+          <div className="border-t border-porcelain-200 px-4 py-3">
+            <div className="grid gap-1 text-xs text-porcelain-400">
               <div className="flex items-center justify-between gap-3">
                 <span className="inline-flex items-center gap-2"><Server className="h-3.5 w-3.5" aria-hidden="true" />API</span>
                 <span className="truncate font-mono">{API_BASE_URL}</span>
@@ -267,20 +304,20 @@ export default function App() {
 
         {/* 主区域 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
-          <header className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white/90 px-4 backdrop-blur lg:px-6">
+          <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <div className={cn(
-                "grid h-9 w-9 shrink-0 place-items-center text-white lg:hidden",
-                activeTab === "sql" ? "bg-patina" : "bg-lacquer",
+                "grid h-8 w-8 shrink-0 place-items-center rounded-lg text-white lg:hidden",
+                activeTab === "sql" ? "bg-porcelain-900" : "bg-porcelain-600",
               )}>
                 {activeTab === "sql" ? <BarChart3 className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
               </div>
               <div className="min-w-0">
-                <div className="truncate text-sm font-semibold text-gray-900">
-                  {activeTab === "sql" ? "智能问数 Agent" : "知识库问答 Agent"}
+                <div className="truncate text-sm font-semibold text-porcelain-900">
+                  {activeTab === "sql" ? "智能问数" : "知识库问答"}
                 </div>
-                <div className="truncate text-xs text-gray-400">
-                  {activeTab === "sql" ? "FastAPI SSE / LangGraph" : "RAG / 多路召回 / 溯源"}
+                <div className="truncate text-xs text-porcelain-400">
+                  {activeTab === "sql" ? "NL2SQL / LangGraph" : "RAG / 多路召回 / 溯源"}
                   {currentSessionId !== "new" && " · 会话中"}
                 </div>
               </div>
@@ -289,7 +326,7 @@ export default function App() {
               type="button"
               onClick={clearConversation}
               disabled={messages.length === 0 || isStreaming}
-              className="grid h-9 w-9 place-items-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-35"
+              className="grid h-8 w-8 place-items-center rounded-full text-porcelain-400 transition hover:bg-porcelain-100 hover:text-porcelain-600 disabled:cursor-not-allowed disabled:opacity-35"
               title="清空" aria-label="清空"
             >
               <Eraser className="h-4 w-4" aria-hidden="true" />
@@ -298,19 +335,19 @@ export default function App() {
 
           <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
             {loadingSession ? (
-              <div className="flex h-full items-center justify-center text-sm text-gray-400">加载中...</div>
+              <div className="flex h-full items-center justify-center text-sm text-porcelain-400">加载中...</div>
             ) : messages.length === 0 ? (
               <EmptyState examples={examples} onUseExample={(ex) => setDraft(ex)} />
             ) : (
-              <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 lg:px-8">
+              <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-5 lg:px-8">
                 {messages.map((m) => <MessageBubble key={m.id} message={m} />)}
               </div>
             )}
           </div>
 
-          <div className="border-t border-gray-200 bg-gray-50/80 px-4 py-2 text-center text-xs text-gray-400">
+          <div className="border-t border-porcelain-200 bg-porcelain-50/80 px-4 py-1.5 text-center text-xs text-porcelain-400">
             <span className="inline-flex items-center gap-2">
-              <Leaf className="h-3.5 w-3.5 text-patina" aria-hidden="true" />
+              <Leaf className="h-3.5 w-3.5 text-kinpaku/60" aria-hidden="true" />
               {isStreaming ? "运行中" : loadingSession ? "加载中" : "就绪"}
             </span>
           </div>

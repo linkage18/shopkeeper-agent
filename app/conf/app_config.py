@@ -142,6 +142,14 @@ class RerankerConfig:
 
 
 @dataclass
+class AuthConfig:
+    jwt_secret: str
+    jwt_algorithm: str
+    jwt_expire_minutes: int
+    rate_limit_per_minute: int
+
+
+@dataclass
 class RagConfig:
     """RAG 模块总配置"""
     retrieval: RetrievalConfig
@@ -164,6 +172,7 @@ class AppConfig:
     embedding: EmbeddingConfig
     es: ESConfig
     llm: LLMConfig
+    auth: AuthConfig
     rag: RagConfig
 
 

@@ -10,3 +10,6 @@ from contextvars import ContextVar
 # 使用 ContextVar 而不是普通全局变量
 # 是为了让并发协程之间的 request_id 互不干扰
 request_id_ctx_var: ContextVar[str] = ContextVar("request_id", default="1")
+
+# 当前请求的用户信息，由 auth middleware 设置
+user_ctx_var: ContextVar[dict | None] = ContextVar("user", default=None)

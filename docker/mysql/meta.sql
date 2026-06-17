@@ -1,8 +1,18 @@
 SET NAMES utf8mb4;
-CREATE DATABASE meta DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS meta DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 GRANT ALL PRIVILEGES ON meta.* TO 'didilili'@'%';
 
 USE meta;
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users
+(
+    id            VARCHAR(36) PRIMARY KEY,
+    username      VARCHAR(64) NOT NULL UNIQUE,
+    password_hash VARCHAR(128) NOT NULL,
+    role          VARCHAR(16) DEFAULT 'user',
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
 DROP TABLE IF EXISTS table_info;
 CREATE TABLE table_info

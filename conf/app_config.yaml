@@ -43,6 +43,12 @@ llm:
   api_key: ${oc.env:LLM_API_KEY}
   base_url: https://api.deepseek.com
 
+auth:
+  jwt_secret: ${oc.env:JWT_SECRET, shopkeeper-dev-secret}
+  jwt_algorithm: HS256
+  jwt_expire_minutes: 1440
+  rate_limit_per_minute: 30
+
 rag:
   retrieval:
     vector_weight: 0.4

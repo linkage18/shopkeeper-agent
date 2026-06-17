@@ -30,6 +30,10 @@ async def lifespan(app: FastAPI):
     meta_mysql_client_manager.init()
     dw_mysql_client_manager.init()
 
+    # 初始化语义缓存的 Qdrant collection
+    from app.cache.services import ensure_cache_collection
+    await ensure_cache_collection()
+
     # yield 之前是启动逻辑，yield 之后是关闭逻辑；中间阶段由 FastAPI 正常处理请求
     yield
 
