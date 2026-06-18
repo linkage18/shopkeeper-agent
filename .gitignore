@@ -63,7 +63,7 @@ docker/embedding/
 # Runtime data
 data/sessions/
 logs/
-reports/
+/reports/
 data/docs/
 
 # Tools

@@ -1,0 +1,53 @@
+name: topn
+label: 排行分析
+description: 查看指定维度的 Top N 排行
+params:
+  - name: metric
+    label: 指标
+    type: select
+    options: [order_amount, order_quantity]
+  - name: dimension
+    label: 排行维度
+    type: select
+    options: [region_name, category, brand, member_level]
+  - name: dim_table
+    label: 维度表
+    type: select
+    options: [dim_region, dim_product, dim_customer]
+    default: dim_region
+  - name: dim_key
+    label: 维度关联键
+    type: select
+    options: [region_id, product_id, customer_id]
+    default: region_id
+  - name: dim_name_field
+    label: 维度名称字段
+    type: select
+    options: [region_name, category, brand, member_level]
+    default: region_name
+  - name: top_n
+    label: Top N
+    type: int
+    default: 10
+  - name: start_date
+    label: 开始日期
+    type: int
+    default: 20250101
+  - name: end_date
+    label: 结束日期
+    type: int
+    default: 20250331
+sqls:
+  - id: main
+    sql: "SELECT d.{dim_name_field} AS {dimension}, SUM(f.{metric}) AS value
+          FROM fact_order f JOIN {dim_table} d ON f.{dim_key} = d.{dim_key}
+          WHERE f.date_id BETWEEN {start_date} AND {end_date}
+          GROUP BY d.{dim_name_field} ORDER BY value DESC LIMIT {top_n}"
+  - id: total
+    sql: "SELECT SUM({metric}) AS total FROM fact_order f
+          WHERE f.date_id BETWEEN {start_date} AND {end_date}"
+chart:
+  type: bar
+  title: "Top{top_n} {dimension} {metric}排行"
+  x: dimension
+  y: [value]

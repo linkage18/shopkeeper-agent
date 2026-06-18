@@ -1,0 +1,35 @@
+name: trend
+label: 趋势分析
+description: 分析指标随时间的变化趋势
+params:
+  - name: metric
+    label: 指标
+    type: select
+    options: [order_amount, order_quantity]
+  - name: granularity
+    label: 时间粒度
+    type: select
+    options: [month, quarter]
+  - name: start_date
+    label: 开始日期
+    type: int
+    default: 20250101
+  - name: end_date
+    label: 结束日期
+    type: int
+    default: 20250331
+sqls:
+  - id: main
+    sql: "SELECT d.{granularity}, SUM(f.{metric}) AS value
+          FROM fact_order f JOIN dim_date d ON f.date_id = d.date_id
+          WHERE d.date_id BETWEEN {start_date} AND {end_date}
+          GROUP BY d.{granularity} ORDER BY d.{granularity}"
+  - id: total
+    sql: "SELECT SUM({metric}) AS total FROM fact_order f
+          JOIN dim_date d ON f.date_id = d.date_id
+          WHERE d.date_id BETWEEN {start_date} AND {end_date}"
+chart:
+  type: line
+  title: "{metric} 趋势图"
+  x: granularity
+  y: [value]

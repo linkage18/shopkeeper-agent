@@ -1,0 +1,31 @@
+name: detail
+label: 明细分析
+description: 查看原始数据明细
+params:
+  - name: start_date
+    label: 开始日期
+    type: int
+    default: 20250101
+  - name: end_date
+    label: 结束日期
+    type: int
+    default: 20250331
+  - name: limit
+    label: 条数限制
+    type: int
+    default: 50
+sqls:
+  - id: main
+    sql: "SELECT f.order_id, c.customer_name, p.product_name, p.category, p.brand,
+                  r.region_name, d.year, d.month, d.day,
+                  f.order_quantity, f.order_amount
+          FROM fact_order f
+          JOIN dim_customer c ON f.customer_id = c.customer_id
+          JOIN dim_product p ON f.product_id = p.product_id
+          JOIN dim_region r ON f.region_id = r.region_id
+          JOIN dim_date d ON f.date_id = d.date_id
+          WHERE f.date_id BETWEEN {start_date} AND {end_date}
+          ORDER BY f.date_id DESC LIMIT {limit}"
+chart:
+  type: table
+  title: "订单明细"
