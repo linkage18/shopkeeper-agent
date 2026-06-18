@@ -355,23 +355,24 @@ export default function App() {
 
         {/* 主区域 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
-          {activeTab === "analysis" ? (
-            <>
-              <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
-                <div className="flex items-center gap-3">
-                  <button onClick={() => setActiveTab("sql")}
-                    className="rounded-md border border-porcelain-200 bg-white px-3 py-1.5 text-xs font-medium text-porcelain-600 hover:bg-porcelain-100">
-                    ← 返回问数
-                  </button>
-                  <div className="text-sm font-semibold text-porcelain-900">深度分析</div>
-                </div>
-              </header>
-              <div className="flex-1 overflow-hidden">
-                <AnalysisPanel onBack={() => setActiveTab("sql")} />
+          {/* 深度分析面板（始终渲染，CSS 控制显隐） */}
+          <div className={cn("flex flex-col flex-1 min-h-0", activeTab !== "analysis" && "hidden")}>
+            <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
+              <div className="flex items-center gap-3">
+                <button onClick={() => setActiveTab("sql")}
+                  className="rounded-md border border-porcelain-200 bg-white px-3 py-1.5 text-xs font-medium text-porcelain-600 hover:bg-porcelain-100">
+                  ← 返回问数
+                </button>
+                <div className="text-sm font-semibold text-porcelain-900">深度分析</div>
               </div>
-            </>
-          ) : (
-            <>
+            </header>
+            <div className="flex-1 overflow-hidden">
+              <AnalysisPanel onBack={() => setActiveTab("sql")} />
+            </div>
+          </div>
+
+          {/* 聊天面板（始终渲染，CSS 控制显隐） */}
+          <div className={cn("flex flex-col flex-1 min-h-0", activeTab === "analysis" && "hidden")}>
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <div className={cn(
@@ -427,8 +428,7 @@ export default function App() {
             onSubmit={() => startQuery()}
             onStop={stopQuery}
           />
-        </>
-        )}
+        </div>
         </main>
       </div>
     </div>
