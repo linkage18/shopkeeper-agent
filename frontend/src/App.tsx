@@ -359,7 +359,7 @@ export default function App() {
               </div>
             </>
           ) : (
-          <>
+            <>
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <div className={cn(
@@ -415,6 +415,7 @@ export default function App() {
             onSubmit={() => startQuery()}
             onStop={stopQuery}
           />
+        </>
         </main>
         )}
       </div>
