@@ -7,17 +7,79 @@ interface Template {
   params: { name: string; label: string; type: string; options?: string[]; default?: any }[];
 }
 
+/* 将 markdown 管道表格行解析为二维数组 */
+function parseTableLines(lines: string[]): { headers: string[]; rows: string[][] } | null {
+  // 过滤出连续的表格行
+  const tableLines = lines.filter(l => l.startsWith("| ") && l.endsWith("|"));
+  if (tableLines.length < 3) return null; // 至少需要表头 + 分隔线 + 一行数据
+  const headerRow = tableLines[0].split("|").filter(c => c.trim()).map(c => c.trim());
+  const dataRows: string[][] = [];
+  for (let i = 2; i < tableLines.length; i++) { // 跳过第1行(表头)和第2行(分隔线)
+    const cells = tableLines[i].split("|").filter(c => c.trim()).map(c => c.trim());
+    if (cells.length === headerRow.length) dataRows.push(cells);
+  }
+  if (dataRows.length === 0) return null;
+  return { headers: headerRow, rows: dataRows };
+}
+
 const ReportContent = React.memo(function ReportContent({ report, chartData }: { report: string; chartData?: any }) {
   const rendered = useMemo(() => {
     if (!report) return null;
-    return report.split("\n").map((line, i) => {
-      if (line.startsWith("# ")) return <h1 key={i} className="text-lg font-semibold text-porcelain-900 mt-4 mb-2">{line.slice(2)}</h1>;
-      if (line.startsWith("## ")) return <h2 key={i} className="text-base font-semibold text-porcelain-800 mt-3 mb-1">{line.slice(3)}</h2>;
-      if (line.startsWith("| ")) return <div key={i} className="font-mono text-xs text-porcelain-600">{line}</div>;
-      if (line.startsWith("> ")) return <blockquote key={i} className="border-l-2 border-porcelain-300 pl-3 text-xs text-porcelain-500 my-1">{line.slice(2)}</blockquote>;
-      if (line.trim()) return <p key={i} className="text-xs text-porcelain-600 my-1">{line}</p>;
-      return <br key={i} />;
-    });
+    const lines = report.split("\n");
+    const elements: React.ReactNode[] = [];
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      // 检测是否进入表格区域
+      if (line.startsWith("| ") && lines[i + 1]?.startsWith("| ---")) {
+        // 收集表格行
+        const tableLines: string[] = [];
+        while (i < lines.length && lines[i].startsWith("| ")) {
+          tableLines.push(lines[i]);
+          i++;
+        }
+        const tbl = parseTableLines(tableLines);
+        if (tbl) {
+          elements.push(
+            <div key={`tbl-${elements.length}`} className="overflow-x-auto mb-4 rounded-lg border border-porcelain-200">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="bg-porcelain-100">
+                    {tbl.headers.map((h, idx) => (
+                      <th key={idx} className="border border-porcelain-200 px-3 py-2 text-left font-semibold text-porcelain-700 whitespace-nowrap">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {tbl.rows.map((row, rIdx) => (
+                    <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white" : "bg-porcelain-50"}>
+                      {row.map((cell, cIdx) => (
+                        <td key={cIdx} className="border border-porcelain-200 px-3 py-1.5 text-porcelain-600 whitespace-nowrap">{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+          continue;
+        }
+      }
+      // 非表格后处理
+      if (line.startsWith("# ")) {
+        elements.push(<h1 key={i} className="text-lg font-semibold text-porcelain-900 mt-4 mb-2">{line.slice(2)}</h1>);
+      } else if (line.startsWith("## ")) {
+        elements.push(<h2 key={i} className="text-base font-semibold text-porcelain-800 mt-3 mb-1">{line.slice(3)}</h2>);
+      } else if (line.startsWith("> ")) {
+        elements.push(<blockquote key={i} className="border-l-2 border-porcelain-300 pl-3 text-xs text-porcelain-500 my-1">{line.slice(2)}</blockquote>);
+      } else if (line.trim()) {
+        elements.push(<p key={i} className="text-xs text-porcelain-600 my-1">{line}</p>);
+      } else {
+        elements.push(<br key={i} />);
+      }
+      i++;
+    }
+    return elements;
   }, [report]);
   return (
     <div className="flex-1 overflow-y-auto p-4">
@@ -26,7 +88,7 @@ const ReportContent = React.memo(function ReportContent({ report, chartData }: {
           <InteractiveChart chartData={chartData} />
         </div>
       )}
-      {report ? <div className="prose prose-sm max-w-none text-porcelain-700">{rendered}</div> : (
+      {report ? <div className="text-porcelain-700">{rendered}</div> : (
         <div className="flex h-full items-center justify-center text-xs text-porcelain-400">选择模板并运行分析</div>
       )}
     </div>
