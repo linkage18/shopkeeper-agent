@@ -73,15 +73,27 @@ export default function App() {
     [messages],
   );
 
-  const user = getUser();
+  const [user, setUser] = useState(() => getUser());
 
   const handleLogout = () => {
     removeToken();
     removeUser();
+    setMessages([]);
+    setDraft("");
+    setActiveController(null);
+    setActiveTab("sql");
+    setCurrentSessionId("new");
+    setSessions([]);
+    setUser(null);
     setLoggedIn(false);
   };
 
-  if (!loggedIn) return <LoginPage onLogin={() => setLoggedIn(true)} />;
+  if (!loggedIn) return <LoginPage onLogin={() => {
+    setUser(getUser());
+    setLoggedIn(true);
+    setActiveTab("sql");
+    setMessages([]);
+  }} />;
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -416,8 +428,8 @@ export default function App() {
             onStop={stopQuery}
           />
         </>
-        </main>
         )}
+        </main>
       </div>
     </div>
   );
