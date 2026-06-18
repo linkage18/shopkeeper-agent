@@ -136,26 +136,17 @@ export default function App() {
     if (!query || isStreaming) return;
 
     // 意图路由：自动分类用户输入
-    let targetTab = activeTab;
-    if (targetTab !== "analysis") {
+    let reportIntent = false;
+    if (activeTab !== "analysis") {
       try {
         const intentResp = await apiPost("/api/intent/classify", { query });
-        targetTab = intentResp.intent || activeTab;
+        if (intentResp.intent === "report") reportIntent = true;
       } catch { /* 分类失败则不切换 */ }
     }
 
-    if (targetTab === "analysis") {
-      setActiveTab("analysis");
-      setDraft("");
-      return;
-    }
-
-    setActiveTab(targetTab);
-    const tab = targetTab as "sql" | "rag";
-
-    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab };
+    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: activeTab };
     const assistantId = makeId();
-    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab };
+    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab: activeTab };
 
     const controller = new AbortController();
     setActiveController(controller);
@@ -163,7 +154,49 @@ export default function App() {
     setMessages((cur) => [...cur, userMessage, assistantMessage]);
 
     try {
-      if (tab === "sql") {
+      if (reportIntent) {
+        // 报告生成管线
+        const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+        const token = localStorage.getItem("token");
+        const resp = await fetch(`${API_BASE}/api/report/generate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ query }),
+          signal: controller.signal,
+        });
+        const reader = resp.body!.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let buf = "";
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          const chunks = buf.split("\n\n");
+          buf = chunks.pop() ?? "";
+          for (const chunk of chunks) {
+            const pd = chunk.replace(/^data:\s?/, "").trim();
+            if (!pd) continue;
+            try {
+              const ev = JSON.parse(pd);
+              setMessages((cur) => cur.map((m) => {
+                if (m.id !== assistantId) return m;
+                if (ev.type === "progress") {
+                  const content = ev.status === "success" ? `✓ ${ev.step}` : `→ ${ev.step}`;
+                  return { ...m, content: m.content === "正在连接..." ? content : m.content + "\n" + content, steps: upsertStep(m.steps || [], { type: "progress", step: ev.step, status: ev.status }) };
+                }
+                if (ev.type === "result") {
+                  if (ev.report_md) return { ...m, status: "done" as const, content: ev.report_md, result: ev };
+                  if (ev.chart_data) return { ...m, content: m.content.replace("正在连接...", ""), result: ev };
+                  if (ev.sql_id) return { ...m, content: m.content.replace("正在连接...", "") + `\n[${ev.sql_id}]: ${JSON.stringify(ev.data || ev.error).slice(0, 100)}` };
+                }
+                if (ev.type === "error") return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
+                return m;
+              }));
+            } catch { /* skip */ }
+          }
+        }
+        setMessages((cur) => cur.map((m) => m.id === assistantId && m.status !== "done" ? { ...m, status: "done" as const } : m));
+      } else if (activeTab === "sql") {
         await streamQuery(query, {
           signal: controller.signal,
           onEvent: (event: AgentEvent) => {

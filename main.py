@@ -16,6 +16,9 @@ from app.api.routers.rag_query_router import rag_router, file_router
 from app.auth.router import auth_router, me_router
 from app.intent.router import intent_router
 from app.memory.router import memory_router
+from app.report_agent.router import report_agent_router
+from app.report_agent.token_router import token_router
+from app.schema_analyzer.router import schema_router, viz_router
 from app.cache.services import ensure_cache_collection
 from app.core.context import request_id_ctx_var
 from app.knowledge.router import knowledge_router
@@ -41,6 +44,10 @@ app.include_router(file_router)
 
 app.include_router(intent_router)
 app.include_router(memory_router)
+app.include_router(report_agent_router)
+app.include_router(token_router)
+app.include_router(schema_router)
+app.include_router(viz_router)
 app.include_router(auth_router)
 app.include_router(me_router)
 
