@@ -7,80 +7,46 @@ interface Template {
   params: { name: string; label: string; type: string; options?: string[]; default?: any }[];
 }
 
-/* 将 markdown 管道表格行解析为二维数组 */
-function parseTableLines(lines: string[]): { headers: string[]; rows: string[][] } | null {
-  // 过滤出连续的表格行
-  const tableLines = lines.filter(l => l.startsWith("| ") && l.endsWith("|"));
-  if (tableLines.length < 3) return null; // 至少需要表头 + 分隔线 + 一行数据
-  const headerRow = tableLines[0].split("|").filter(c => c.trim()).map(c => c.trim());
-  const dataRows: string[][] = [];
-  for (let i = 2; i < tableLines.length; i++) { // 跳过第1行(表头)和第2行(分隔线)
-    const cells = tableLines[i].split("|").filter(c => c.trim()).map(c => c.trim());
-    if (cells.length === headerRow.length) dataRows.push(cells);
-  }
-  if (dataRows.length === 0) return null;
-  return { headers: headerRow, rows: dataRows };
-}
+/* 将后端返回的结果数据渲染为 HTML 表格 */
+const DataTable = React.memo(function DataTable({ rows }: { rows: Record<string, any>[] }) {
+  if (!rows || rows.length === 0) return <p className="text-xs text-porcelain-400 py-4">无数据</p>;
+  const headers = Object.keys(rows[0]);
+  return (
+    <div className="overflow-x-auto mb-4 rounded-lg border border-porcelain-200">
+      <table className="w-full text-xs border-collapse">
+        <thead>
+          <tr className="bg-porcelain-100">
+            {headers.map((h) => (
+              <th key={h} className="border border-porcelain-200 px-3 py-2 text-left font-semibold text-porcelain-700 whitespace-nowrap">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, rIdx) => (
+            <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white" : "bg-porcelain-50"}>
+              {headers.map((h) => (
+                <td key={h} className="border border-porcelain-200 px-3 py-1.5 text-porcelain-600 whitespace-nowrap">
+                  {row[h] !== null && row[h] !== undefined ? String(row[h]) : ""}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+});
 
-const ReportContent = React.memo(function ReportContent({ report, chartData }: { report: string; chartData?: any }) {
-  const rendered = useMemo(() => {
+const ReportContent = React.memo(function ReportContent({
+  report, chartData, results
+}: {
+  report: string; chartData?: any; results?: Record<string, any>;
+}) {
+  const overview = useMemo(() => {
     if (!report) return null;
-    const lines = report.split("\n");
-    const elements: React.ReactNode[] = [];
-    let i = 0;
-    while (i < lines.length) {
-      const line = lines[i];
-      // 检测是否进入表格区域
-      if (line.startsWith("| ") && lines[i + 1]?.startsWith("| ---")) {
-        // 收集表格行
-        const tableLines: string[] = [];
-        while (i < lines.length && lines[i].startsWith("| ")) {
-          tableLines.push(lines[i]);
-          i++;
-        }
-        const tbl = parseTableLines(tableLines);
-        if (tbl) {
-          elements.push(
-            <div key={`tbl-${elements.length}`} className="overflow-x-auto mb-4 rounded-lg border border-porcelain-200">
-              <table className="w-full text-xs border-collapse">
-                <thead>
-                  <tr className="bg-porcelain-100">
-                    {tbl.headers.map((h, idx) => (
-                      <th key={idx} className="border border-porcelain-200 px-3 py-2 text-left font-semibold text-porcelain-700 whitespace-nowrap">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {tbl.rows.map((row, rIdx) => (
-                    <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white" : "bg-porcelain-50"}>
-                      {row.map((cell, cIdx) => (
-                        <td key={cIdx} className="border border-porcelain-200 px-3 py-1.5 text-porcelain-600 whitespace-nowrap">{cell}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-          continue;
-        }
-      }
-      // 非表格后处理
-      if (line.startsWith("# ")) {
-        elements.push(<h1 key={i} className="text-lg font-semibold text-porcelain-900 mt-4 mb-2">{line.slice(2)}</h1>);
-      } else if (line.startsWith("## ")) {
-        elements.push(<h2 key={i} className="text-base font-semibold text-porcelain-800 mt-3 mb-1">{line.slice(3)}</h2>);
-      } else if (line.startsWith("> ")) {
-        elements.push(<blockquote key={i} className="border-l-2 border-porcelain-300 pl-3 text-xs text-porcelain-500 my-1">{line.slice(2)}</blockquote>);
-      } else if (line.trim()) {
-        elements.push(<p key={i} className="text-xs text-porcelain-600 my-1">{line}</p>);
-      } else {
-        elements.push(<br key={i} />);
-      }
-      i++;
-    }
-    return elements;
+    return report.split("\n").filter(l => l.startsWith("#") || l.startsWith(">") || l.startsWith("**")).join("\n");
   }, [report]);
+
   return (
     <div className="flex-1 overflow-y-auto p-4">
       {chartData && (
@@ -88,9 +54,20 @@ const ReportContent = React.memo(function ReportContent({ report, chartData }: {
           <InteractiveChart chartData={chartData} />
         </div>
       )}
-      {report ? <div className="text-porcelain-700">{rendered}</div> : (
-        <div className="flex h-full items-center justify-center text-xs text-porcelain-400">选择模板并运行分析</div>
-      )}
+      {overview && <div className="text-xs text-porcelain-500 mb-4 whitespace-pre-wrap">{overview}</div>}
+      {results && Object.entries(results).map(([key, val]) => {
+        if (key.endsWith("_error")) {
+          return <div key={key} className="mb-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-600">{String(val)}</div>;
+        }
+        if (key === "total" && Array.isArray(val) && val.length > 0) {
+          return <div key={key} className="mb-2 text-sm font-semibold text-porcelain-700">总计：{String(val[0]?.total ?? "")}</div>;
+        }
+        if (Array.isArray(val)) {
+          return <div key={key} className="mb-2"><div className="text-xs font-semibold text-porcelain-600 mb-1">{key}</div><DataTable rows={val} /></div>;
+        }
+        return null;
+      })}
+      {!results && <div className="flex h-full items-center justify-center text-xs text-porcelain-400">选择模板并运行分析</div>}
     </div>
   );
 });
@@ -146,6 +123,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const [params, setParams] = useState<Record<string, any>>({});
   const [report, setReport] = useState<string>("");
   const [chartData, setChartData] = useState<any>(null);
+  const [results, setResults] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -155,11 +133,11 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const tmpl = templates.find((t) => t.id === selected);
   const handleParamChange = (name: string, value: any) => setParams((p) => ({ ...p, [name]: value }));
 
-  const handleSelect = (id: string) => { setSelected(id); setParams({}); setReport(""); setChartData(null); };
+  const handleSelect = (id: string) => { setSelected(id); setParams({}); setReport(""); setChartData(null); setResults(null); };
 
   const handleRun = async () => {
     if (!selected) return;
-    setLoading(true); setReport(""); setChartData(null);
+    setLoading(true); setReport(""); setChartData(null); setResults(null);
     try {
       const fullParams = { ...params };
       if (tmpl) for (const p of tmpl.params) {
@@ -167,6 +145,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
       }
       const data = await apiPost("/api/reports/analyze", { template_id: selected, params: fullParams });
       setReport(data.report_md || "");
+      setResults(data.results || null);
       if (data.chart_data) setChartData(data.chart_data);
     } catch (e: any) { setReport("错误：" + e.message); }
     finally { setLoading(false); }
@@ -178,7 +157,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
         <TemplateList templates={templates} selected={selected} onSelect={handleSelect} />
         <div className="flex flex-1 flex-col min-w-0">
           {tmpl && <ParamForm tmpl={tmpl} params={params} onParamChange={handleParamChange} onRun={handleRun} loading={loading} />}
-          <ReportContent report={report} chartData={chartData} />
+          <ReportContent report={report} chartData={chartData} results={results} />
         </div>
       </div>
     </div>
