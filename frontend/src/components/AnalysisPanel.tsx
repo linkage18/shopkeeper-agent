@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { apiGet, apiPost } from "../lib/authApi";
+import { InteractiveChart } from "./InteractiveChart";
 
 interface Template {
   id: string; name: string; label: string; description: string;
   params: { name: string; label: string; type: string; options?: string[]; default?: any }[];
 }
 
-const ReportContent = React.memo(function ReportContent({ report, chart }: { report: string; chart: string }) {
+const ReportContent = React.memo(function ReportContent({ report, chartData }: { report: string; chartData?: any }) {
   const rendered = useMemo(() => {
     if (!report) return null;
     return report.split("\n").map((line, i) => {
@@ -20,7 +21,11 @@ const ReportContent = React.memo(function ReportContent({ report, chart }: { rep
   }, [report]);
   return (
     <div className="flex-1 overflow-y-auto p-4">
-      {chart && <img src={chart} alt="chart" className="mb-4 max-w-full rounded-lg border border-porcelain-200" />}
+      {chartData && (
+        <div className="mb-4 rounded-lg border border-porcelain-200 bg-white p-2">
+          <InteractiveChart chartData={chartData} />
+        </div>
+      )}
       {report ? <div className="prose prose-sm max-w-none text-porcelain-700">{rendered}</div> : (
         <div className="flex h-full items-center justify-center text-xs text-porcelain-400">选择模板并运行分析</div>
       )}
@@ -78,7 +83,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const [selected, setSelected] = useState<string>("");
   const [params, setParams] = useState<Record<string, any>>({});
   const [report, setReport] = useState<string>("");
-  const [chart, setChart] = useState<string>("");
+  const [chartData, setChartData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -88,11 +93,11 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const tmpl = templates.find((t) => t.id === selected);
   const handleParamChange = (name: string, value: any) => setParams((p) => ({ ...p, [name]: value }));
 
-  const handleSelect = (id: string) => { setSelected(id); setParams({}); setReport(""); setChart(""); };
+  const handleSelect = (id: string) => { setSelected(id); setParams({}); setReport(""); setChartData(null); };
 
   const handleRun = async () => {
     if (!selected) return;
-    setLoading(true); setReport(""); setChart("");
+    setLoading(true); setReport(""); setChartData(null);
     try {
       const fullParams = { ...params };
       if (tmpl) for (const p of tmpl.params) {
@@ -100,7 +105,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
       }
       const data = await apiPost("/api/reports/analyze", { template_id: selected, params: fullParams });
       setReport(data.report_md || "");
-      if (data.chart_b64) setChart(`data:image/png;base64,${data.chart_b64}`);
+      if (data.chart_data) setChartData(data.chart_data);
     } catch (e: any) { setReport("错误：" + e.message); }
     finally { setLoading(false); }
   };
@@ -111,7 +116,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
         <TemplateList templates={templates} selected={selected} onSelect={handleSelect} />
         <div className="flex flex-1 flex-col min-w-0">
           {tmpl && <ParamForm tmpl={tmpl} params={params} onParamChange={handleParamChange} onRun={handleRun} loading={loading} />}
-          <ReportContent report={report} chart={chart} />
+          <ReportContent report={report} chartData={chartData} />
         </div>
       </div>
     </div>

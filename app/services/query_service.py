@@ -52,12 +52,21 @@ class QueryService:
             yield f"data: {json.dumps({'type': 'result', 'data': cached, 'from_cache': True}, ensure_ascii=False)}\n\n"
             return
 
-        # 检索知识记忆，注入上下文
-        from app.knowledge.retriever import knowledge_augmented_query
-        knowledge_ctx = await knowledge_augmented_query(query, user_id)
+        # 多层级联记忆检索（每次从磁盘/数据库重新读取）
+        memory_ctx = ""
+        try:
+            from app.memory.retriever import retrieve_all
+            memory_ctx = await retrieve_all(
+                query=query,
+                session_id="",  # 暂不传入 session_id，需要时由路由层传入
+                user_id=user_id,
+                db_session=self.meta_mysql_repository.session,
+            )
+        except Exception:
+            pass
         augmented_query = query
-        if knowledge_ctx:
-            augmented_query = f"[知识参考]\n{knowledge_ctx}\n\n[用户问题]\n{query}"
+        if memory_ctx:
+            augmented_query = f"[知识参考]\n{memory_ctx}\n\n[用户问题]\n{query}"
 
         # State 只放会被图节点读写和合并的业务数据，外部工具对象不塞进 State
         state = DataAgentState(query=augmented_query)

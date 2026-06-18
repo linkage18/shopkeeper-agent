@@ -69,12 +69,11 @@ def _ensure_chinese_font():
     return None
 
 
-def generate_chart(data: list[dict], chart_config: dict, params: dict) -> str | None:
-    if not _HAS_MPL:
-        return None
-    if not data or chart_config.get("type") == "table":
-        return None
+def generate_chart(data: list[dict], chart_config: dict, params: dict) -> dict | None:
+    """返回结构化图表数据供前端 ECharts 渲染"""
     try:
+        if not data or chart_config.get("type") == "table":
+            return None
         chart_type = chart_config["type"]
         x_field = chart_config["x"]
         y_fields = chart_config["y"]
@@ -82,46 +81,52 @@ def generate_chart(data: list[dict], chart_config: dict, params: dict) -> str | 
         for k, v in params.items():
             title = title.replace("{" + k + "}", str(v))
 
-        fp = _ensure_chinese_font()
-        if fp:
-            # 全局设置中文字体，避免 tick labels 和 legend 乱码
-            plt.rcParams["font.family"] = fp.get_name()
-            plt.rcParams["axes.unicode_minus"] = False
-        fig, ax = plt.subplots(figsize=(10, 5))
-
         x_vals = [str(row.get(x_field, "")) for row in data]
         y_vals = [float(row.get(y_fields[0], 0)) for row in data]
 
-        if chart_type == "bar":
-            ax.bar(x_vals, y_vals, color="#5a8a7a")
-            plt.xticks(rotation=45, ha="right")
-        elif chart_type == "line":
-            ax.plot(x_vals, y_vals, marker="o", color="#c4901a", linewidth=2)
-            plt.xticks(rotation=45, ha="right")
-        elif chart_type == "pie":
-            colors = ["#c4901a", "#5a8a7a", "#1a1a18", "#d6d3d1", "#a8a29e"]
-            wedges, texts, autotexts = ax.pie(
-                y_vals, labels=x_vals, autopct="%1.1f%%",
-                colors=colors[:len(x_vals)], startangle=90,
-            )
+        result: dict = {
+            "chart_data": {
+                "chart_type": chart_type,
+                "title": title,
+                "labels": x_vals,
+                "values": y_vals,
+            },
+        }
+
+        if _HAS_MPL:
+            fp = _ensure_chinese_font()
             if fp:
-                for t in texts + autotexts:
-                    t.set_fontproperties(fp)
+                plt.rcParams["font.family"] = fp.get_name()
+                plt.rcParams["axes.unicode_minus"] = False
+            fig, ax = plt.subplots(figsize=(10, 5))
 
-        if fp:
-            ax.set_title(title, fontproperties=fp, fontsize=14)
-            ax.set_xlabel(chart_config.get("x", ""), fontproperties=fp)
-            ax.set_ylabel(y_fields[0] if y_fields else "", fontproperties=fp)
-        else:
-            ax.set_title(title, fontsize=14)
-        fig.tight_layout()
+            if chart_type == "bar":
+                ax.bar(x_vals, y_vals, color="#5a8a7a")
+                plt.xticks(rotation=45, ha="right")
+            elif chart_type == "line":
+                ax.plot(x_vals, y_vals, marker="o", color="#c4901a", linewidth=2)
+                plt.xticks(rotation=45, ha="right")
+            elif chart_type == "pie":
+                colors = ["#c4901a", "#5a8a7a", "#1a1a18", "#d6d3d1", "#a8a29e"]
+                wedges, texts, autotexts = ax.pie(y_vals, labels=x_vals,
+                    autopct="%1.1f%%", colors=colors[:len(x_vals)], startangle=90)
+                if fp:
+                    for t in texts + autotexts:
+                        t.set_fontproperties(fp)
 
-        buf = io.BytesIO()
-        fig.savefig(buf, format="png", dpi=150)
-        buf.seek(0)
-        b64 = base64.b64encode(buf.read()).decode()
-        plt.close(fig)
-        return b64
+            if fp:
+                ax.set_title(title, fontproperties=fp, fontsize=14)
+                ax.set_xlabel(chart_config.get("x", ""), fontproperties=fp)
+                ax.set_ylabel(y_fields[0] if y_fields else "", fontproperties=fp)
+            else:
+                ax.set_title(title, fontsize=14)
+            fig.tight_layout()
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png", dpi=150)
+            buf.seek(0)
+            result["b64"] = base64.b64encode(buf.read()).decode()
+            plt.close(fig)
+        return result
     except Exception as e:
         logger.error(f"chart generation failed: {e}")
         return None

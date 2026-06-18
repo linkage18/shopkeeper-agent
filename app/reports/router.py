@@ -22,6 +22,7 @@ class AnalysisResp(BaseModel):
     template_id: str
     params: dict[str, Any]
     chart_b64: str | None = None
+    chart_data: dict[str, Any] | None = None
     report_md: str
     results: dict[str, Any]
 
@@ -64,10 +65,12 @@ async def analyze(req: AnalysisReq, user: Annotated[dict, Depends(require_user)]
                 results[sql_def["id"]] = []
                 results[f"{sql_def['id']}_error"] = str(e)
 
-    # 3. 出图
+    # 3. 出图 (返回结构化数据供前端 ECharts 渲染)
     main_key = sqls[0]["id"] if sqls else "main"
     main_data = results.get(main_key, [])
-    chart_b64 = generate_chart(main_data, tmpl.get("chart", {}), req.params)
+    chart_result = generate_chart(main_data, tmpl.get("chart", {}), req.params)
+    chart_b64 = chart_result.get("b64") if chart_result else None
+    chart_data = chart_result.get("chart_data") if chart_result else None
 
     # 4. 生成报告
     report_md = build_report(req.params, tmpl, results, chart_b64)
@@ -82,6 +85,7 @@ async def analyze(req: AnalysisReq, user: Annotated[dict, Depends(require_user)]
         template_id=req.template_id,
         params=req.params,
         chart_b64=chart_b64,
+        chart_data=chart_data,
         report_md=report_md,
         results=results,
     )
