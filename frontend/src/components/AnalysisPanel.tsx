@@ -6,7 +6,7 @@ interface Template {
   params: { name: string; label: string; type: string; options?: string[]; default?: any }[];
 }
 
-export function AnalysisPanel() {
+export function AnalysisPanel({ onBack }: { onBack?: () => void }) {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selected, setSelected] = useState<string>("");
   const [params, setParams] = useState<Record<string, any>>({});

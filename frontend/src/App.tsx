@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnalysisPanel } from "./components/AnalysisPanel";
+import { apiPost } from "./lib/authApi";
 import { Composer } from "./components/Composer";
 import { EmptyState } from "./components/EmptyState";
 import { FileUpload } from "./components/FileUpload";
@@ -132,9 +133,27 @@ export default function App() {
     const query = rawQuery.trim();
     if (!query || isStreaming) return;
 
-    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: activeTab };
+    // 意图路由：自动分类用户输入
+    let targetTab = activeTab;
+    if (targetTab !== "analysis") {
+      try {
+        const intentResp = await apiPost("/api/intent/classify", { query });
+        targetTab = intentResp.intent || activeTab;
+      } catch { /* 分类失败则不切换 */ }
+    }
+
+    if (targetTab === "analysis") {
+      setActiveTab("analysis");
+      setDraft("");
+      return;
+    }
+
+    setActiveTab(targetTab);
+    const tab = targetTab as "sql" | "rag";
+
+    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab };
     const assistantId = makeId();
-    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab: activeTab };
+    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab };
 
     const controller = new AbortController();
     setActiveController(controller);
@@ -142,7 +161,7 @@ export default function App() {
     setMessages((cur) => [...cur, userMessage, assistantMessage]);
 
     try {
-      if (activeTab === "sql") {
+      if (tab === "sql") {
         await streamQuery(query, {
           signal: controller.signal,
           onEvent: (event: AgentEvent) => {
@@ -182,7 +201,6 @@ export default function App() {
   const clearConversation = () => { if (!isStreaming) { setMessages([]); setDraft(""); } };
 
   return (
-    activeTab === "analysis" ? <AnalysisPanel /> :
     <div className="h-dvh overflow-hidden bg-porcelain-50 text-porcelain-900">
       <div className="relative grid h-full min-h-0 overflow-hidden lg:grid-cols-[300px_minmax(0,1fr)]">
         {/* 侧边栏 — 瓷白色 */}
@@ -248,6 +266,15 @@ export default function App() {
             >
               分析
             </button>
+            {activeTab === "analysis" && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("sql")}
+                className="absolute right-3 top-3 rounded p-1 text-porcelain-400 hover:text-porcelain-600"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
@@ -316,6 +343,23 @@ export default function App() {
 
         {/* 主区域 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
+          {activeTab === "analysis" ? (
+            <>
+              <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => setActiveTab("sql")}
+                    className="rounded-md border border-porcelain-200 bg-white px-3 py-1.5 text-xs font-medium text-porcelain-600 hover:bg-porcelain-100">
+                    ← 返回问数
+                  </button>
+                  <div className="text-sm font-semibold text-porcelain-900">深度分析</div>
+                </div>
+              </header>
+              <div className="flex-1 overflow-hidden">
+                <AnalysisPanel onBack={() => setActiveTab("sql")} />
+              </div>
+            </>
+          ) : (
+          <>
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <div className={cn(
@@ -372,6 +416,7 @@ export default function App() {
             onStop={stopQuery}
           />
         </main>
+        )}
       </div>
     </div>
   );
