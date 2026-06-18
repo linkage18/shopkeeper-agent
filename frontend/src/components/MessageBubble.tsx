@@ -6,6 +6,7 @@
  */
 import { Bot, Copy, UserRound } from "lucide-react";
 import { useCallback, useState } from "react";
+import { InteractiveChart } from "./InteractiveChart";
 import { ResultTable } from "./ResultTable";
 import { SourceList } from "./SourceCard";
 import { StepRail } from "./StepRail";
@@ -81,7 +82,12 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           )}
 
           {!isUser && <StepRail steps={message.steps} mode={message.tab === "rag" ? "rag" : "sql"} />}
-          {!isUser && message.result !== undefined && <ResultTable data={message.result} />}
+          {!isUser && (message.result as any)?.chart_data && (
+            <div className="mt-3 rounded-lg border border-porcelain-200 bg-white p-2">
+              <InteractiveChart chartData={(message.result as any).chart_data} />
+            </div>
+          )}
+          {!isUser && message.result !== undefined && !(message.result as any)?.chart_data && <ResultTable data={message.result} />}
           {!isUser && message.sources && message.sources.length > 0 && (
             <SourceList sources={message.sources} activeIndex={activeSource} />
           )}

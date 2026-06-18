@@ -135,27 +135,40 @@ export default function App() {
     const query = rawQuery.trim();
     if (!query || isStreaming) return;
 
-    // 意图路由：自动分类用户输入
+    // ── 意图路由：自动分类用户输入，切换 Tab ──
+    let targetTab = activeTab;
     let reportIntent = false;
     if (activeTab !== "analysis") {
       try {
         const intentResp = await apiPost("/api/intent/classify", { query });
-        if (intentResp.intent === "report") reportIntent = true;
+        if (intentResp.intent === "report") {
+          reportIntent = true;
+        } else if (intentResp.intent === "sql" || intentResp.intent === "rag") {
+          targetTab = intentResp.intent;
+          setActiveTab(targetTab);
+        }
       } catch { /* 分类失败则不切换 */ }
     }
 
-    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: activeTab };
+    // 确定消息的 tab 字段（决定 StepRail 显示哪个流程图）
+    const msgTab = reportIntent ? (targetTab as "sql") : (targetTab as "sql" | "rag");
+
+    const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: msgTab };
     const assistantId = makeId();
-    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab: activeTab };
+    const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab: msgTab };
 
     const controller = new AbortController();
     setActiveController(controller);
     setDraft("");
     setMessages((cur) => [...cur, userMessage, assistantMessage]);
 
+    const handleEvent = (updater: (m: ChatMessage) => ChatMessage) => {
+      setMessages((cur) => cur.map((m) => (m.id !== assistantId ? m : updater(m))));
+    };
+
     try {
       if (reportIntent) {
-        // 报告生成管线
+        // ═══ 报告生成管线 ═══
         const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
         const token = localStorage.getItem("token");
         const resp = await fetch(`${API_BASE}/api/report/generate`, {
@@ -178,48 +191,52 @@ export default function App() {
             if (!pd) continue;
             try {
               const ev = JSON.parse(pd);
-              setMessages((cur) => cur.map((m) => {
-                if (m.id !== assistantId) return m;
+              handleEvent((m) => {
                 if (ev.type === "progress") {
-                  const content = ev.status === "success" ? `✓ ${ev.step}` : `→ ${ev.step}`;
-                  return { ...m, content: m.content === "正在连接..." ? content : m.content + "\n" + content, steps: upsertStep(m.steps || [], { type: "progress", step: ev.step, status: ev.status }) };
+                  return { ...m, steps: upsertStep(m.steps || [], { type: "progress", step: ev.step, status: ev.status }) };
                 }
                 if (ev.type === "result") {
-                  if (ev.report_md) return { ...m, status: "done" as const, content: ev.report_md, result: ev };
-                  if (ev.chart_data) return { ...m, content: m.content.replace("正在连接...", ""), result: ev };
-                  if (ev.sql_id) return { ...m, content: m.content.replace("正在连接...", "") + `\n[${ev.sql_id}]: ${JSON.stringify(ev.data || ev.error).slice(0, 100)}` };
+                  const result = m.result as any || {};
+                  if (ev.report_md) {
+                    return { ...m, status: "done" as const, content: ev.report_md, result: { ...result, report_md: ev.report_md } };
+                  }
+                  if (ev.chart_data) {
+                    return { ...m, result: { ...result, chart_data: ev.chart_data } };
+                  }
                 }
-                if (ev.type === "error") return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
+                if (ev.type === "error") {
+                  return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
+                }
                 return m;
-              }));
+              });
             } catch { /* skip */ }
           }
         }
-        setMessages((cur) => cur.map((m) => m.id === assistantId && m.status !== "done" ? { ...m, status: "done" as const } : m));
-      } else if (activeTab === "sql") {
+        handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
+      } else if (msgTab === "sql") {
+        // ═══ NL2SQL 管线 ═══
         await streamQuery(query, {
           signal: controller.signal,
           onEvent: (event: AgentEvent) => {
-            setMessages((cur) => cur.map((m) => {
-              if (m.id !== assistantId) return m;
-              if (event.type === "progress") return { ...m, content: event.status === "running" ? `正在执行：${event.step}` : m.content, steps: upsertStep(m.steps, event) };
+            handleEvent((m) => {
+              if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
               if (event.type === "result") return { ...m, status: "done" as const, content: summarizeResult(event.data), result: event.data };
               return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
-            }));
+            });
           },
         });
       } else {
+        // ═══ RAG 管线 ═══
         const sid = currentSessionId === "new" ? crypto.randomUUID?.() ?? `${Date.now()}` : currentSessionId;
         if (currentSessionId === "new") setCurrentSessionId(sid);
         await streamRagQuery(query, sid, {
           signal: controller.signal,
           onEvent: (event: any) => {
-            setMessages((cur) => cur.map((m) => {
-              if (m.id !== assistantId) return m;
-              if (event.type === "progress") return { ...m, content: event.status === "running" ? `正在执行：${event.step}` : m.content, steps: upsertStep(m.steps, event) };
+            handleEvent((m) => {
+              if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
               if (event.type === "result") return { ...m, status: "done" as const, content: event.answer || "（无回答）", sources: event.sources || [] };
               return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
-            }));
+            });
           },
         });
         refreshSessions();
