@@ -18,7 +18,7 @@ const highlights = [
 
 export function EmptyState({ examples, onUseExample }: EmptyStateProps) {
   return (
-    <div className="mx-auto flex min-h-full max-w-5xl flex-col justify-center px-4 py-12">
+    <div className="mx-auto flex flex-col justify-center px-4 py-12">
       <div className="mb-10 max-w-3xl">
         <div className="mb-5 inline-flex items-center gap-2 border border-kinpaku/20 bg-kinpaku/[0.06] px-3 py-1.5 text-sm font-semibold text-kinpaku">
           <Sparkles className="h-4 w-4" aria-hidden="true" />

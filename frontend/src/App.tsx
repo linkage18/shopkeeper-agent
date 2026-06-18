@@ -85,10 +85,6 @@ export default function App() {
     setLoggedIn(false);
   };
 
-  if (!loggedIn) return <LoginPage onLogin={() => {
-    setLoggedIn(true);
-  }} />;
-
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
@@ -207,7 +203,13 @@ export default function App() {
   const clearConversation = () => { if (!isStreaming) { setMessages([]); setDraft(""); } };
 
   return (
-    <div className="h-dvh overflow-hidden bg-porcelain-50 text-porcelain-900">
+    <>
+    {/* 登录页始终渲染，未登录时显示 */}
+    <div style={{ display: loggedIn ? "none" : "" }}>
+      <LoginPage onLogin={() => { setLoggedIn(true); }} />
+    </div>
+    {/* 主应用始终渲染，登录后显示 */}
+    <div style={{ display: loggedIn ? "" : "none" }} className="h-dvh overflow-hidden bg-porcelain-50 text-porcelain-900">
       <div className="relative grid h-full min-h-0 overflow-hidden lg:grid-cols-[300px_minmax(0,1fr)]">
         {/* 侧边栏 — 瓷白色 */}
         <aside className="hidden min-h-0 border-r border-porcelain-200 bg-white lg:flex lg:flex-col">
@@ -421,5 +423,6 @@ export default function App() {
         </main>
       </div>
     </div>
+    </>
   );
 }
