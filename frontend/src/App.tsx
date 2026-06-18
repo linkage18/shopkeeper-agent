@@ -20,7 +20,7 @@ import { MessageBubble } from "./components/MessageBubble";
 import { SessionList } from "./components/SessionList";
 import { SessionSearch } from "./components/SessionSearch";
 import { streamQuery } from "./lib/agentApi";
-import { getToken, getUser, removeToken, removeUser } from "./lib/authApi";
+import { getToken, removeToken, removeUser } from "./lib/authApi";
 import { streamRagQuery, listSessions, getSession, deleteSession } from "./lib/ragApi";
 import { cn, summarizeResult } from "./lib/format";
 import type { AgentEvent, ChatMessage, SessionListItem, StepState } from "./types/agent";
@@ -73,8 +73,6 @@ export default function App() {
     [messages],
   );
 
-  const [user, setUser] = useState(() => getUser());
-
   const handleLogout = () => {
     removeToken();
     removeUser();
@@ -84,15 +82,11 @@ export default function App() {
     setActiveTab("sql");
     setCurrentSessionId("new");
     setSessions([]);
-    setUser(null);
     setLoggedIn(false);
   };
 
   if (!loggedIn) return <LoginPage onLogin={() => {
-    setUser(getUser());
     setLoggedIn(true);
-    setActiveTab("sql");
-    setMessages([]);
   }} />;
 
   useEffect(() => {
@@ -232,18 +226,13 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              {user && (
-                <button onClick={handleLogout} className="rounded p-1 text-porcelain-400 hover:text-porcelain-600" title="退出登录">
-                  <LogOut className="h-3.5 w-3.5" />
-                </button>
-              )}
+              <button onClick={handleLogout} className="rounded p-1 text-porcelain-400 hover:text-porcelain-600" title="退出登录">
+                <LogOut className="h-3.5 w-3.5" />
+              </button>
             </div>
-            {user && (
-              <div className="mt-2 flex items-center gap-2 text-xs text-porcelain-500">
-                <span className="rounded bg-porcelain-100 px-1.5 py-0.5">{user.username}</span>
-                <span className="rounded bg-porcelain-100 px-1.5 py-0.5">{user.role}</span>
-              </div>
-            )}
+            <div className="mt-2 flex items-center gap-2 text-xs text-porcelain-500">
+              <span className="rounded bg-porcelain-100 px-1.5 py-0.5">已登录</span>
+            </div>
           </div>
 
           {/* Tab 切换 */}
