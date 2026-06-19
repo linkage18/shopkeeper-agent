@@ -180,12 +180,14 @@ async def list_sessions():
         lines = f.read_text(encoding="utf-8").strip().split("\n")
         first = json.loads(lines[0]) if lines else {}
         last = json.loads(lines[-1]) if lines else {}
+        sess_type = first.get("type", "rag") if first.get("type") else ("sql" if f.stem.startswith("sql_") else "rag")
         sessions.append({
             "id": f.stem,
             "created_at": first.get("timestamp", 0),
             "query_count": len(lines),
             "first_query": (first.get("query", "") or "")[:60],
             "summary": last.get("summary", ""),
+            "type": sess_type,
         })
     return {"sessions": sessions}
 

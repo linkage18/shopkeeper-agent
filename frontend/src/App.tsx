@@ -81,6 +81,11 @@ export default function App() {
 
   const isStreaming = Boolean(activeController);
   const canSubmit = draft.trim().length > 0 && !isStreaming;
+  const filteredSessions = useMemo(() => {
+    const targetType = activeTab === "sql" ? "sql" : activeTab === "rag" ? "rag" : "";
+    return targetType ? sessions.filter((s) => (s as any).type === targetType) : sessions;
+  }, [sessions, activeTab]);
+
   const examples = activeTab === "sql"
     ? [...SQL_EXAMPLES, "---", ...CHART_EXAMPLES, "---", ...REPORT_EXAMPLES]
     : RAG_EXAMPLES;
@@ -430,15 +435,19 @@ export default function App() {
 
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
             {activeTab !== "analysis" && (
-              <SessionSearch sessions={sessions} onSearch={(q) => {
-                if (q) {
-                  const found = sessions.find((s) => s.id === q);
+              <SessionSearch
+                sessions={filteredSessions}
+                onSearch={(q) => {
+                  const found = filteredSessions.find((s) => s.id === q);
                   if (found) handleSessionSelect(found.id);
-                }
-              }} />
+                }}
+              />
             )}
-            {activeTab !== "analysis" && (
-              <SessionList sessions={sessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
+            {activeTab === "sql" && (
+              <SessionList sessions={filteredSessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
+            )}
+            {activeTab === "rag" && (
+              <SessionList sessions={filteredSessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
             )}
             {activeTab === "rag" && (
               <>

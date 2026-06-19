@@ -64,6 +64,7 @@ export type SessionListItem = {
   query_count: number;
   first_query: string;
   summary: string;
+  type?: string;
 };
 
 export type SessionRecord = {
