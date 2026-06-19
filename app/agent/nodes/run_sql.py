@@ -38,7 +38,7 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
     columns = list(rows[0].keys())
     numeric_columns = [
         col for col in columns
-        if any(_is_number(row.get(col)) for row in rows)
+        if all(_is_number(row.get(col)) for row in rows)
     ]
     dimension_columns = [col for col in columns if col not in numeric_columns]
 
@@ -68,7 +68,14 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
 
     if len(y_fields) == 1:
         y_field = y_fields[0]
-        values = [float(row.get(y_field) or 0) for row in limited_rows]
+        values = []
+        for row in limited_rows:
+            try:
+                values.append(float(row.get(y_field) or 0))
+            except (ValueError, TypeError):
+                values.append(0)
+        if all(v == 0 for v in values):
+            return None
         chart_type = "line" if _looks_like_date_field(x_field) else "bar"
         if len(limited_rows) <= 8 and _has_chart_keyword(query):
             chart_type = "pie"

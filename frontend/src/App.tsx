@@ -315,10 +315,10 @@ export default function App() {
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-porcelain-900">
-                    {activeTab === "sql" ? "智能问数" : activeTab === "rag" ? "知识库" : "深度分析"}
+                    {activeTab === "sql" ? "智能问数" : activeTab === "rag" ? "知识库" : "多维可视化"}
                   </div>
                   <div className="text-xs text-porcelain-400">
-                    {activeTab === "sql" ? "NL2SQL" : activeTab === "rag" ? "RAG" : "报告"}
+                    {activeTab === "sql" ? "NL2SQL" : activeTab === "rag" ? "RAG" : "可视化"}
                   </div>
                 </div>
               </div>
@@ -361,7 +361,7 @@ export default function App() {
                 activeTab === "analysis" ? "border-b-2 border-kinpaku text-kinpaku" : "text-porcelain-400 hover:text-porcelain-600",
               )}
             >
-              分析
+              可视化
             </button>
             {activeTab === "analysis" && (
               <button
@@ -456,7 +456,7 @@ export default function App() {
                   className="rounded-md border border-porcelain-200 bg-white px-3 py-1.5 text-xs font-medium text-porcelain-600 hover:bg-porcelain-100">
                   ← 返回问数
                 </button>
-                <div className="text-sm font-semibold text-porcelain-900">深度分析</div>
+                <div className="text-sm font-semibold text-porcelain-900">多维可视化</div>
               </div>
             </header>
             <div className="flex-1 overflow-hidden">
