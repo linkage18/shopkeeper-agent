@@ -192,7 +192,7 @@ export default function App() {
     }
 
     // 消息 tab 字段用于 StepRail 显示正确流程图
-    const msgTab = pipeline as "sql" | "rag";
+    const msgTab = reportIntent ? "report" : (pipeline as "sql" | "rag");
 
     const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: msgTab };
     const assistantId = makeId();

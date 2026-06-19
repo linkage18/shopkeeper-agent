@@ -61,7 +61,8 @@ async def _generate(query: str, user_id: str):
 
         # 2. 规划
         yield _sse({"type": "progress", "step": "规划报告", "status": "running"})
-        plan = await plan_report(query, schema_text)
+        from datetime import date
+        plan = await plan_report(query, schema_text, current_date=date.today().strftime("%Y-%m-%d"))
         sqls = plan.get("sqls", [])
         python_code = plan.get("python_preprocess", "")
         chart_info = {
