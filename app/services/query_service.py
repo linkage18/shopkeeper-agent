@@ -58,12 +58,13 @@ class QueryService:
             from app.memory.retriever import retrieve_all
             memory_ctx = await retrieve_all(
                 query=query,
-                session_id="",  # 暂不传入 session_id，需要时由路由层传入
+                session_id="",
                 user_id=user_id,
                 db_session=self.meta_mysql_repository.session,
             )
-        except Exception:
-            pass
+        except Exception as e:
+            from app.core.log import logger
+            logger.warning(f"记忆检索失败（不影响主流程）: {e}")
         augmented_query = query
         if memory_ctx:
             augmented_query = f"[知识参考]\n{memory_ctx}\n\n[用户问题]\n{query}"
@@ -90,10 +91,22 @@ class QueryService:
                 if chunk.get("type") == "result":
                     last_result = chunk.get("data")
                 yield f"data: {json.dumps(chunk, ensure_ascii=False, default=str)}\n\n"
-            # 缓存结果
+            # 缓存结果（精确缓存 + Qdrant 语义缓存）
             if last_result:
-                from app.cache.services import exact_cache_set
+                from app.cache.services import exact_cache_set, semantic_cache_save
                 exact_cache_set(query, last_result)
+                try:
+                    await semantic_cache_save(query, last_result)
+                except Exception:
+                    pass
+                # 知识提取：对话中识别业务口径定义
+                try:
+                    from app.knowledge.extractor import extract_knowledge
+                    sql = last_result.get("sql", "") if isinstance(last_result, dict) else ""
+                    data = last_result.get("rows", last_result) if isinstance(last_result, dict) else last_result
+                    await extract_knowledge(query, sql, str(data)[:500], user_id)
+                except Exception:
+                    pass
         except Exception as e:
             # 流式接口已经开始返回后不能再改 HTTP 状态码，因此把异常也包装成一条 SSE 消息
             err_msg = str(e)

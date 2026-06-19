@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from starlette.responses import StreamingResponse
 
 from app.auth.middleware import require_user
-from app.clients.mysql_client_manager import dw_mysql_client_manager
+from app.clients.mysql_client_manager import dw_mysql_client_manager, meta_mysql_client_manager
 from app.report_agent.planner import plan_report
 from app.report_agent.executor import execute_sqls, execute_python, generate_report_text
 from app.report_agent.renderer import build_chart_data
@@ -59,10 +59,19 @@ async def _generate(query: str, user_id: str):
 
         yield _sse({"type": "progress", "step": "读取 Schema", "status": "success"})
 
+        # 1.5 记忆检索注入上下文
+        memory_ctx = ""
+        try:
+            from app.memory.retriever import retrieve_all
+            async with meta_mysql_client_manager.session_factory() as msession:
+                memory_ctx = await retrieve_all(query=query, db_session=msession)
+        except Exception as e:
+            logger.warning(f"报告记忆检索失败: {e}")
+
         # 2. 规划
         yield _sse({"type": "progress", "step": "规划报告", "status": "running"})
         from datetime import date
-        plan = await plan_report(query, schema_text, current_date=date.today().strftime("%Y-%m-%d"))
+        plan = await plan_report(query, schema_text, current_date=date.today().strftime("%Y-%m-%d"), memory_context=memory_ctx)
         sqls = plan.get("sqls", [])
         python_code = plan.get("python_preprocess", "")
         chart_info = {
