@@ -77,7 +77,6 @@ export default function App() {
   const [loadingSession, setLoadingSession] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const lastIntentRef = useRef<string>("sql");
 
   const isStreaming = Boolean(activeController);
   const canSubmit = draft.trim().length > 0 && !isStreaming;
@@ -178,16 +177,17 @@ export default function App() {
     const query = rawQuery.trim();
     if (!query || isStreaming) return;
 
-    // ── 意图路由：分类意图决定走哪个管线，上下文感知 ──
+    // ── 意图路由：分类意图决定走哪个管线（LLM 上下文感知） ──
     let pipeline = activeTab as string;
     let reportIntent = false;
-
-    // 简短追问：用上一条意图作为上下文，不走分类
-    if (query.length < 10 && lastIntentRef.current === "report") {
-      reportIntent = true;
-    } else if (activeTab !== "analysis") {
+    if (activeTab !== "analysis") {
+      // 取最近 2 条消息作为上下文传给 LLM
+      const recentMessages = messages.slice(-4);
+      const historyText = recentMessages
+        .map((m) => `${m.role === "user" ? "用户" : "助手"}: ${m.content.slice(0, 100)}`)
+        .join("\n");
       try {
-        const intentResp = await apiPost("/api/intent/classify", { query });
+        const intentResp = await apiPost("/api/intent/classify", { query, history: historyText });
         if (intentResp.intent === "report") {
           reportIntent = true;
         } else if (intentResp.intent === "sql" || intentResp.intent === "rag") {
@@ -195,9 +195,6 @@ export default function App() {
         }
       } catch { /* 忽略 */ }
     }
-
-    if (reportIntent) lastIntentRef.current = "report";
-    else lastIntentRef.current = pipeline;
 
     // 消息 tab 字段用于 StepRail 显示正确流程图
     const msgTab = reportIntent ? "report" : (pipeline as "sql" | "rag");

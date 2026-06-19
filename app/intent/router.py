@@ -9,16 +9,23 @@ intent_router = APIRouter(prefix="/api/intent", tags=["intent"])
 
 class IntentReq(BaseModel):
     query: str
+    history: str = ""
 
 
 @intent_router.post("/classify")
 async def classify_intent(req: IntentReq):
+    history_context = ""
+    if req.history:
+        history_context = f"\n历史对话上下文（最后 2 轮）：\n{req.history}\n\n"
+        history_context += "注意：如果当前问题是历史对话的追问（如'那2025年呢'），意图应与上一条保持一致。\n"
+
     prompt = (
         f"判断以下用户问题的意图，只返回一个词：sql、rag、report。\n\n"
         f"规则：\n"
         f"- sql：用户要查具体数据、查报表、查数字（如上个月GMV、华东区销售额）\n"
         f"- rag：用户要问文档、制度、规范、知识类问题（如年假多少天、技术栈是什么）\n"
-        f"- report：用户要分析、总结、出报告、深度分析、对比分析、趋势分析（如总结Q1销售情况、分析各品牌表现、出报告）\n\n"
+        f"- report：用户要分析、总结、出报告、深度分析、对比分析、趋势分析（如总结Q1销售情况、分析各品牌表现、出报告）\n"
+        f"{history_context}"
         f"问题：{req.query}\n\n"
         f"意图："
     )
