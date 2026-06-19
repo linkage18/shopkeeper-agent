@@ -23,7 +23,7 @@ function Chart({ chartData }: { chartData: any }) {
       title: { text: title || "", left: "center", textStyle: { fontSize: 14 } },
       tooltip: { trigger: "axis" as const },
       legend: Array.isArray(series) && series.length > 1 ? { top: 28 } : undefined,
-      grid: { left: "3%", right: "4%", bottom: "15%", containLabel: true },
+      grid: { left: "3%", right: "4%", bottom: "15%" },
       xAxis: { type: "category" as const, data: labels, axisLabel: { rotate: labels.length > 6 ? 45 : 0, fontSize: 11 } },
       yAxis: { type: "value" as const },
       series: normalizedSeries,

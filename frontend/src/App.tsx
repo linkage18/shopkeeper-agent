@@ -140,7 +140,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (activeTab === "rag") refreshSessions();
+    if (activeTab === "rag" || activeTab === "sql") refreshSessions();
   }, [activeTab, refreshSessions]);
 
   const handleSessionSelect = useCallback(async (id: string) => {
@@ -448,27 +448,31 @@ export default function App() {
 
             {activeTab !== "analysis" && (
             <section>
-              <div className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-[0.12em] text-porcelain-400">
-                <History className="h-3.5 w-3.5" aria-hidden="true" />
-                样例
-              </div>
-              <div className="space-y-1.5">
-                {examples.map((example) =>
-                  example === "---" ? (
-                    <div key={example} className="border-t border-porcelain-200 my-2" />
-                  ) : (
-                    <button
-                      key={example}
-                      type="button"
-                      disabled={isStreaming || loadingSession}
-                      onClick={() => { setDraft(example); }}
-                      className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2.5 text-left text-xs leading-5 text-porcelain-600 transition hover:border-kinpaku/30 hover:bg-porcelain-50 disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      {example}
-                    </button>
-                  )
-                )}
-              </div>
+              <details className="group" open>
+                <summary className="mb-2 flex cursor-pointer items-center gap-2 px-1 text-xs font-semibold uppercase tracking-[0.12em] text-porcelain-400 hover:text-porcelain-600">
+                  <History className="h-3.5 w-3.5" aria-hidden="true" />
+                  样例
+                  <span className="ml-auto text-[10px] opacity-50 group-open:hidden">展开</span>
+                  <span className="ml-auto text-[10px] opacity-50 hidden group-open:inline">收起</span>
+                </summary>
+                <div className="space-y-1.5">
+                  {examples.map((example, idx) =>
+                    example === "---" ? (
+                      <div key={`sep-${idx}`} className="border-t border-porcelain-200 my-2" />
+                    ) : (
+                      <button
+                        key={example}
+                        type="button"
+                        disabled={isStreaming || loadingSession}
+                        onClick={() => { setDraft(example); }}
+                        className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2.5 text-left text-xs leading-5 text-porcelain-600 transition hover:border-kinpaku/30 hover:bg-porcelain-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        {example}
+                      </button>
+                    )
+                  )}
+                </div>
+              </details>
             </section>
             )}
           </div>
