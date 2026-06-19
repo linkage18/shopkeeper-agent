@@ -181,8 +181,8 @@ export default function App() {
     let pipeline = activeTab as string;
     let reportIntent = false;
     if (activeTab !== "analysis") {
-      // 取最近 2 条消息作为上下文传给 LLM
-      const recentMessages = messages.slice(-4);
+      // 传最近 20 轮对话给 LLM 做上下文感知意图分类
+      const recentMessages = messages.slice(-40);
       const historyText = recentMessages
         .map((m) => `${m.role === "user" ? "用户" : "助手"}: ${m.content.slice(0, 100)}`)
         .join("\n");
