@@ -34,9 +34,9 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   const [activeSource, setActiveSource] = useState<number | null>(null);
   const result = message.result as any;
-  const tableData = result && typeof result === "object" && Array.isArray(result.rows)
+  const tableData = result && typeof result === "object" && Array.isArray(result.rows) && result.rows.length > 0
     ? result.rows
-    : message.result;
+    : (Array.isArray(message.result) ? message.result : null);
 
   const scrollToSource = useCallback((i: number) => {
     setActiveSource(i);
@@ -91,7 +91,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
               <InteractiveChart chartData={result.chart_data} />
             </div>
           )}
-          {!isUser && message.tab !== "report" && message.result !== undefined && <ResultTable data={tableData} />}
+          {!isUser && tableData && <ResultTable data={tableData} />}
           {!isUser && message.sources && message.sources.length > 0 && (
             <SourceList sources={message.sources} activeIndex={activeSource} />
           )}

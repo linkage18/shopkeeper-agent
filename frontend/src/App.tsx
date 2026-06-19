@@ -168,8 +168,18 @@ export default function App() {
           id: makeId(), role: "user", content: record.query,
           createdAt: (record.timestamp || 0) * 1000, tab,
         });
+        // 从保存的数据重建 result（含 chart_data 和 rows）
+        const savedResult: any = {};
+        if (record.type === "sql" || record.type === "report") {
+          if ((record as any).chart_data) savedResult.chart_data = (record as any).chart_data;
+          if ((record as any).data) savedResult.rows = (record as any).data;
+          if ((record as any).row_count) savedResult.row_count = (record as any).row_count;
+        }
+        const content = record.type === "report" ? record.answer :
+          `查询完成，共 ${(record as any).row_count || 0} 行结果。`;
         restored.push({
-          id: makeId(), role: "assistant", content: typeof record.answer === "string" ? record.answer : JSON.stringify(record.answer),
+          id: makeId(), role: "assistant", content,
+          result: Object.keys(savedResult).length > 0 ? savedResult : undefined,
           sources: record.sources, createdAt: (record.timestamp || 0) * 1000,
           status: "done" as const, tab,
         });
@@ -302,7 +312,7 @@ export default function App() {
           try {
             const summary = lastReportMd.split("\n")[0]?.replace(/^#\s*/, "") || query.slice(0, 40);
             await apiPost("/api/session/save", {
-              query, answer: lastReportMd.slice(0, 500),
+              query, answer: lastReportMd.slice(0, 1000),
               summary: `报告: ${summary}`, type: "report",
             });
           } catch (e) { console.warn("保存报告会话失败:", e); }
@@ -323,18 +333,19 @@ export default function App() {
             });
           },
         });
-        // 保存到后端会话文件（和 RAG 同一套 session 系统）
+        // 保存完整数据 + 图表到会话文件
         if (sqlResult) {
           try {
-            const answerText = summarizeResult(sqlResult);
             await apiPost("/api/session/save", {
-              query, answer: answerText,
-              summary: `${query.slice(0, 40)}`, type: "sql",
+              query,
+              answer: summarizeResult(sqlResult),
+              summary: `${query.slice(0, 40)}`,
+              type: "sql",
+              chart_data: sqlResult.chart_data || null,
+              data: (sqlResult.rows || []).slice(0, 50),
+              row_count: sqlResult.row_count || 0,
             });
-            refreshSessions();
-          } catch (e) {
-            console.warn("保存 SQL 会话失败:", e);
-          }
+          } catch (e) { console.warn("保存 SQL 会话失败:", e); }
         }
       } else {
         // ═══ RAG 管线 ═══
