@@ -388,7 +388,7 @@ export default function App() {
           </div>
 
           <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 py-3">
-            {activeTab === "rag" && (
+            {activeTab !== "analysis" && (
               <SessionSearch sessions={sessions} onSearch={(q) => {
                 if (q) {
                   const found = sessions.find((s) => s.id === q);
@@ -396,9 +396,11 @@ export default function App() {
                 }
               }} />
             )}
+            {activeTab !== "analysis" && (
+              <SessionList sessions={sessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
+            )}
             {activeTab === "rag" && (
               <>
-                <SessionList sessions={sessions} currentId={currentSessionId} onSelect={handleSessionSelect} onNew={handleNewSession} onDelete={handleDeleteSession} />
                 <FileUpload />
                 <KnowledgeManager />
               </>
@@ -416,6 +418,7 @@ export default function App() {
               </button>
             )}
 
+            {activeTab !== "analysis" && (
             <section>
               <div className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-[0.12em] text-porcelain-400">
                 <History className="h-3.5 w-3.5" aria-hidden="true" />
@@ -439,6 +442,7 @@ export default function App() {
                 )}
               </div>
             </section>
+            )}
           </div>
 
           <div className="border-t border-porcelain-200 px-4 py-3">
