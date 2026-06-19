@@ -23,6 +23,13 @@ def _looks_like_date_field(name: str) -> bool:
     return any(token in lowered for token in ["date", "time", "day", "month", "year", "dt"])
 
 
+_CHART_KEYWORDS = ["占比", "比例", "份额", "分布", "图", "图表", "可视化", "chart", "pie", "bar", "line", "饼图", "柱状图", "折线图"]
+
+
+def _has_chart_keyword(query: str) -> bool:
+    return any(word.lower() in query.lower() for word in _CHART_KEYWORDS)
+
+
 def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
     """基于 SQL 结果自动生成前端 ECharts 可消费的数据。"""
     if not rows or not isinstance(rows[0], dict):
@@ -35,9 +42,21 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
     ]
     dimension_columns = [col for col in columns if col not in numeric_columns]
 
-    # 单值结果不强行画图，直接展示表格/指标即可。
-    if len(rows) == 1 and len(columns) <= 2:
-        return None
+    # 单值结果：只有明确包含图表关键词才展示单柱图
+    if len(rows) == 1 and len(columns) <= 2 and numeric_columns:
+        if not _has_chart_keyword(query):
+            return None
+        # 单值也展示一个孤柱，让用户能看到"有个图表框架"
+        label = dimension_columns[0] if dimension_columns else columns[0]
+        val = numeric_columns[0]
+        return {
+            "chart_type": "bar",
+            "title": f"{label} - {val}",
+            "labels": [str(rows[0].get(label, "")) or "数值"],
+            "values": [float(rows[0].get(val) or 0)],
+            "x_field": label,
+            "y_fields": [val],
+        }
 
     if not numeric_columns:
         return None
@@ -51,7 +70,7 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
         y_field = y_fields[0]
         values = [float(row.get(y_field) or 0) for row in limited_rows]
         chart_type = "line" if _looks_like_date_field(x_field) else "bar"
-        if len(limited_rows) <= 8 and any(word in query for word in ["占比", "比例", "份额", "分布"]):
+        if len(limited_rows) <= 8 and _has_chart_keyword(query):
             chart_type = "pie"
         return {
             "chart_type": chart_type,

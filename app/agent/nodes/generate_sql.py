@@ -32,8 +32,17 @@ async def generate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
         db_info = state["db_info"]
         query = state["query"]
 
+        # 检测用户是否要求图表/可视化，在 prompt 中注入提示
+        _chart_words = ["占比", "比例", "份额", "分布", "图", "图表", "可视化", "chart", "pie", "bar", "line", "饼图", "柱状图", "折线图"]
+        is_chart_query = any(w in query.lower() for w in _chart_words)
+        chart_hint = (
+            "\n【提示】用户希望看到可视化图表。请确保 SQL 返回多行数据（维度 + 数值），"
+            "不要只返回一个汇总值。例如：GROUP BY 地区/品类/品牌 等维度。"
+            if is_chart_query else ""
+        )
+
         prompt = PromptTemplate(
-            template=load_prompt("generate_sql"),
+            template=load_prompt("generate_sql") + chart_hint,
             input_variables=[
                 "table_infos",
                 "metric_infos",
