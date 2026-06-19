@@ -10,14 +10,23 @@ echarts.use([BarChart, LineChart, PieChart, GridComponent, TooltipComponent, Tit
 function Chart({ chartData }: { chartData: any }) {
   const option = useMemo(() => {
     if (!chartData || !chartData.labels || chartData.labels.length === 0) return null;
-    const { chart_type, title, labels, values } = chartData;
+    const { chart_type, title, labels, values, series } = chartData;
+    const normalizedSeries = Array.isArray(series) && series.length > 0
+      ? series.map((item: any) => ({
+          name: item.name,
+          data: item.data,
+          type: chart_type === "pie" ? "bar" : (chart_type as any) || "bar",
+          barMaxWidth: 50,
+        }))
+      : [{ data: values, type: chart_type === "pie" ? "bar" : (chart_type as any) || "bar", barMaxWidth: 50 }];
     const base = {
       title: { text: title || "", left: "center", textStyle: { fontSize: 14 } },
       tooltip: { trigger: "axis" as const },
+      legend: Array.isArray(series) && series.length > 1 ? { top: 28 } : undefined,
       grid: { left: "3%", right: "4%", bottom: "15%", containLabel: true },
       xAxis: { type: "category" as const, data: labels, axisLabel: { rotate: labels.length > 6 ? 45 : 0, fontSize: 11 } },
       yAxis: { type: "value" as const },
-      series: [{ data: values, type: chart_type === "pie" ? "bar" : (chart_type as any) || "bar", barMaxWidth: 50 }],
+      series: normalizedSeries,
     };
     if (chart_type === "pie") {
       return {

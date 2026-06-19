@@ -14,6 +14,18 @@ export function formatTime(timestamp: number) {
 }
 
 export function summarizeResult(data: unknown) {
+  if (data && typeof data === "object" && (data as any).chart_data) {
+    const count = (data as any).row_count ?? (data as any).rows?.length ?? 0;
+    const chartType = (data as any).chart_data?.chart_type || "";
+    const chartHint = chartType ? `（${chartType === "pie" ? "饼图" : chartType === "line" ? "折线图" : "柱状图"}）` : "";
+    return count > 0 ? `查询完成，${count} 行结果 ${chartHint}` : "查询完成，已生成图表";
+  }
+
+  if (data && typeof data === "object" && Array.isArray((data as any).rows)) {
+    const count = (data as any).row_count ?? (data as any).rows.length;
+    return count > 0 ? `查询完成，共 ${count} 行结果。` : "查询完成，结果为空。";
+  }
+
   if (Array.isArray(data)) {
     return data.length > 0 ? `查询完成，共 ${data.length} 行结果。` : "查询完成，结果为空。";
   }

@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnalysisPanel } from "./components/AnalysisPanel";
-import { apiPost } from "./lib/authApi";
+import { apiGet, apiPost, authHeaders } from "./lib/authApi";
 import { Composer } from "./components/Composer";
 import { EmptyState } from "./components/EmptyState";
 import { FileUpload } from "./components/FileUpload";
@@ -57,6 +57,7 @@ export default function App() {
   const [draft, setDraft] = useState("");
   const [activeController, setActiveController] = useState<AbortController | null>(null);
   const [activeTab, setActiveTab] = useState<"sql" | "rag" | "analysis">("sql");
+  const [tokenUsage, setTokenUsage] = useState<{ total: number; input: number; output: number; calls: number } | null>(null);
 
   const [sessions, setSessions] = useState<SessionListItem[]>([]);
   const [currentSessionId, setCurrentSessionId] = useState<string>("new");
@@ -73,6 +74,18 @@ export default function App() {
     [messages],
   );
 
+  const refreshTokenUsage = useCallback(async () => {
+    try {
+      const usage = await apiGet("/api/token/usage");
+      setTokenUsage({
+        total: usage.total ?? 0,
+        input: usage.input ?? 0,
+        output: usage.output ?? 0,
+        calls: usage.calls ?? 0,
+      });
+    } catch { /* silent */ }
+  }, []);
+
   const handleLogout = () => {
     removeToken();
     removeUser();
@@ -88,6 +101,10 @@ export default function App() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (loggedIn) refreshTokenUsage();
+  }, [loggedIn, refreshTokenUsage]);
 
   const refreshSessions = useCallback(async () => {
     try {
@@ -151,7 +168,7 @@ export default function App() {
     }
 
     // 确定消息的 tab 字段（决定 StepRail 显示哪个流程图）
-    const msgTab = reportIntent ? (targetTab as "sql") : (targetTab as "sql" | "rag");
+    const msgTab: "sql" | "rag" | "report" = reportIntent ? "report" : (targetTab as "sql" | "rag");
 
     const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: msgTab };
     const assistantId = makeId();
@@ -170,13 +187,13 @@ export default function App() {
       if (reportIntent) {
         // ═══ 报告生成管线 ═══
         const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
-        const token = localStorage.getItem("token");
         const resp = await fetch(`${API_BASE}/api/report/generate`, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify({ query }),
           signal: controller.signal,
         });
+        if (!resp.ok || !resp.body) throw new Error(`HTTP ${resp.status}`);
         const reader = resp.body!.getReader();
         const decoder = new TextDecoder("utf-8");
         let buf = "";
@@ -246,7 +263,10 @@ export default function App() {
       setMessages((cur) => cur.map((m) =>
         m.id === assistantId ? { ...m, status: isAbort ? "done" as const : "error" as const, content: isAbort ? "已停止。" : "无法连接接口。", error: isAbort ? undefined : String(error) } : m,
       ));
-    } finally { setActiveController(null); }
+    } finally {
+      setActiveController(null);
+      refreshTokenUsage();
+    }
   };
 
   const stopQuery = () => activeController?.abort();
@@ -389,6 +409,10 @@ export default function App() {
               <div className="flex items-center justify-between">
                 <span className="inline-flex items-center gap-2"><Activity className="h-3.5 w-3.5" aria-hidden="true" />完成</span>
                 <span>{completedCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Token</span>
+                <span>{tokenUsage ? `${tokenUsage.total} / ${tokenUsage.calls}次` : "0"}</span>
               </div>
             </div>
           </div>

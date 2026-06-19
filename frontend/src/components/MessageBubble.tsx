@@ -33,6 +33,10 @@ function renderContent(text: string, onCite: (i: number) => void) {
 export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   const [activeSource, setActiveSource] = useState<number | null>(null);
+  const result = message.result as any;
+  const tableData = result && typeof result === "object" && Array.isArray(result.rows)
+    ? result.rows
+    : message.result;
 
   const scrollToSource = useCallback((i: number) => {
     setActiveSource(i);
@@ -81,13 +85,13 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           )}
 
-          {!isUser && <StepRail steps={message.steps} mode={message.tab === "rag" ? "rag" : "sql"} />}
-          {!isUser && (message.result as any)?.chart_data && (
+          {!isUser && <StepRail steps={message.steps} mode={message.tab === "rag" ? "rag" : message.tab === "report" ? "report" : "sql"} />}
+          {!isUser && result?.chart_data && (
             <div className="mt-3 rounded-lg border border-porcelain-200 bg-white p-2">
-              <InteractiveChart chartData={(message.result as any).chart_data} />
+              <InteractiveChart chartData={result.chart_data} />
             </div>
           )}
-          {!isUser && message.result !== undefined && !(message.result as any)?.chart_data && <ResultTable data={message.result} />}
+          {!isUser && message.tab !== "report" && message.result !== undefined && <ResultTable data={tableData} />}
           {!isUser && message.sources && message.sources.length > 0 && (
             <SourceList sources={message.sources} activeIndex={activeSource} />
           )}

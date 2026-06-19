@@ -3,7 +3,7 @@ Schema & Viz 路由 — 动态可视化 API
 """
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from app.auth.middleware import require_user
@@ -36,10 +36,24 @@ class VizResp(BaseModel):
 
 
 @schema_router.get("")
-async def get_schema(user: Annotated[dict, Depends(require_user)]):
-    async with dw_mysql_client_manager.session_factory() as session:
-        schema = await get_db_schema(session)
-    return schema
+async def get_schema(
+    user: Annotated[dict, Depends(require_user)],
+    refresh: bool = Query(False),
+):
+    try:
+        if dw_mysql_client_manager.session_factory is None:
+            raise RuntimeError("DW MySQL client has not been initialized")
+        async with dw_mysql_client_manager.session_factory() as session:
+            schema = await get_db_schema(session, refresh=refresh)
+        return schema
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Schema 加载失败: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"数据库结构加载失败：{str(e)[:200]}",
+        ) from e
 
 
 @viz_router.post("/generate", response_model=VizResp)
@@ -74,8 +88,8 @@ async def generate_viz(req: VizReq, user: Annotated[dict, Depends(require_user)]
                 f"输出纯 SQL，不要 markdown 代码块。注意多表 JOIN 和 GROUP BY。"
             )
             from app.agent.llm import llm
-            sql_text = await llm.ainvoke(prompt)
-            sql_text = sql_text.strip().strip("```sql").strip("```").strip()
+            raw = await llm.ainvoke(prompt)
+            sql_text = raw.content.strip().strip("```sql").strip("```").strip()
             _sql_cache[cache_key] = sql_text
             logger.info(f"[VIZ] SQL 生成完成，已缓存")
 

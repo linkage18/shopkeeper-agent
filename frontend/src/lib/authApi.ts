@@ -1,4 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+const DEFAULT_TIMEOUT_MS = 15000;
 
 export function getToken(): string | null {
   return localStorage.getItem("token");
@@ -25,34 +26,63 @@ export function removeUser() {
   localStorage.removeItem("user");
 }
 
-function authHeaders(): Record<string, string> {
+export function authHeaders(): Record<string, string> {
   const token = getToken();
   if (token) return { Authorization: `Bearer ${token}` };
   return {};
 }
 
+async function readError(res: Response) {
+  try {
+    const data = await res.json();
+    return data.detail || data.message || "请求失败";
+  } catch {
+    return await res.text().catch(() => "请求失败");
+  }
+}
+
+async function withTimeout<T>(fn: (signal: AbortSignal) => Promise<T>, timeoutMs = DEFAULT_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fn(controller.signal);
+  } catch (e: any) {
+    if (e?.name === "AbortError") {
+      throw new Error("请求超时，请检查后端服务或数据库连接");
+    }
+    throw e;
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
 export async function apiPost(path: string, body: any) {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await withTimeout((signal) => fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error((await res.json()).detail || "请求失败");
+    signal,
+  }));
+  if (!res.ok) throw new Error(await readError(res));
   return res.json();
 }
 
 export async function apiGet(path: string) {
-  const res = await fetch(`${API_BASE}${path}`, { headers: authHeaders() });
-  if (!res.ok) throw new Error((await res.json()).detail || "请求失败");
+  const res = await withTimeout((signal) => fetch(`${API_BASE}${path}`, {
+    headers: authHeaders(),
+    signal,
+  }));
+  if (!res.ok) throw new Error(await readError(res));
   return res.json();
 }
 
 export async function apiDelete(path: string, body?: any) {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await withTimeout((signal) => fetch(`${API_BASE}${path}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json", ...authHeaders() },
     body: body ? JSON.stringify(body) : undefined,
-  });
-  if (!res.ok) throw new Error((await res.json()).detail || "请求失败");
+    signal,
+  }));
+  if (!res.ok) throw new Error(await readError(res));
   return res.json();
 }

@@ -37,7 +37,7 @@ export type ChatMessage = {
   steps?: StepState[];
   result?: unknown;
   error?: string;
-  tab?: "sql" | "rag";      // 所属 Tab
+  tab?: "sql" | "rag" | "report";      // 所属流程
   sources?: SourceRef[];     // RAG 问答的溯源引用
 };
 

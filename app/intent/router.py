@@ -23,7 +23,7 @@ async def classify_intent(req: IntentReq):
         f"意图："
     )
     resp = await llm.ainvoke(prompt)
-    intent = resp.strip().lower()
+    intent = resp.content.strip().lower()
     if intent not in ("sql", "rag", "report"):
         intent = "sql"
     return {"intent": intent}

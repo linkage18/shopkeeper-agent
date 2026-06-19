@@ -20,7 +20,7 @@ from app.report_agent.router import report_agent_router
 from app.report_agent.token_router import token_router
 from app.schema_analyzer.router import schema_router, viz_router
 from app.cache.services import ensure_cache_collection
-from app.core.context import request_id_ctx_var
+from app.core.context import request_id_ctx_var, user_ctx_var
 from app.knowledge.router import knowledge_router
 from app.reports.router import reports_router
 
@@ -56,22 +56,29 @@ app.include_router(me_router)
 async def auth_middleware_inline(request: Request, call_next):
     from app.auth.jwt import verify_token
     auth_header = request.headers.get("authorization", "")
+    ctx_token = None
     if auth_header.startswith("Bearer "):
         payload = verify_token(auth_header[7:])
         if payload:
             request.state.user = payload
-    response = await call_next(request)
-    return response
+            ctx_token = user_ctx_var.set(payload)
+    try:
+        response = await call_next(request)
+        return response
+    finally:
+        if ctx_token is not None:
+            user_ctx_var.reset(ctx_token)
 
 
 @app.middleware("http")
 async def add_request_id(request: Request, call_next):
     # 请求被处理之前
     request_id = uuid.uuid4()
-    request_id_ctx_var.set(request_id)
-    response = await call_next(request)
-    # 请求被处理之后
-    return response
-
+    ctx_token = request_id_ctx_var.set(str(request_id))
+    try:
+        response = await call_next(request)
+        return response
+    finally:
+        request_id_ctx_var.reset(ctx_token)
 
 

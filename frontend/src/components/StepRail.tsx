@@ -19,7 +19,7 @@ const SQL_NODES: FlowNode[] = [
   { step: "合并召回信息", x: 410, y: 214 },
   { step: "过滤指标信息", x: 290, y: 318 },
   { step: "过滤表信息", x: 530, y: 318 },
-  { step: "增加额外上下文", x: 410, y: 422, w: 176 },
+  { step: "添加额外上下文", x: 410, y: 422, w: 176 },
   { step: "生成SQL", x: 410, y: 526 },
   { step: "校验SQL", x: 410, y: 630 },
   { step: "校正SQL", x: 670, y: 630 },
@@ -83,21 +83,26 @@ function FlowNodeCard({ node, status }: { node: FlowNode; status: FlowStatus }) 
   );
 }
 
-type StepRailProps = { steps?: StepState[]; mode?: "sql" | "rag" };
+const REPORT_STEPS = ["读取 Schema", "规划报告", "执行 SQL", "数据处理", "构建图表", "生成报告", "完成"];
+
+type StepRailProps = { steps?: StepState[]; mode?: "sql" | "rag" | "report" };
 
 export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
   if (steps.length === 0) return null;
   const statusMap = getStatusMap(steps);
 
-  if (mode === "rag") {
+  if (mode === "rag" || mode === "report") {
+    const flowSteps = mode === "rag"
+      ? ["抽取关键词", "召回文档", "组装上下文", "生成答案"]
+      : REPORT_STEPS;
     return (
       <section className="mt-4 rounded-lg border border-gray-200 bg-white/40 px-3 py-4 shadow-subtle">
         <div className="mb-3 flex items-center justify-between gap-3 px-1">
           <div className="text-sm font-semibold text-gray-900">执行流程</div>
-          <div className="text-xs text-gray-400">RAG Agent</div>
+          <div className="text-xs text-gray-400">{mode === "rag" ? "RAG Agent" : "Report Agent"}</div>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {["抽取关键词", "召回文档", "组装上下文", "生成答案"].map((step) => {
+          {flowSteps.map((step) => {
             const st = statusMap[step];
             const flowStatus: "pending" | "running" | "success" | "error" = st ? st.status : "pending";
             return (
@@ -114,7 +119,7 @@ export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
                   </span>
                   <span className="min-w-0 flex-1 truncate">{step}</span>
                 </div>
-                {step !== "生成答案" && <span className="text-lg text-gray-300">→</span>}
+                {step !== flowSteps[flowSteps.length - 1] && <span className="text-lg text-gray-300">→</span>}
               </div>
             );
           })}

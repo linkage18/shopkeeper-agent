@@ -28,8 +28,12 @@ async def plan_report(query: str, schema_text: str) -> dict:
     )
     resp = await llm.ainvoke(prompt)
     import json
-    text = resp.strip()
+    import re
+    text = resp.content.strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1]
         text = text.rsplit("```", 1)[0]
+    match = re.search(r"\{.*\}", text.strip(), flags=re.S)
+    if match:
+        text = match.group(0)
     return json.loads(text.strip())

@@ -3,6 +3,10 @@ import { apiGet, apiPost } from "../lib/authApi";
 import { InteractiveChart } from "./InteractiveChart";
 
 /* 动态可视化面板 — 从 Schema 自动生成可选维度和指标 */
+let schemaCache: any = null;
+let schemaCacheAt = 0;
+const SCHEMA_CACHE_MS = 10 * 60 * 1000;
+
 export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onBack?: () => void }) {
   const [schema, setSchema] = useState<any>(null);
   const [dims, setDims] = useState<string[]>([]);
@@ -15,8 +19,36 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const [error, setError] = useState("");
 
   useEffect(() => {
-    apiGet("/api/schema").then((d) => setSchema(d)).catch(() => {});
+    let cancelled = false;
+    const now = Date.now();
+    if (schemaCache && now - schemaCacheAt < SCHEMA_CACHE_MS) {
+      setSchema(schemaCache);
+      return;
+    }
+    apiGet("/api/schema")
+      .then((d) => {
+        schemaCache = d;
+        schemaCacheAt = Date.now();
+        if (!cancelled) setSchema(d);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message || "加载数据库结构失败");
+      });
+    return () => { cancelled = true; };
   }, []);
+
+  const reloadSchema = async () => {
+    setError("");
+    setSchema(null);
+    try {
+      const d = await apiGet("/api/schema?refresh=true");
+      schemaCache = d;
+      schemaCacheAt = Date.now();
+      setSchema(d);
+    } catch (e: any) {
+      setError(e.message || "加载数据库结构失败");
+    }
+  };
 
   const handleGenerate = async () => {
     if (dims.length === 0 || meas.length === 0) return;
@@ -52,7 +84,10 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
           {schema && (
             <>
               <div>
-                <h3 className="text-xs font-semibold text-porcelain-600 uppercase tracking-wider mb-2">维度</h3>
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <h3 className="text-xs font-semibold text-porcelain-600 uppercase tracking-wider">维度</h3>
+                  <button onClick={reloadSchema} className="text-[10px] text-porcelain-400 hover:text-kinpaku">刷新结构</button>
+                </div>
                 <div className="space-y-1">
                   {schema.dimensions?.map((d: any) => (
                     <label key={`${d.table}.${d.column}`} className="flex items-center gap-2 cursor-pointer">
@@ -97,7 +132,26 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
               </button>
             </>
           )}
-          {!schema && <p className="text-xs text-porcelain-400">加载数据库结构...</p>}
+          {!schema && (
+            <div className="space-y-3">
+              <p className="text-xs text-porcelain-400">
+                {error ? "数据库结构加载失败" : "加载数据库结构..."}
+              </p>
+              {error && (
+                <>
+                  <div className="rounded border border-red-200 bg-red-50 px-3 py-2 text-xs leading-5 text-red-600">
+                    {error}
+                  </div>
+                  <button
+                    onClick={reloadSchema}
+                    className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2 text-xs font-medium text-porcelain-600 hover:bg-porcelain-100"
+                  >
+                    重新加载
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 右侧：图表 + 数据 */}

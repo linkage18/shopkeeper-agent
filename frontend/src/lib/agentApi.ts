@@ -3,6 +3,7 @@
  * 封装后端 /api/query SSE 流式接口请求与事件解析逻辑
  */
 import type { AgentEvent } from "../types/agent";
+import { authHeaders } from "./authApi";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
 
@@ -17,6 +18,7 @@ export async function streamQuery(query: string, options: QueryOptions) {
     headers: {
       "Content-Type": "application/json",
       Accept: "text/event-stream",
+      ...authHeaders(),
     },
     body: JSON.stringify({ query }),
     signal: options.signal,

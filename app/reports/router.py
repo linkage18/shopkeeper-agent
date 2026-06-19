@@ -1,6 +1,6 @@
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from pydantic import BaseModel
 
 from app.auth.middleware import require_user
@@ -41,7 +41,11 @@ async def get_template(template_id: str, user: Annotated[dict, Depends(require_u
 
 
 @reports_router.post("/analyze", response_model=AnalysisResp)
-async def analyze(req: AnalysisReq, user: Annotated[dict, Depends(require_user)]):
+async def analyze(
+    req: AnalysisReq,
+    user: Annotated[dict, Depends(require_user)],
+    background_tasks: BackgroundTasks,
+):
     tmpl = load_template(req.template_id)
     if not tmpl:
         raise HTTPException(status_code=404, detail="模板不存在")
@@ -75,11 +79,13 @@ async def analyze(req: AnalysisReq, user: Annotated[dict, Depends(require_user)]
     # 4. 生成报告
     report_md = build_report(req.params, tmpl, results, chart_b64)
 
-    # 5. 知识挖掘（静默运行，失败不影响主流程）
-    try:
-        await extract_knowledge_from_report(req.params, results, user.get("user_id", ""))
-    except Exception:
-        pass
+    # 5. 知识挖掘放到后台，避免拖慢分析接口主链路
+    background_tasks.add_task(
+        extract_knowledge_from_report,
+        req.params,
+        results,
+        user.get("user_id", ""),
+    )
 
     return AnalysisResp(
         template_id=req.template_id,
