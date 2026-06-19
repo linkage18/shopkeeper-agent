@@ -149,12 +149,22 @@ export default function App() {
     setCurrentSessionId(id);
     try {
       const detail = await getSession(id);
+      const isSql = id.startsWith("sql_");
       const restored: ChatMessage[] = [];
       for (const record of detail.history) {
-        restored.push({ id: makeId(), role: "user", content: record.query, createdAt: (record.timestamp || 0) * 1000, tab: "rag" });
-        restored.push({ id: makeId(), role: "assistant", content: record.answer, sources: record.sources, createdAt: (record.timestamp || 0) * 1000, status: "done", tab: "rag" });
+        const tab = record.type === "sql" || isSql ? ("sql" as const) : ("rag" as const);
+        restored.push({
+          id: makeId(), role: "user", content: record.query,
+          createdAt: (record.timestamp || 0) * 1000, tab,
+        });
+        restored.push({
+          id: makeId(), role: "assistant", content: typeof record.answer === "string" ? record.answer : JSON.stringify(record.answer),
+          sources: record.sources, createdAt: (record.timestamp || 0) * 1000,
+          status: "done" as const, tab,
+        });
       }
       setMessages(restored);
+      setActiveTab(isSql ? "sql" : "rag");
     } catch { setMessages([]); }
     finally { setLoadingSession(false); }
   }, [isStreaming, loadingSession]);
@@ -293,8 +303,9 @@ export default function App() {
         // 保存到后端会话文件（和 RAG 同一套 session 系统）
         if (sqlResult) {
           try {
+            const answerText = summarizeResult(sqlResult);
             await apiPost("/api/session/save", {
-              query, answer: JSON.stringify(sqlResult).slice(0, 500),
+              query, answer: answerText,
               summary: `SQL: ${query.slice(0, 40)}`, type: "sql",
             });
             refreshSessions();
