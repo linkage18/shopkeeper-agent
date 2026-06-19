@@ -42,7 +42,7 @@ export function EmptyState({ examples, onUseExample }: EmptyStateProps) {
       </div>
 
       <div className="mt-6 grid gap-3 md:grid-cols-2">
-        {examples.map((example) => (
+        {examples.filter(e => e !== "---").slice(0, 8).map((example) => (
           <button
             key={example}
             type="button"

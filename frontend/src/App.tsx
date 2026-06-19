@@ -32,11 +32,16 @@ const SQL_EXAMPLES = [
   "按会员等级统计 2025 年第一季度的订单数和销售额",
 ];
 
-const RAG_EXAMPLES = [
-  "项目使用什么技术栈？",
-  "服务器如何查看日志？",
-  "合同审批流程是怎样的？",
-  "销售人员的 KPI 有哪些？",
+const CHART_EXAMPLES = [
+  "按品牌统计销售额（会自动生成柱状图）",
+  "统计各品类月销售额趋势（会自动生成折线图）",
+  "统计各地区销售占比（会自动生成饼图）",
+  "对比各品类销量和销售额（会自动生成多系列图）",
+];
+
+const REPORT_EXAMPLES = [
+  "总结Q1各品牌销售情况并出报告",
+  "分析各品类销量对比并生成报告",
 ];
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "Vite /api proxy";
@@ -67,7 +72,9 @@ export default function App() {
 
   const isStreaming = Boolean(activeController);
   const canSubmit = draft.trim().length > 0 && !isStreaming;
-  const examples = activeTab === "sql" ? SQL_EXAMPLES : RAG_EXAMPLES;
+  const examples = activeTab === "sql"
+    ? [...SQL_EXAMPLES, "---", ...CHART_EXAMPLES, "---", ...REPORT_EXAMPLES]
+    : RAG_EXAMPLES;
 
   const completedCount = useMemo(
     () => messages.filter((m) => m.role === "assistant" && m.status === "done").length,
@@ -385,17 +392,21 @@ export default function App() {
                 样例
               </div>
               <div className="space-y-1.5">
-                {examples.map((example) => (
-                  <button
-                    key={example}
-                    type="button"
-                    disabled={isStreaming || loadingSession}
-                    onClick={() => startQuery(example)}
-                    className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2.5 text-left text-xs leading-5 text-porcelain-600 transition hover:border-kinpaku/30 hover:bg-porcelain-50 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    {example}
-                  </button>
-                ))}
+                {examples.map((example) =>
+                  example === "---" ? (
+                    <div key={example} className="border-t border-porcelain-200 my-2" />
+                  ) : (
+                    <button
+                      key={example}
+                      type="button"
+                      disabled={isStreaming || loadingSession}
+                      onClick={() => { setDraft(example); }}
+                      className="w-full rounded-md border border-porcelain-200 bg-white px-3 py-2.5 text-left text-xs leading-5 text-porcelain-600 transition hover:border-kinpaku/30 hover:bg-porcelain-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      {example}
+                    </button>
+                  )
+                )}
               </div>
             </section>
           </div>
