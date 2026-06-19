@@ -170,8 +170,8 @@ export default function App() {
     const query = rawQuery.trim();
     if (!query || isStreaming) return;
 
-    // ── 意图路由：自动分类用户输入，切换 Tab ──
-    let targetTab = activeTab;
+    // ── 意图路由：分类意图决定走哪个管线，不切换 Tab ──
+    let pipeline = activeTab as string;  // sql / rag
     let reportIntent = false;
     if (activeTab !== "analysis") {
       try {
@@ -179,14 +179,13 @@ export default function App() {
         if (intentResp.intent === "report") {
           reportIntent = true;
         } else if (intentResp.intent === "sql" || intentResp.intent === "rag") {
-          targetTab = intentResp.intent;
-          setActiveTab(targetTab);
+          pipeline = intentResp.intent;
         }
-      } catch { /* 分类失败则不切换 */ }
+      } catch { /* 忽略 */ }
     }
 
-    // 确定消息的 tab 字段（决定 StepRail 显示哪个流程图）
-    const msgTab: "sql" | "rag" | "report" = reportIntent ? "report" : (targetTab as "sql" | "rag");
+    // 消息 tab 字段用于 StepRail 显示正确流程图
+    const msgTab = pipeline as "sql" | "rag";
 
     const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: msgTab };
     const assistantId = makeId();
@@ -248,7 +247,7 @@ export default function App() {
           }
         }
         handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
-      } else if (msgTab === "sql") {
+      } else if (pipeline === "sql") {
         // ═══ NL2SQL 管线 ═══
         await streamQuery(query, {
           signal: controller.signal,
