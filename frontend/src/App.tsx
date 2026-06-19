@@ -177,11 +177,9 @@ export default function App() {
   const startQuery = async (rawQuery = draft) => {
     const query = rawQuery.trim();
     if (!query) return;
-    // 正在流式处理时，暂存为待处理队列，等当前完成后再自动执行
+    // 正在流式处理时，加入队列等当前完成后再自动执行
     if (isStreaming) {
       pendingQueryRef.current = query;
-      // 中止当前请求，让新查询立即执行
-      activeController?.abort();
       return;
     }
     pendingQueryRef.current = "";
@@ -292,13 +290,14 @@ export default function App() {
             });
           },
         });
-        // 保存到会话历史 (localStorage)
+        // 保存到后端会话文件（和 RAG 同一套 session 系统）
         if (sqlResult) {
           try {
-            const history = JSON.parse(localStorage.getItem("sql_history") || "[]");
-            history.unshift({ query, answer: sqlResult, time: Date.now() });
-            if (history.length > 200) history.length = 200;
-            localStorage.setItem("sql_history", JSON.stringify(history));
+            await apiPost("/api/session/save", {
+              query, answer: JSON.stringify(sqlResult).slice(0, 500),
+              summary: `SQL: ${query.slice(0, 40)}`, type: "sql",
+            });
+            refreshSessions();
           } catch { /* ignore */ }
         }
       } else {

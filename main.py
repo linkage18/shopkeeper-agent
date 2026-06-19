@@ -19,6 +19,7 @@ from app.memory.router import memory_router
 from app.report_agent.router import report_agent_router
 from app.report_agent.token_router import token_router
 from app.schema_analyzer.router import schema_router, viz_router
+from app.session.router import session_router
 from app.cache.services import ensure_cache_collection
 from app.core.context import request_id_ctx_var, user_ctx_var
 from app.knowledge.router import knowledge_router
@@ -48,6 +49,7 @@ app.include_router(report_agent_router)
 app.include_router(token_router)
 app.include_router(schema_router)
 app.include_router(viz_router)
+app.include_router(session_router)
 app.include_router(auth_router)
 app.include_router(me_router)
 

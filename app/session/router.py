@@ -1,0 +1,45 @@
+"""
+Session 保存路由 — 用于保存 NL2SQL 等非 RAG 的对话历史
+"""
+from typing import Annotated
+import json
+import uuid
+from datetime import datetime
+from pathlib import Path
+
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+
+from app.auth.middleware import require_user
+
+session_router = APIRouter(prefix="/api/session", tags=["session"])
+
+
+class SessionRecord(BaseModel):
+    query: str
+    answer: str
+    summary: str = ""
+    type: str = "sql"
+
+
+@session_router.post("/save")
+async def save_session(record: SessionRecord, user: Annotated[dict, Depends(require_user)]):
+    """保存一条对话记录到会话文件"""
+    sessions_dir = Path("data/sessions")
+    sessions_dir.mkdir(parents=True, exist_ok=True)
+    user_id = user.get("user_id", "anonymous")[:8]
+    session_id = f"sql_{user_id}_{datetime.now().strftime('%Y%m%d')}"
+    fp = sessions_dir / f"{session_id}.jsonl"
+
+    entry = {
+        "timestamp": datetime.now().timestamp(),
+        "query": record.query,
+        "answer": record.answer,
+        "summary": record.summary or record.query[:60],
+        "type": record.type,
+        "user_id": user_id,
+    }
+    with open(fp, "a", encoding="utf-8") as f:
+        f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+    return {"status": "ok", "session_id": session_id}
