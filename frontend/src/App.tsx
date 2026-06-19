@@ -77,6 +77,7 @@ export default function App() {
   const [loadingSession, setLoadingSession] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const pendingQueryRef = useRef<string>("");
 
   const isStreaming = Boolean(activeController);
   const canSubmit = draft.trim().length > 0 && !isStreaming;
@@ -175,7 +176,15 @@ export default function App() {
 
   const startQuery = async (rawQuery = draft) => {
     const query = rawQuery.trim();
-    if (!query || isStreaming) return;
+    if (!query) return;
+    // 正在流式处理时，暂存为待处理队列，等当前完成后再自动执行
+    if (isStreaming) {
+      pendingQueryRef.current = query;
+      // 中止当前请求，让新查询立即执行
+      activeController?.abort();
+      return;
+    }
+    pendingQueryRef.current = "";
 
     // ── 意图路由：分类意图决定走哪个管线（LLM 上下文感知） ──
     let pipeline = activeTab as string;
@@ -269,16 +278,29 @@ export default function App() {
         handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
       } else if (pipeline === "sql") {
         // ═══ NL2SQL 管线 ═══
+        let sqlResult: any = null;
         await streamQuery(query, {
           signal: controller.signal,
           onEvent: (event: AgentEvent) => {
             handleEvent((m) => {
               if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
-              if (event.type === "result") return { ...m, status: "done" as const, content: summarizeResult(event.data), result: event.data };
+              if (event.type === "result") {
+                sqlResult = event.data;
+                return { ...m, status: "done" as const, content: summarizeResult(event.data), result: event.data };
+              }
               return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
             });
           },
         });
+        // 保存到会话历史 (localStorage)
+        if (sqlResult) {
+          try {
+            const history = JSON.parse(localStorage.getItem("sql_history") || "[]");
+            history.unshift({ query, answer: sqlResult, time: Date.now() });
+            if (history.length > 200) history.length = 200;
+            localStorage.setItem("sql_history", JSON.stringify(history));
+          } catch { /* ignore */ }
+        }
       } else {
         // ═══ RAG 管线 ═══
         const sid = currentSessionId === "new" ? crypto.randomUUID?.() ?? `${Date.now()}` : currentSessionId;
@@ -303,6 +325,13 @@ export default function App() {
     } finally {
       setActiveController(null);
       refreshTokenUsage();
+      // 如果有待处理查询，自动执行
+      const next = pendingQueryRef.current;
+      pendingQueryRef.current = "";
+      if (next) {
+        setDraft(next);
+        setTimeout(() => startQuery(next), 100);
+      }
     }
   };
 
