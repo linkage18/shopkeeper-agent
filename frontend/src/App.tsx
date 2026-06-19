@@ -82,8 +82,12 @@ export default function App() {
   const isStreaming = Boolean(activeController);
   const canSubmit = draft.trim().length > 0 && !isStreaming;
   const filteredSessions = useMemo(() => {
-    const targetType = activeTab === "sql" ? "sql" : activeTab === "rag" ? "rag" : "";
-    return targetType ? sessions.filter((s) => (s as any).type === targetType) : sessions;
+    if (activeTab === "sql") return sessions.filter((s) => {
+      const t = (s as any).type;
+      return t === "sql" || t === "report";
+    });
+    if (activeTab === "rag") return sessions.filter((s) => (s as any).type === "rag");
+    return sessions;
   }, [sessions, activeTab]);
 
   const examples = activeTab === "sql"
@@ -155,9 +159,11 @@ export default function App() {
     try {
       const detail = await getSession(id);
       const isSql = id.startsWith("sql_");
+      const isRpt = id.startsWith("rpt_");
       const restored: ChatMessage[] = [];
       for (const record of detail.history) {
-        const tab = record.type === "sql" || isSql ? ("sql" as const) : ("rag" as const);
+        const tab = record.type === "report" || isRpt ? ("sql" as const) :
+                    (record.type === "sql" || isSql ? ("sql" as const) : ("rag" as const));
         restored.push({
           id: makeId(), role: "user", content: record.query,
           createdAt: (record.timestamp || 0) * 1000, tab,
@@ -169,7 +175,7 @@ export default function App() {
         });
       }
       setMessages(restored);
-      setActiveTab(isSql ? "sql" : "rag");
+      setActiveTab(isSql || isRpt ? "sql" : "rag");
     } catch { setMessages([]); }
     finally { setLoadingSession(false); }
   }, [isStreaming, loadingSession]);
@@ -248,6 +254,7 @@ export default function App() {
         const reader = resp.body!.getReader();
         const decoder = new TextDecoder("utf-8");
         let buf = "";
+        let lastReportMd = "";
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
@@ -266,6 +273,7 @@ export default function App() {
                 if (ev.type === "result") {
                   const result = m.result as any || {};
                   if (ev.report_md) {
+                    lastReportMd = ev.report_md;
                     return { ...m, status: "done" as const, content: ev.report_md, result: { ...result, report_md: ev.report_md } };
                   }
                   if (ev.chart_data) {
@@ -289,6 +297,16 @@ export default function App() {
           }
         }
         handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
+        // 保存报告到会话历史
+        if (lastReportMd) {
+          try {
+            const summary = lastReportMd.split("\n")[0]?.replace(/^#\s*/, "") || query.slice(0, 40);
+            await apiPost("/api/session/save", {
+              query, answer: lastReportMd.slice(0, 500),
+              summary: `报告: ${summary}`, type: "report",
+            });
+          } catch (e) { console.warn("保存报告会话失败:", e); }
+        }
       } else if (pipeline === "sql") {
         // ═══ NL2SQL 管线 ═══
         let sqlResult: any = null;

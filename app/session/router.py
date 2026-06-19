@@ -28,7 +28,8 @@ async def save_session(record: SessionRecord, user: Annotated[dict, Depends(requ
     sessions_dir = Path("data/sessions")
     sessions_dir.mkdir(parents=True, exist_ok=True)
     user_id = user.get("user_id", "anonymous")[:8]
-    session_id = f"sql_{user_id}_{datetime.now().strftime('%Y%m%d')}"
+    prefix = "rpt" if record.type == "report" else "sql"
+    session_id = f"{prefix}_{user_id}_{datetime.now().strftime('%Y%m%d')}"
     fp = sessions_dir / f"{session_id}.jsonl"
 
     entry = {
