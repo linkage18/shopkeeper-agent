@@ -245,6 +245,14 @@ export default function App() {
                     return { ...m, result: { ...result, chart_data: ev.chart_data } };
                   }
                 }
+                if (ev.type === "ask_user") {
+                  const hints = (ev.suggestions || []).join("\n• ");
+                  return {
+                    ...m, status: "done" as const,
+                    content: `⚠️ ${ev.message}\n\n可能的原因：\n• ${hints}\n\n${ev.detail ? `\n错误详情：${ev.detail}` : ""}\n\n💡 请修改问题后重新提交，例如指定正确的年份或字段名。`,
+                    result: { ...(m.result || {}), ask_user: ev },
+                  };
+                }
                 if (ev.type === "error") {
                   return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
                 }

@@ -84,6 +84,27 @@ async def _generate(query: str, user_id: str):
 
         yield _sse({"type": "progress", "step": "执行 SQL", "status": "success"})
 
+        # 3.5 检查结果是否为空 → 询问用户而非猜测
+        all_empty = True
+        for sql_def in sqls:
+            data = sql_results.get(sql_def["id"], [])
+            if data:
+                all_empty = False
+                break
+        if all_empty:
+            errors = [v for k, v in sql_results.items() if k.endswith("_error")]
+            error_info = errors[0] if errors else ""
+            yield _sse({"type": "ask_user",
+                "message": f"查询未返回任何数据。系统不确定原因，需要你确认：",
+                "suggestions": [
+                    "数据表中可能还没有对应年份的记录，请确认年份是否正确",
+                    "字段名可能不匹配，请确认表结构中的字段名",
+                    "时间范围或过滤条件可能过于严格",
+                ],
+                "detail": error_info[:500] if error_info else "",
+            })
+            return
+
         # 4. Python 预处理
         yield _sse({"type": "progress", "step": "数据处理", "status": "running"})
         if python_code:
