@@ -21,7 +21,7 @@ import { MessageBubble } from "./components/MessageBubble";
 import { SessionList } from "./components/SessionList";
 import { SessionSearch } from "./components/SessionSearch";
 import { streamQuery } from "./lib/agentApi";
-import { getToken, removeToken, removeUser, setOnUnauthorized } from "./lib/authApi";
+import { getToken, removeToken, removeUser, setOnUnauthorized, authHeaders } from "./lib/authApi";
 import { streamRagQuery, listSessions, getSession, deleteSession } from "./lib/ragApi";
 import { cn, summarizeResult } from "./lib/format";
 import type { AgentEvent, ChatMessage, SessionListItem, StepState } from "./types/agent";
