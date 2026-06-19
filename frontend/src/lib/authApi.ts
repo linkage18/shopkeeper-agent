@@ -1,5 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
-const DEFAULT_TIMEOUT_MS = 15000;
+const DEFAULT_TIMEOUT_MS = 8000;
 
 export function getToken(): string | null {
   return localStorage.getItem("token");
