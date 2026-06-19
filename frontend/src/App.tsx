@@ -20,7 +20,7 @@ import { MessageBubble } from "./components/MessageBubble";
 import { SessionList } from "./components/SessionList";
 import { SessionSearch } from "./components/SessionSearch";
 import { streamQuery } from "./lib/agentApi";
-import { getToken, removeToken, removeUser } from "./lib/authApi";
+import { getToken, removeToken, removeUser, setOnUnauthorized } from "./lib/authApi";
 import { streamRagQuery, listSessions, getSession, deleteSession } from "./lib/ragApi";
 import { cn, summarizeResult } from "./lib/format";
 import type { AgentEvent, ChatMessage, SessionListItem, StepState } from "./types/agent";
@@ -83,12 +83,12 @@ export default function App() {
 
   const refreshTokenUsage = useCallback(async () => {
     try {
-      const usage = await apiGet("/api/token/usage");
+      const usage = await apiGet("/api/token/summary");
       setTokenUsage({
-        total: usage.total ?? 0,
-        input: usage.input ?? 0,
-        output: usage.output ?? 0,
-        calls: usage.calls ?? 0,
+        total: usage.total_tokens ?? 0,
+        input: usage.total_input ?? 0,
+        output: usage.total_output ?? 0,
+        calls: usage.total_calls ?? 0,
       });
     } catch { /* silent */ }
   }, []);
@@ -108,6 +108,16 @@ export default function App() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
+
+  // 401 自动登出
+  useEffect(() => {
+    setOnUnauthorized(() => {
+      setMessages([]);
+      setSessions([]);
+      setLoggedIn(false);
+    });
+    return () => setOnUnauthorized(null);
+  }, []);
 
   useEffect(() => {
     if (loggedIn) refreshTokenUsage();

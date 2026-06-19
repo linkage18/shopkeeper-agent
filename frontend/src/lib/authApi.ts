@@ -56,6 +56,23 @@ async function withTimeout<T>(fn: (signal: AbortSignal) => Promise<T>, timeoutMs
   }
 }
 
+let _onUnauthorized: (() => void) | null = null;
+
+export function setOnUnauthorized(cb: () => void) {
+  _onUnauthorized = cb;
+}
+
+async function checkResponse(res: Response) {
+  if (res.status === 401) {
+    removeToken();
+    removeUser();
+    if (_onUnauthorized) _onUnauthorized();
+    throw new Error("登录已过期，请重新登录");
+  }
+  if (!res.ok) throw new Error(await readError(res));
+  return res.json();
+}
+
 export async function apiPost(path: string, body: any) {
   const res = await withTimeout((signal) => fetch(`${API_BASE}${path}`, {
     method: "POST",
@@ -63,8 +80,7 @@ export async function apiPost(path: string, body: any) {
     body: JSON.stringify(body),
     signal,
   }));
-  if (!res.ok) throw new Error(await readError(res));
-  return res.json();
+  return checkResponse(res);
 }
 
 export async function apiGet(path: string) {
@@ -72,8 +88,7 @@ export async function apiGet(path: string) {
     headers: authHeaders(),
     signal,
   }));
-  if (!res.ok) throw new Error(await readError(res));
-  return res.json();
+  return checkResponse(res);
 }
 
 export async function apiDelete(path: string, body?: any) {
@@ -83,6 +98,5 @@ export async function apiDelete(path: string, body?: any) {
     body: body ? JSON.stringify(body) : undefined,
     signal,
   }));
-  if (!res.ok) throw new Error(await readError(res));
-  return res.json();
+  return checkResponse(res);
 }
