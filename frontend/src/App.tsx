@@ -45,6 +45,13 @@ const REPORT_EXAMPLES = [
   "分析各品类销量对比并生成报告",
 ];
 
+const RAG_EXAMPLES = [
+  "项目使用什么技术栈？",
+  "服务器如何查看日志？",
+  "合同审批流程是怎样的？",
+  "销售人员的 KPI 有哪些？",
+];
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "Vite /api proxy";
 
 function makeId() {
