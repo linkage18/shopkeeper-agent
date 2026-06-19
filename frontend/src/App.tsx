@@ -10,8 +10,9 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnalysisPanel } from "./components/AnalysisPanel";
-import { apiGet, apiPost, authHeaders } from "./lib/authApi";
+import { apiPost } from "./lib/authApi";
 import { Composer } from "./components/Composer";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { EmptyState } from "./components/EmptyState";
 import { FileUpload } from "./components/FileUpload";
 import { KnowledgeManager } from "./components/KnowledgeManager";
@@ -439,8 +440,9 @@ export default function App() {
           </div>
         </aside>
 
-        {/* 主区域：每次只渲染一个面板，完整挂载/卸载 */}
+        {/* 主区域：ErrorBoundary 防止渲染崩溃 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
+          <ErrorBoundary key={activeTab}>
           {activeTab === "analysis" ? (
             <>
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
@@ -515,6 +517,7 @@ export default function App() {
           />
           </>
           )}
+        </ErrorBoundary>
         </main>
       </div>
     </div>

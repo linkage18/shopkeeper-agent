@@ -11,8 +11,63 @@ from app.report_agent.sandbox import run_pandas, SandboxError
 from app.core.log import logger
 
 
+_COMMON_FIELD_FIXES = {
+    "amount": "order_amount",
+    "quantity": "order_quantity",
+    "sales_amount": "order_amount",
+    "sale_amount": "order_amount",
+    "revenue": "order_amount",
+    "price": "order_amount",
+    "total_price": "order_amount",
+    "order_count": "count",
+    "qty": "order_quantity",
+    "id": "order_id",
+    "date": "date_id",
+}
+
+
+async def _retry_sql(failed_sql: str, error_msg: str, dw_session: AsyncSession) -> str | None:
+    """检测列名错误后自动修正并重试"""
+    # 只处理 "Unknown column" 错误
+    if "Unknown column" not in error_msg and "1054" not in error_msg:
+        return None
+    # 提取错误字段名
+    import re
+    match = re.search(r"Unknown column '([^']+)'", error_msg)
+    if not match:
+        return None
+    bad_field = match.group(1).split(".")[-1]  # 去掉表名前缀
+
+    # 尝试常见修正
+    fixed_sql = failed_sql
+    if bad_field in _COMMON_FIELD_FIXES:
+        fixed_sql = failed_sql.replace(bad_field, _COMMON_FIELD_FIXES[bad_field])
+        logger.info(f"[RETRY] 列名修正: {bad_field} → {_COMMON_FIELD_FIXES[bad_field]}")
+    else:
+        # 尝试去掉最后几个字符（常见情况：少写了 order_ 前缀）
+        for prefix in ["order_", "dim_", "fact_"]:
+            candidate = prefix + bad_field
+            if candidate in failed_sql:
+                continue  # 已经在 SQL 里了
+            fixed_sql = failed_sql.replace(bad_field, candidate)
+            logger.info(f"[RETRY] 加前缀尝试: {bad_field} → {candidate}")
+            break
+
+    if fixed_sql == failed_sql:
+        return None
+
+    try:
+        result = await dw_session.execute(text(fixed_sql))
+        rows = [dict(row) for row in result.mappings().fetchall()]
+        logger.info(f"[RETRY] 修正后 SQL 执行成功: {len(rows)} 行")
+        return fixed_sql
+    except Exception:
+        logger.warning(f"[RETRY] 修正后仍失败")
+        return None
+
+
 async def execute_sqls(sqls: list[dict], dw_session: AsyncSession) -> dict[str, list[dict]]:
-    """逐条执行 SQL，返回 {sql_id: [rows]}"""
+    """逐条执行 SQL，失败时自动修正字段名重试"""
     results = {}
     for sql_def in sqls:
         try:
@@ -22,9 +77,24 @@ async def execute_sqls(sqls: list[dict], dw_session: AsyncSession) -> dict[str, 
                 rows.append(dict(row))
             results[sql_def["id"]] = rows
         except Exception as e:
-            logger.error(f"SQL 执行失败 [{sql_def['id']}]: {e}")
-            results[sql_def["id"]] = []
-            results[f"{sql_def['id']}_error"] = str(e)
+            err_msg = str(e)
+            logger.error(f"SQL 执行失败 [{sql_def['id']}]: {err_msg[:200]}")
+            # 尝试自动修正
+            fixed = await _retry_sql(sql_def["sql"], err_msg, dw_session)
+            if fixed:
+                results[sql_def["id"] + "_fixed"] = fixed
+                try:
+                    rows = []
+                    result = await dw_session.execute(text(fixed))
+                    for row in result.mappings().fetchall():
+                        rows.append(dict(row))
+                    results[sql_def["id"]] = rows
+                except Exception as e2:
+                    results[sql_def["id"]] = []
+                    results[f"{sql_def['id']}_error"] = str(e2)
+            else:
+                results[sql_def["id"]] = []
+                results[f"{sql_def['id']}_error"] = err_msg
     return results
 
 

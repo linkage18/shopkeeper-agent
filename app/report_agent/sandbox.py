@@ -49,7 +49,18 @@ def run_pandas(code: str, data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     local_vars.update(data)
 
     try:
-        exec(code, {"__builtins__": {}}, local_vars)
+        # 允许基本内置函数（dict/list/str/int/float/len/range等等），
+        # 但危险操作已在 _check_safety 中拦截，此处不重复过滤
+        safe_builtins = {
+            "dict": dict, "list": list, "str": str, "int": int, "float": float,
+            "bool": bool, "len": len, "range": range, "zip": zip, "map": map,
+            "filter": filter, "min": min, "max": max, "sum": sum, "abs": abs,
+            "round": round, "sorted": sorted, "reversed": reversed,
+            "enumerate": enumerate, "isinstance": isinstance, "type": type,
+            "True": True, "False": False, "None": None,
+            "print": lambda *a: None,  # 允许 print 但不输出
+        }
+        exec(code, {"__builtins__": safe_builtins}, local_vars)
     except Exception as e:
         raise SandboxError(f"Python 执行错误: {e}")
 
@@ -58,7 +69,7 @@ def run_pandas(code: str, data: dict[str, pd.DataFrame]) -> dict[str, Any]:
     for k, v in local_vars.items():
         if k in ALLOWED_MODULES or k in data:
             continue
-        if isinstance(v, (pd.DataFrame, pd.Series, int, float, str, list)):
+        if isinstance(v, (pd.DataFrame, pd.Series, int, float, str, list, dict)):
             if isinstance(v, pd.DataFrame):
                 result[k] = v.to_dict(orient="records")
             elif isinstance(v, pd.Series):

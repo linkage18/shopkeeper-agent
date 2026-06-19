@@ -30,11 +30,23 @@ class ReportReq(BaseModel):
 async def _generate(query: str, user_id: str):
     """报告生成管线 — 逐步推送 SSE"""
     try:
-        # 1. 读取 Schema
+        # 1. 读取 Schema 并构建清晰的字段名索引
         yield _sse({"type": "progress", "step": "读取 Schema", "status": "running"})
         async with dw_mysql_client_manager.session_factory() as session:
             schema = await get_db_schema(session)
-            schema_text = json.dumps(schema, ensure_ascii=False, indent=2)[:3000]
+            # 构建字段名索引：每张表 + 字段名 + 字段描述
+            field_index_parts = ["可用字段列表："]
+            for t in schema.get("tables", []):
+                field_index_parts.append(f"\n表 {t['name']} ({t['role']}):")
+                for c in t["columns"]:
+                    desc = f" ({c['comment']})" if c["comment"] else ""
+                    field_index_parts.append(f"  - {c['name']}  [{c['type']}]  {c['role']}{desc}")
+            field_index = "\n".join(field_index_parts)
+            # 完整 schema 不截断
+            schema_text = json.dumps(schema, ensure_ascii=False, indent=2)
+            # 限制总长度但保留字段名索引（最后 3000 字符）
+            if len(schema_text) > 6000:
+                schema_text = schema_text[:3000] + "\n...\n" + field_index[:3000]
 
         yield _sse({"type": "progress", "step": "读取 Schema", "status": "success"})
 
