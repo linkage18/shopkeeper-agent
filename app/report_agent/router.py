@@ -2,6 +2,7 @@
 Report 路由 — SSE 流式报告生成
 """
 import json
+from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -19,8 +20,16 @@ from app.core.log import logger
 report_agent_router = APIRouter(prefix="/api/report", tags=["report"])
 
 
+def _default_json(obj):
+    if isinstance(obj, Decimal):
+        return float(obj)
+    if isinstance(obj, (set, frozenset)):
+        return list(obj)
+    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
+
 def _sse(payload: dict) -> str:
-    return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
+    return f"data: {json.dumps(payload, ensure_ascii=False, default=_default_json)}\n\n"
 
 
 class ReportReq(BaseModel):
