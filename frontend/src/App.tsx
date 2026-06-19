@@ -342,6 +342,8 @@ export default function App() {
     } finally {
       setActiveController(null);
       refreshTokenUsage();
+      // 每次查询完成后刷新会话列表（无论 SQL/RAG）
+      refreshSessions();
       // 如果有待处理查询，自动执行
       const next = pendingQueryRef.current;
       pendingQueryRef.current = "";
