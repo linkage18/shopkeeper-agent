@@ -306,10 +306,12 @@ export default function App() {
             const answerText = summarizeResult(sqlResult);
             await apiPost("/api/session/save", {
               query, answer: answerText,
-              summary: `SQL: ${query.slice(0, 40)}`, type: "sql",
+              summary: `${query.slice(0, 40)}`, type: "sql",
             });
             refreshSessions();
-          } catch { /* ignore */ }
+          } catch (e) {
+            console.warn("保存 SQL 会话失败:", e);
+          }
         }
       } else {
         // ═══ RAG 管线 ═══

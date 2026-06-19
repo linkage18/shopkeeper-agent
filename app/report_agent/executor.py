@@ -120,6 +120,12 @@ async def execute_python(code: str, sql_results: dict[str, list[dict]]) -> dict[
 async def generate_report_text(query: str, sql_results: dict, python_results: dict, chart_info: dict) -> str:
     """LLM 根据所有结果生成最终报告"""
     from app.agent.llm import llm
+    from decimal import Decimal
+
+    def _convert(obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        raise TypeError
 
     def summarize_rows(rows: list[dict], max_rows: int = 20) -> dict[str, Any]:
         if not rows:
@@ -148,9 +154,9 @@ async def generate_report_text(query: str, sql_results: dict, python_results: di
             context_parts.append(f"[SQL 错误 - {k}]: {v}\n")
         else:
             summary = summarize_rows(v if isinstance(v, list) else [])
-            context_parts.append(f"[SQL 结果 - {k}]: {json.dumps(summary, ensure_ascii=False)[:2500]}\n")
+            context_parts.append(f"[SQL 结果 - {k}]: {json.dumps(summary, ensure_ascii=False, default=_convert)[:2500]}\n")
     if python_results:
-        context_parts.append(f"[Python 处理结果]: {json.dumps(python_results, ensure_ascii=False)[:300]}\n")
+        context_parts.append(f"[Python 处理结果]: {json.dumps(python_results, ensure_ascii=False, default=_convert)[:300]}\n")
     if chart_info:
         context_parts.append(f"[图表类型]: {chart_info.get('chart_type', '')} — {chart_info.get('chart_title', '')}\n")
 
