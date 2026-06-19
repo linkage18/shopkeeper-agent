@@ -25,16 +25,24 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
       setSchema(schemaCache);
       return;
     }
+    // 4 秒快速超时：如果 schema 还没加载，显示错误
+    const fastTimer = setTimeout(() => {
+      if (!cancelled && !schema) {
+        setError("数据库结构加载超时，请确认后端已启动（端口 8002）");
+      }
+    }, 4000);
     apiGet("/api/schema")
       .then((d) => {
+        clearTimeout(fastTimer);
         schemaCache = d;
         schemaCacheAt = Date.now();
         if (!cancelled) setSchema(d);
       })
       .catch((e) => {
+        clearTimeout(fastTimer);
         if (!cancelled) setError(e.message || "加载数据库结构失败");
       });
-    return () => { cancelled = true; };
+    return () => { cancelled = true; clearTimeout(fastTimer); };
   }, []);
 
   const reloadSchema = async () => {
