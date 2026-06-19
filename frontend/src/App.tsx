@@ -439,11 +439,10 @@ export default function App() {
           </div>
         </aside>
 
-        {/* 主区域 */}
+        {/* 主区域 — 双面板同时渲染，CSS 显隐切换 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
-          {activeTab === "analysis" ? (
-            <ErrorBoundary key="analysis">
-            <>
+          {/* ═══ 分析面板 ═══ */}
+          <div className={activeTab === "analysis" ? "flex flex-col flex-1 min-h-0" : "hidden"}>
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
               <div className="flex items-center gap-3">
                 <button onClick={() => setActiveTab("sql")}
@@ -456,10 +455,10 @@ export default function App() {
             <div className="flex-1 overflow-hidden">
               <AnalysisPanel onBack={() => setActiveTab("sql")} />
             </div>
-            </>
-            </ErrorBoundary>
-          ) : (
-            <>
+          </div>
+
+          {/* ═══ 聊天面板（SQL + RAG）═══ */}
+          <div className={activeTab !== "analysis" ? "flex flex-col flex-1 min-h-0" : "hidden"}>
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
             <div className="flex min-w-0 items-center gap-3">
               <div className={cn(
@@ -515,8 +514,7 @@ export default function App() {
             onSubmit={() => startQuery()}
             onStop={stopQuery}
           />
-          </>
-          )}
+          </div>
         </main>
       </div>
     </div>
