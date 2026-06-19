@@ -1,7 +1,7 @@
 import React from "react";
 
 interface State { hasError: boolean; error?: Error }
-interface Props { children: React.ReactNode }
+interface Props { children: React.ReactNode; onRetry?: () => void }
 
 export class ErrorBoundary extends React.Component<Props, State> {
   state: State = { hasError: false };
@@ -10,6 +10,11 @@ export class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
 
+  handleRetry = () => {
+    this.setState({ hasError: false });
+    this.props.onRetry?.();
+  };
+
   render() {
     if (this.state.hasError) {
       return (
@@ -17,10 +22,14 @@ export class ErrorBoundary extends React.Component<Props, State> {
           <div className="max-w-md rounded-lg border border-red-200 bg-red-50 px-6 py-4 text-center">
             <p className="text-sm font-medium text-red-700">页面渲染异常</p>
             <p className="mt-1 text-xs text-red-500">{this.state.error?.message}</p>
-            <button
-              onClick={() => { this.setState({ hasError: false }); window.location.reload(); }}
-              className="mt-3 rounded-md bg-red-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-red-700"
-            >重新加载</button>
+            <div className="mt-3 flex justify-center gap-2">
+              <button onClick={this.handleRetry}
+                className="rounded-md bg-red-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+              >重试</button>
+              <button onClick={() => window.location.reload()}
+                className="rounded-md border border-red-300 bg-white px-4 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
+              >刷新页面</button>
+            </div>
           </div>
         </div>
       );

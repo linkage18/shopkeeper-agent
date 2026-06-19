@@ -440,10 +440,10 @@ export default function App() {
           </div>
         </aside>
 
-        {/* 主区域：ErrorBoundary 防止渲染崩溃 */}
+        {/* 主区域 */}
         <main className="flex min-h-0 min-w-0 flex-col overflow-hidden">
-          <ErrorBoundary key={activeTab}>
           {activeTab === "analysis" ? (
+            <ErrorBoundary key="analysis">
             <>
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
               <div className="flex items-center gap-3">
@@ -458,6 +458,7 @@ export default function App() {
               <AnalysisPanel onBack={() => setActiveTab("sql")} />
             </div>
             </>
+            </ErrorBoundary>
           ) : (
             <>
           <header className="flex h-14 shrink-0 items-center justify-between border-b border-porcelain-200 bg-white/90 px-4 backdrop-blur lg:px-6">
@@ -517,7 +518,6 @@ export default function App() {
           />
           </>
           )}
-        </ErrorBoundary>
         </main>
       </div>
     </div>
