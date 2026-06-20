@@ -47,6 +47,26 @@
 
 本系统将大语言模型的 NL2SQL 与 RAG 技术结合，把数据查询入口从「找 BI 写 SQL」变为「用自然语言直接提问」，将响应时间从天级降为秒级。
 
+## 技术栈
+
+| 层次 | 技术 | 用途 |
+|------|------|------|
+| **后端框架** | Python 3.12, FastAPI, Uvicorn | 异步 API 服务，SSE 流式推送 |
+| **AI Agent** | LangGraph, LangChain, DeepSeek API | 13 节点 NL2SQL 工作流，工具调用链 |
+| **报告管线** | LLM Planner + SQL Executor + pandas Sandbox | 智能报告生成，安全 Python 预处理 |
+| **RAG 检索** | Qdrant (向量), Elasticsearch (BM25), BGE Embedding | 混合检索，父子块索引 |
+| **数据库** | MySQL 8.0, SQLAlchemy (async), asyncmy | 数仓查询，元数据管理，会话持久化 |
+| **SQL 引擎** | sqlglot (AST 校验), EXPLAIN 执行计划分析 | SQL 安全白名单，自动列名修正 |
+| **鉴权** | JWT (HMAC-SHA256), ContextVar 中间件 | 用户登录/注册，admin/user 角色，401 自动登出 |
+| **记忆系统** | 三级存储：持久 (MySQL) + 长期 (MD 文件) + 短期 (JSONL) | 业务口径知识，对话上下文注入 |
+| **意图路由** | LLM 上下文感知分类 (sql/rag/report) | 自动分流到对应管线，支持 20 轮历史 |
+| **缓存** | Qdrant 语义缓存 + 内存精确缓存 + 频率限制 | 重复查询秒回，防恶意刷请求 |
+| **Token 统计** | tiktoken 估算 | 每次 LLM 调用的 token 消耗追踪 |
+| **前端** | React 19, Vite, Tailwind CSS, TypeScript | 瓷白色 UI，ECharts 交互式图表 |
+| **可视化** | ECharts 6, echarts-for-react | 柱状/折线/饼图/多系列，可交互缩放 |
+| **容器化** | Docker, Docker Compose | 6 容器一键编排 (MySQL/ES/Qdrant/Embedding/Kibana) |
+| **测试** | pytest, httpx, TypeScript (tsc) | 模块测试，API 集成测试，类型检查 |
+
 ### 功能特性
 
 - **NL2SQL 查询**：输入自然语言 → 自动生成 SQL → 执行并返回结果表格
