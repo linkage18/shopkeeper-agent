@@ -15,8 +15,9 @@ _rate_limit: int = app_config.auth.rate_limit_per_minute
 _rate_window: float = 60.0
 
 
-def _query_hash(query: str) -> str:
-    return hashlib.sha256(query.encode()).hexdigest()[:16]
+def _query_hash(query: str) -> int:
+    """生成无符号整数作为 Qdrant point ID"""
+    return int(hashlib.sha256(query.encode()).hexdigest()[:16], 16)
 
 
 async def semantic_cache_search(query: str, threshold: float = 0.95) -> Any | None:

@@ -36,7 +36,7 @@ export function ResultTable({ data }: { data: unknown }) {
           <Database className="h-4 w-4 text-patina" aria-hidden="true" />
           查询结果
         </div>
-        <div className="flex items-center gap-2 text-xs text-gray-400">
+        <div className="flex items-center gap-2 text-xs text-gray-500">
           <FileJson className="h-3.5 w-3.5" aria-hidden="true" />
           {rows.length} 行
         </div>
@@ -46,7 +46,7 @@ export function ResultTable({ data }: { data: unknown }) {
           <thead className="sticky top-0 z-10 bg-gray-100">
             <tr>
               {columns.map((column) => (
-                <th key={column} scope="col" className="border-b border-gray-200 px-4 py-3 font-semibold text-gray-600">
+                <th key={column} scope="col" className="border-b border-gray-200 px-4 py-3 font-semibold text-gray-700">
                   {column}
                 </th>
               ))}

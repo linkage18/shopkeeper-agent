@@ -38,11 +38,11 @@ export function FileUpload() {
         onClick={() => inputRef.current?.click()}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-8 transition",
-          dragOver ? "border-patina/60 bg-patina/[0.06]" : "border-gray-700 bg-white/[0.04] hover:border-patina/40",
+          dragOver ? "border-patina/60 bg-patina/[0.06]" : "border-porcelain-300 bg-porcelain-50 hover:border-patina/40",
         )}
       >
         <Upload className={cn("h-6 w-6", dragOver ? "text-patina" : "text-gray-500")} aria-hidden="true" />
-        <span className="text-sm font-medium text-gray-400">拖拽文件到此处，或点击选择</span>
+        <span className="text-sm font-medium text-gray-500">拖拽文件到此处，或点击选择</span>
         <span className="text-xs text-gray-600">支持 PDF、Word、MD、TXT</span>
         <input ref={inputRef} type="file" accept=".md,.txt,.pdf,.docx" multiple className="hidden" onChange={onSelect} />
       </div>
@@ -50,7 +50,7 @@ export function FileUpload() {
       {uploads.length > 0 && (
         <div className="space-y-2">
           {uploads.map((u) => (
-            <div key={u.file_name} className="flex items-center gap-3 rounded border border-gray-700 bg-white/[0.06] px-3 py-2.5">
+            <div key={u.file_name} className="flex items-center gap-3 rounded border border-porcelain-300 bg-porcelain-50 px-3 py-2.5">
               {u.status === "ready" ? (
                 <FileText className="h-4 w-4 shrink-0 text-patina" aria-hidden="true" />
               ) : u.status === "error" ? (
@@ -58,7 +58,7 @@ export function FileUpload() {
               ) : (
                 <LoaderCircle className="h-4 w-4 shrink-0 animate-spin text-kinpaku" aria-hidden="true" />
               )}
-              <span className="min-w-0 flex-1 truncate text-sm text-gray-300">{u.file_name}</span>
+              <span className="min-w-0 flex-1 truncate text-sm text-gray-600">{u.file_name}</span>
               <span className={cn("shrink-0 text-xs", u.status === "ready" ? "text-patina" : u.status === "error" ? "text-red-400" : "text-gray-500")}>
                 {u.status === "uploading" ? "上传中..." : u.status === "indexing" ? "索引中..." : u.message}
               </span>

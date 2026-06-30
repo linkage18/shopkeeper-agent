@@ -36,12 +36,12 @@ export function SourceCard({ source, index, active }: { source: SourceRef; index
         onClick={() => setOpen(!open)}
         className="flex w-full items-center gap-2 text-left"
       >
-        <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gray-100 text-[11px] font-bold text-gray-500">
+        <span className="grid h-5 w-5 shrink-0 place-items-center rounded bg-gray-200 text-[11px] font-bold text-gray-600">
           {index + 1}
         </span>
         <FileText className={cn("h-3.5 w-3.5 shrink-0", isHighScore ? "text-kinpaku" : "text-patina")} aria-hidden="true" />
         <span className="min-w-0 flex-1 truncate text-xs font-medium text-gray-800">{source.file_name}</span>
-        <span className="shrink-0 text-[11px] text-gray-400">P{source.page_number}</span>
+        <span className="shrink-0 text-[11px] text-gray-500">P{source.page_number}</span>
         <span className={cn(
           "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
           isHighScore ? "bg-kinpaku/15 text-kinpaku" : "bg-gray-100 text-gray-500",
@@ -63,7 +63,7 @@ export function SourceList({ sources, activeIndex }: { sources: SourceRef[]; act
   if (!sources || sources.length === 0) return null;
   return (
     <section className="mt-4 space-y-2">
-      <div className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">来源引用</div>
+      <div className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-500">来源引用</div>
       <div className="space-y-1.5">
         {sources.map((s, i) => (
           <SourceCard key={`${s.file_name}-${s.page_number}-${i}`} source={s} index={i} active={activeIndex === i} />

@@ -31,7 +31,7 @@ export const Composer = React.memo(function Composer({ value, disabled, isStream
     };
 
     return (
-        <form onSubmit={submit} className="border-t border-gray-200 bg-white/80 px-4 py-4 backdrop-blur">
+        <form onSubmit={submit} className="border-t border-gray-200 bg-white px-4 py-4">
             <div className="mx-auto flex max-w-5xl items-end gap-3 rounded-xl border border-gray-200 bg-white p-2 shadow-elevated">
                 <div className="hidden h-11 w-11 shrink-0 place-items-center bg-patina/10 text-patina sm:grid">
                     <WandSparkles className="h-5 w-5" aria-hidden="true" />

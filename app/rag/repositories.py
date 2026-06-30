@@ -123,7 +123,7 @@ class DocESRepository:
 
     def __init__(self, client: AsyncElasticsearch):
         self.client = client
-        self.index_name = app_config.rag.es.doc_index_name
+        self.index_name = app_config.rag.es.index_name
         self.index_mappings = {
             "dynamic": False,
             "properties": {

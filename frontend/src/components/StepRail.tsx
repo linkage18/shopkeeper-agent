@@ -86,7 +86,7 @@ function FlowNodeCard({ node, status }: { node: FlowNode; status: FlowStatus }) 
     <div className="absolute -translate-x-1/2" style={{ left: node.x, top: node.y, width }}>
       <div className={cn(
         "flex h-10 items-center gap-2 border px-3 text-sm font-semibold shadow-subtle transition",
-        status === "pending" && "border-gray-200 bg-white/55 text-gray-400",
+        status === "pending" && "border-gray-200 bg-white/55 text-gray-500",
         status === "running" && "border-kinpaku/40 bg-kinpaku/[0.08] text-gray-900",
         status === "success" && "border-patina/30 bg-patina/[0.08] text-gray-900",
         status === "error" && "border-red-300 bg-red-50 text-red-600",
@@ -138,7 +138,7 @@ export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
       <section ref={railRef} className="mt-4 rounded-lg border border-gray-200 bg-white/40 px-3 py-4 shadow-subtle">
         <div className="mb-3 flex items-center justify-between gap-3 px-1">
           <div className="text-sm font-semibold text-gray-900">执行流程</div>
-          <div className="text-xs text-gray-400">{mode === "rag" ? "RAG Agent" : "Report Agent"}</div>
+          <div className="text-xs text-gray-500">{mode === "rag" ? "RAG Agent" : "Report Agent"}</div>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-3">
           {flowSteps.map((step) => {
@@ -148,7 +148,7 @@ export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
               <div key={step} className="flex items-center gap-3">
                 <div className={cn(
                   "flex h-10 items-center gap-2 border px-4 text-sm font-semibold shadow-subtle transition",
-                  flowStatus === "pending" && "border-gray-200 bg-white/55 text-gray-400",
+                  flowStatus === "pending" && "border-gray-200 bg-white/55 text-gray-500",
                   flowStatus === "running" && "border-kinpaku/40 bg-kinpaku/[0.08] text-gray-900",
                   flowStatus === "success" && "border-patina/30 bg-patina/[0.08] text-gray-900",
                   flowStatus === "error" && "border-red-300 bg-red-50 text-red-600",
@@ -158,7 +158,7 @@ export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
                   </span>
                   <span className="min-w-0 flex-1 truncate">{step}</span>
                 </div>
-                {step !== flowSteps[flowSteps.length - 1] && <span className="text-lg text-gray-300">→</span>}
+                {step !== flowSteps[flowSteps.length - 1] && <span className="text-lg text-gray-400">→</span>}
               </div>
             );
           })}
@@ -171,7 +171,7 @@ export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
     <section className="mt-4 rounded-lg border border-gray-200 bg-white/40 px-3 py-4 shadow-subtle">
       <div className="mb-3 flex items-center justify-between gap-3 px-1">
         <div className="text-sm font-semibold text-gray-900">执行流程</div>
-        <div className="text-xs text-gray-400">LangGraph</div>
+        <div className="text-xs text-gray-500">LangGraph</div>
       </div>
       <div className="overflow-x-auto">
         <div className="relative mx-auto h-[780px] w-[820px]">

@@ -45,7 +45,20 @@ export const MessageBubble = React.memo(function MessageBubble({ message }: { me
   // Entrance animation for new messages
   useEffect(() => {
     if (bubbleRef.current) {
-      gsap.from(bubbleRef.current, { opacity: 0, y: 24, duration: 0.5, ease: "power2.out" });
+      const el = bubbleRef.current;
+      el.style.opacity = "0";
+      el.style.transform = "translateY(24px)";
+      requestAnimationFrame(() => {
+        el.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+        el.style.opacity = "1";
+        el.style.transform = "translateY(0)";
+      });
+      const timer = setTimeout(() => {
+        el.style.transition = "";
+        el.style.transform = "";
+        el.style.opacity = "";
+      }, 600);
+      return () => clearTimeout(timer);
     }
   }, []);
 
@@ -83,14 +96,14 @@ export const MessageBubble = React.memo(function MessageBubble({ message }: { me
               : "border-gray-200 bg-white text-gray-900",
           )}>
           <div className="flex items-start justify-between gap-3">
-            <p className="whitespace-pre-wrap text-[15px] leading-7">
+            <p className="whitespace-pre-wrap text-[15px] font-semibold leading-7">
               {!isUser && message.sources?.length
                 ? renderContent(message.content, scrollToSource)
                 : message.content}
             </p>
             {!isUser && message.status !== "streaming" && (
               <button type="button" onClick={copy}
-                className="shrink-0 rounded-full p-1.5 text-gray-400 opacity-0 outline-none transition hover:bg-gray-100 hover:text-gray-600 focus:opacity-100 focus:ring-2 focus:ring-patina/40 group-hover:opacity-100"
+                className="shrink-0 rounded-full p-1.5 text-gray-500 opacity-0 outline-none transition hover:bg-gray-100 hover:text-gray-700 focus:opacity-100 focus:ring-2 focus:ring-patina/40 group-hover:opacity-100"
                 title="复制" aria-label="复制">
                 <Copy className="h-4 w-4" aria-hidden="true" />
               </button>
@@ -135,7 +148,7 @@ export const MessageBubble = React.memo(function MessageBubble({ message }: { me
             <SourceList sources={message.sources} activeIndex={activeSource} />
           )}
 
-          <div className={cn("mt-3 text-xs", isUser ? "text-white/55" : "text-gray-400")}>
+          <div className={cn("mt-3 text-xs", isUser ? "text-white/55" : "text-gray-500")}>
             {formatTime(message.createdAt)}
           </div>
         </div>

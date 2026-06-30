@@ -40,6 +40,13 @@ async def add_extra_context(state: DataAgentState, runtime: Runtime[DataAgentCon
         return {"date_info": date_info, "db_info": db_info}
 
     except Exception as e:
-        logger.error(f"{step} failed: {e}")
+        logger.warning(f"{step} 失败（使用默认值继续）: {e}")
         writer({"type": "progress", "step": step, "status": "error"})
-        raise
+        today = date.today()
+        date_str = today.strftime("%Y-%m-%d")
+        weekday = today.strftime("%A")
+        quarter = f"Q{(today.month - 1) // 3 + 1}"
+        return {
+            "date_info": DateInfoState(date=date_str, weekday=weekday, quarter=quarter),
+            "db_info": DBInfoState(dialect="mysql", version="8.0.0"),
+        }

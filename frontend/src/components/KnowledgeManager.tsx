@@ -52,7 +52,7 @@ export function KnowledgeManager() {
         <div className="flex items-center gap-1.5 text-xs font-medium text-porcelain-600">
           <BookOpen className="h-3.5 w-3.5" /> 知识管理
         </div>
-        <button onClick={() => setShowEditor(true)} className="rounded p-0.5 text-porcelain-400 hover:text-kinpaku">
+        <button onClick={() => setShowEditor(true)} className="rounded p-0.5 text-porcelain-600 hover:text-kinpaku">
           <Plus className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -61,7 +61,7 @@ export function KnowledgeManager() {
         {items.filter((i) => i.scope === "shared").map((item) => (
           <div key={item.id} className="group flex items-center justify-between rounded px-1.5 py-0.5 text-xs text-porcelain-600 hover:bg-porcelain-100">
             <span className="truncate">{item.title}</span>
-            <button onClick={() => handleDelete(item.id)} className="hidden p-0.5 text-porcelain-400 hover:text-red-500 group-hover:block">
+            <button onClick={() => handleDelete(item.id)} className="hidden p-0.5 text-porcelain-600 hover:text-red-500 group-hover:block">
               <X className="h-3 w-3" />
             </button>
           </div>

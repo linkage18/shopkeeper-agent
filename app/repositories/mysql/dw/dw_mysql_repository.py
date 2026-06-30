@@ -52,3 +52,16 @@ class DWMySQLRepository:
     async def validate(self, sql: str):
         """用 EXPLAIN 让数据库提前解析 SQL，发现语法 表名 字段名等错误"""
         await self.session.execute(text(f"explain {sql}"))
+
+    async def get_db_info(self) -> dict[str, str]:
+        """获取数据库方言和版本信息"""
+        result = await self.session.execute(text("select version() as ver"))
+        ver = result.scalar_one()
+        return {"dialect": "mysql", "version": ver}
+
+    async def run(self, sql: str) -> list[dict]:
+        """执行 SQL 并返回结果列表"""
+        result = await self.session.execute(text(sql))
+        columns = result.keys()
+        rows = result.fetchall()
+        return [dict(zip(columns, row)) for row in rows]

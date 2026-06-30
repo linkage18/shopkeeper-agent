@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { apiGet, apiPost } from "../lib/authApi";
 import { InteractiveChart } from "./InteractiveChart";
+import { cn } from "../lib/format";
 
 export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onBack?: () => void }) {
   const [schema, setSchema] = useState<any>(null);
@@ -68,8 +69,14 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
     finally { setLoading(false); }
   };
 
-  const toggleDim = (col: string) => setDims((p) => p.includes(col) ? p.filter((d) => d !== col) : [...p, col]);
-  const toggleMea = (col: string) => setMeas((p) => p.includes(col) ? p.filter((d) => d !== col) : [...p, col]);
+  const toggleDim = (col: string) => {
+    if (chartType === "pie" && dims.length >= 1 && !dims.includes(col)) return;
+    setDims((p) => p.includes(col) ? p.filter((d) => d !== col) : [...p, col]);
+  };
+  const toggleMea = (col: string) => {
+    if (chartType === "pie" && meas.length >= 1 && !meas.includes(col)) return;
+    setMeas((p) => p.includes(col) ? p.filter((d) => d !== col) : [...p, col]);
+  };
 
   // 判断某列是否是时间维度
   const isDateField = (name: string) => /year|month|day|date|quarter/i.test(name);
@@ -109,32 +116,41 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
               <div>
                 <div className="mb-2 flex items-center justify-between gap-2">
                   <h3 className="text-xs font-semibold text-porcelain-600 uppercase tracking-wider">维度</h3>
-                  <button onClick={reloadSchema} className="text-[10px] text-porcelain-400 hover:text-kinpaku">刷新结构</button>
+                  <button onClick={reloadSchema} className="text-[10px] text-porcelain-600 hover:text-kinpaku">刷新结构</button>
                 </div>
                 <div className="space-y-1">
-                  {schema.dimensions?.map((d: any) => (
-                    <label key={`${d.table}.${d.column}`} className="flex items-center gap-2 cursor-pointer">
+                  {schema.dimensions?.map((d: any) => {
+                    const disabled = chartType === "line" && !isDateField(d.column);
+                    const pieLocked = chartType === "pie" && dims.length >= 1 && !dims.includes(d.column);
+                    const isDisabled = disabled || pieLocked;
+                    const reason = disabled ? "折线图需要时间维度" : pieLocked ? "饼图仅允许 1 个维度" : "";
+                    return (
+                    <label key={`${d.table}.${d.column}`} className={cn("flex items-center gap-2", isDisabled ? "cursor-not-allowed" : "cursor-pointer")} title={reason || d.column}>
                       <input type="checkbox" checked={dims.includes(d.column)}
-                        onChange={() => toggleDim(d.column)}
-                        className="rounded border-porcelain-300 text-kinpaku focus:ring-kinpaku" />
-                      <span className="text-xs text-porcelain-700">{d.column}</span>
-                      <span className="text-[10px] text-porcelain-400">{d.table}</span>
+                        onChange={() => !isDisabled && toggleDim(d.column)} disabled={isDisabled}
+                        className="rounded border-porcelain-300 text-kinpaku focus:ring-kinpaku disabled:opacity-30" />
+                      <span className={cn("text-xs", isDisabled ? "text-porcelain-400" : "text-porcelain-700")}>{d.column}</span>
+                      <span className="text-[10px] text-porcelain-600">{d.table}</span>
                     </label>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <div>
                 <h3 className="text-xs font-semibold text-porcelain-600 uppercase tracking-wider mb-2">指标</h3>
                 <div className="space-y-1">
-                  {schema.measures?.map((m: any) => (
-                    <label key={`${m.table}.${m.column}`} className="flex items-center gap-2 cursor-pointer">
+                  {schema.measures?.map((m: any) => {
+                    const pieLocked = chartType === "pie" && meas.length >= 1 && !meas.includes(m.column);
+                    return (
+                    <label key={`${m.table}.${m.column}`} className={cn("flex items-center gap-2", pieLocked ? "cursor-not-allowed" : "cursor-pointer")} title={pieLocked ? "饼图仅允许 1 个指标" : m.column}>
                       <input type="checkbox" checked={meas.includes(m.column)}
-                        onChange={() => toggleMea(m.column)}
-                        className="rounded border-porcelain-300 text-kinpaku focus:ring-kinpaku" />
-                      <span className="text-xs text-porcelain-700">{m.column}</span>
-                      <span className="text-[10px] text-porcelain-400">{m.table}</span>
+                        onChange={() => !pieLocked && toggleMea(m.column)} disabled={pieLocked}
+                        className="rounded border-porcelain-300 text-kinpaku focus:ring-kinpaku disabled:opacity-30" />
+                      <span className={cn("text-xs", pieLocked ? "text-porcelain-400" : "text-porcelain-700")}>{m.column}</span>
+                      <span className="text-[10px] text-porcelain-600">{m.table}</span>
                     </label>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <div>
@@ -159,7 +175,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
           )}
           {!schema && (
             <div className="space-y-3">
-              <p className="text-xs text-porcelain-400">
+              <p className="text-xs text-porcelain-600">
                 {error ? "数据库结构加载失败" : "加载数据库结构..."}
               </p>
               {error && (
@@ -219,13 +235,13 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
               </div>
             )}
             {!chartData && !tableData.length && !error && (
-              <div className="flex h-full items-center justify-center text-xs text-porcelain-400">
+              <div className="flex h-full items-center justify-center text-xs text-porcelain-600">
                 {loading ? "生成中..." : "选择维度和指标后生成可视化"}
               </div>
             )}
             {sql && (
               <details className="mt-4">
-                <summary className="cursor-pointer text-xs text-porcelain-400 hover:text-porcelain-600">查看 SQL</summary>
+                <summary className="cursor-pointer text-xs text-porcelain-600 hover:text-porcelain-700">查看 SQL</summary>
                 <pre className="mt-2 rounded bg-porcelain-50 p-3 text-xs text-porcelain-600 overflow-x-auto">{sql}</pre>
               </details>
             )}
