@@ -1,0 +1,684 @@
+tables:
+  - name: "Ref_Payment_Methods"
+    role: fact
+    description: "ref payment methods"
+    columns:
+      - name: "payment_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "payment_method_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method description"
+        alias: ["payment_method_description"]
+        sync: false
+  - name: "Ref_Service_Types"
+    role: dim
+    description: "ref service types"
+    columns:
+      - name: "Service_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "Parent_Service_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "parent service type code"
+        alias: ["parent_service_type_code"]
+        sync: true
+      - name: "Service_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type description"
+        alias: ["service_type_description"]
+        sync: true
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "Address_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1"
+        alias: ["line_1"]
+        sync: false
+      - name: "Line_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 2"
+        alias: ["line_2"]
+        sync: false
+      - name: "City_Town"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city town"
+        alias: ["city_town"]
+        sync: true
+      - name: "State_County"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state county"
+        alias: ["state_county"]
+        sync: true
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "Product_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "Product_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "Product_Price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+      - name: "Product_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product description"
+        alias: ["product_description"]
+        sync: false
+      - name: "Other_Product_Service_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other product service details"
+        alias: ["other_product_service_details"]
+        sync: false
+  - name: "Marketing_Regions"
+    role: dim
+    description: "marketing regions"
+    columns:
+      - name: "Marketing_Region_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "marketing region code"
+        alias: ["marketing_region_code"]
+        sync: true
+      - name: "Marketing_Region_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "marketing region name"
+        alias: ["marketing_region_name"]
+        sync: true
+      - name: "Marketing_Region_Descriptrion"
+        role: dimension
+        type: VARCHAR(255)
+        description: "marketing region descriptrion"
+        alias: ["marketing_region_descriptrion"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Clients"
+    role: dim
+    description: "clients"
+    columns:
+      - name: "Client_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "client id"
+        alias: ["client_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Customer_Email_Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email address"
+        alias: ["customer_email_address"]
+        sync: false
+      - name: "Customer_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "Customer_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Drama_Workshop_Groups"
+    role: dim
+    description: "drama workshop groups"
+    columns:
+      - name: "Workshop_Group_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "workshop group id"
+        alias: ["workshop_group_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Currency_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "currency code"
+        alias: ["currency_code"]
+        sync: true
+      - name: "Marketing_Region_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "marketing region code"
+        alias: ["marketing_region_code"]
+        sync: true
+      - name: "Store_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store name"
+        alias: ["store_name"]
+        sync: true
+      - name: "Store_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store phone"
+        alias: ["store_phone"]
+        sync: false
+      - name: "Store_Email_Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store email address"
+        alias: ["store_email_address"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Performers"
+    role: dim
+    description: "performers"
+    columns:
+      - name: "Performer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performer id"
+        alias: ["performer_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Customer_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "Customer_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "Customer_Email_Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email address"
+        alias: ["customer_email_address"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "Customer_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Customer_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "Customer_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "Customer_Email_Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email address"
+        alias: ["customer_email_address"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Stores"
+    role: dim
+    description: "stores"
+    columns:
+      - name: "Store_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Marketing_Region_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "marketing region code"
+        alias: ["marketing_region_code"]
+        sync: true
+      - name: "Store_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store name"
+        alias: ["store_name"]
+        sync: true
+      - name: "Store_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store phone"
+        alias: ["store_phone"]
+        sync: false
+      - name: "Store_Email_Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store email address"
+        alias: ["store_email_address"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Bookings"
+    role: dim
+    description: "bookings"
+    columns:
+      - name: "Booking_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Workshop_Group_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "workshop group id"
+        alias: ["workshop_group_id"]
+        sync: false
+      - name: "Status_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status code"
+        alias: ["status_code"]
+        sync: true
+      - name: "Store_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "Order_Date"
+        role: dimension
+        type: DATETIME
+        description: "order date"
+        alias: ["order_date"]
+        sync: false
+      - name: "Planned_Delivery_Date"
+        role: dimension
+        type: DATETIME
+        description: "planned delivery date"
+        alias: ["planned_delivery_date"]
+        sync: false
+      - name: "Actual_Delivery_Date"
+        role: dimension
+        type: DATETIME
+        description: "actual delivery date"
+        alias: ["actual_delivery_date"]
+        sync: false
+      - name: "Other_Order_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other order details"
+        alias: ["other_order_details"]
+        sync: false
+  - name: "Performers_in_Bookings"
+    role: dim
+    description: "performers in bookings"
+    columns:
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "Performer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performer id"
+        alias: ["performer_id"]
+        sync: false
+  - name: "Customer_Orders"
+    role: fact
+    description: "customer orders"
+    columns:
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Store_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "Order_Date"
+        role: dimension
+        type: DATETIME
+        description: "order date"
+        alias: ["order_date"]
+        sync: false
+      - name: "Planned_Delivery_Date"
+        role: dimension
+        type: DATETIME
+        description: "planned delivery date"
+        alias: ["planned_delivery_date"]
+        sync: false
+      - name: "Actual_Delivery_Date"
+        role: dimension
+        type: DATETIME
+        description: "actual delivery date"
+        alias: ["actual_delivery_date"]
+        sync: false
+      - name: "Other_Order_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other order details"
+        alias: ["other_order_details"]
+        sync: false
+  - name: "Order_Items"
+    role: fact
+    description: "order items"
+    columns:
+      - name: "Order_Item_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "Order_Quantity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order quantity"
+        alias: ["order_quantity"]
+        sync: false
+      - name: "Other_Item_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other item details"
+        alias: ["other_item_details"]
+        sync: false
+  - name: "Invoices"
+    role: fact
+    description: "invoices"
+    columns:
+      - name: "Invoice_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "invoice id"
+        alias: ["invoice_id"]
+        sync: false
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "payment_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "Order_Quantity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order quantity"
+        alias: ["order_quantity"]
+        sync: false
+      - name: "Other_Item_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other item details"
+        alias: ["other_item_details"]
+        sync: false
+      - name: "Order_Item_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+  - name: "Services"
+    role: dim
+    description: "services"
+    columns:
+      - name: "Service_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "Service_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "Workshop_Group_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "workshop group id"
+        alias: ["workshop_group_id"]
+        sync: false
+      - name: "Product_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product description"
+        alias: ["product_description"]
+        sync: false
+      - name: "Product_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "Product_Price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+      - name: "Other_Product_Service_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other product service details"
+        alias: ["other_product_service_details"]
+        sync: false
+  - name: "Bookings_Services"
+    role: dim
+    description: "bookings services"
+    columns:
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+  - name: "Invoice_Items"
+    role: fact
+    description: "invoice items"
+    columns:
+      - name: "Invoice_Item_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "invoice item id"
+        alias: ["invoice_item_id"]
+        sync: false
+      - name: "Invoice_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "invoice id"
+        alias: ["invoice_id"]
+        sync: false
+      - name: "Order_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "Order_Item_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "Order_Quantity"
+        role: measure
+        type: FLOAT
+        description: "order quantity"
+        alias: ["order_quantity"]
+        sync: false
+      - name: "Other_Item_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other item details"
+        alias: ["other_item_details"]
+        sync: false
+
+metrics:
+  - name: "products_product_price"
+    description: product price from products
+    relevant_columns:
+      - Products.Product_Price
+    alias: [product_price]
+  - name: "services_product_price"
+    description: product price from services
+    relevant_columns:
+      - Services.Product_Price
+    alias: [product_price]
+  - name: "invoice_items_order_quantity"
+    description: order quantity from invoice_items
+    relevant_columns:
+      - Invoice_Items.Order_Quantity
+    alias: [order_quantity]

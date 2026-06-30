@@ -1,0 +1,283 @@
+tables:
+  - name: "players"
+    role: dim
+    description: "players"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "hand"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hand"
+        alias: ["hand"]
+        sync: false
+      - name: "birth_date"
+        role: dimension
+        type: DATETIME
+        description: "birth date"
+        alias: ["birth_date"]
+        sync: false
+      - name: "country_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country code"
+        alias: ["country_code"]
+        sync: true
+  - name: "matches"
+    role: dim
+    description: "matches"
+    columns:
+      - name: "best_of"
+        role: dimension
+        type: FLOAT
+        description: "best of"
+        alias: ["best_of"]
+        sync: false
+      - name: "draw_size"
+        role: measure
+        type: FLOAT
+        description: "draw size"
+        alias: ["draw_size"]
+        sync: false
+      - name: "loser_age"
+        role: dimension
+        type: FLOAT
+        description: "loser age"
+        alias: ["loser_age"]
+        sync: false
+      - name: "loser_entry"
+        role: dimension
+        type: VARCHAR(255)
+        description: "loser entry"
+        alias: ["loser_entry"]
+        sync: false
+      - name: "loser_hand"
+        role: dimension
+        type: VARCHAR(255)
+        description: "loser hand"
+        alias: ["loser_hand"]
+        sync: false
+      - name: "loser_ht"
+        role: dimension
+        type: FLOAT
+        description: "loser ht"
+        alias: ["loser_ht"]
+        sync: false
+      - name: "loser_id"
+        role: foreign_key
+        type: FLOAT
+        description: "loser id"
+        alias: ["loser_id"]
+        sync: false
+      - name: "loser_ioc"
+        role: dimension
+        type: VARCHAR(255)
+        description: "loser ioc"
+        alias: ["loser_ioc"]
+        sync: false
+      - name: "loser_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "loser name"
+        alias: ["loser_name"]
+        sync: true
+      - name: "loser_rank"
+        role: dimension
+        type: FLOAT
+        description: "loser rank"
+        alias: ["loser_rank"]
+        sync: false
+      - name: "loser_rank_points"
+        role: dimension
+        type: FLOAT
+        description: "loser rank points"
+        alias: ["loser_rank_points"]
+        sync: false
+      - name: "loser_seed"
+        role: dimension
+        type: FLOAT
+        description: "loser seed"
+        alias: ["loser_seed"]
+        sync: false
+      - name: "match_num"
+        role: dimension
+        type: FLOAT
+        description: "match num"
+        alias: ["match_num"]
+        sync: false
+      - name: "minutes"
+        role: dimension
+        type: FLOAT
+        description: "minutes"
+        alias: ["minutes"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: VARCHAR(255)
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "score"
+        role: dimension
+        type: VARCHAR(255)
+        description: "score"
+        alias: ["score"]
+        sync: false
+      - name: "surface"
+        role: dimension
+        type: VARCHAR(255)
+        description: "surface"
+        alias: ["surface"]
+        sync: false
+      - name: "tourney_date"
+        role: dimension
+        type: DATETIME
+        description: "tourney date"
+        alias: ["tourney_date"]
+        sync: false
+      - name: "tourney_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "tourney id"
+        alias: ["tourney_id"]
+        sync: false
+      - name: "tourney_level"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tourney level"
+        alias: ["tourney_level"]
+        sync: false
+      - name: "tourney_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tourney name"
+        alias: ["tourney_name"]
+        sync: true
+      - name: "winner_age"
+        role: dimension
+        type: FLOAT
+        description: "winner age"
+        alias: ["winner_age"]
+        sync: false
+      - name: "winner_entry"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winner entry"
+        alias: ["winner_entry"]
+        sync: false
+      - name: "winner_hand"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winner hand"
+        alias: ["winner_hand"]
+        sync: false
+      - name: "winner_ht"
+        role: dimension
+        type: FLOAT
+        description: "winner ht"
+        alias: ["winner_ht"]
+        sync: false
+      - name: "winner_id"
+        role: foreign_key
+        type: FLOAT
+        description: "winner id"
+        alias: ["winner_id"]
+        sync: false
+      - name: "winner_ioc"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winner ioc"
+        alias: ["winner_ioc"]
+        sync: false
+      - name: "winner_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winner name"
+        alias: ["winner_name"]
+        sync: true
+      - name: "winner_rank"
+        role: dimension
+        type: FLOAT
+        description: "winner rank"
+        alias: ["winner_rank"]
+        sync: false
+      - name: "winner_rank_points"
+        role: dimension
+        type: FLOAT
+        description: "winner rank points"
+        alias: ["winner_rank_points"]
+        sync: false
+      - name: "winner_seed"
+        role: dimension
+        type: FLOAT
+        description: "winner seed"
+        alias: ["winner_seed"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "rankings"
+    role: dim
+    description: "rankings"
+    columns:
+      - name: "ranking_date"
+        role: dimension
+        type: DATETIME
+        description: "ranking date"
+        alias: ["ranking_date"]
+        sync: false
+      - name: "ranking"
+        role: dimension
+        type: FLOAT
+        description: "ranking"
+        alias: ["ranking"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "ranking_points"
+        role: dimension
+        type: FLOAT
+        description: "ranking points"
+        alias: ["ranking_points"]
+        sync: false
+      - name: "tours"
+        role: dimension
+        type: FLOAT
+        description: "tours"
+        alias: ["tours"]
+        sync: false
+
+metrics:
+  - name: "matches_draw_size"
+    description: draw size from matches
+    relevant_columns:
+      - matches.draw_size
+    alias: [draw_size]
+  - name: "matches_year"
+    description: year from matches
+    relevant_columns:
+      - matches.year
+    alias: [year]

@@ -1,6 +1,7 @@
 import hashlib
 import hmac
 import json
+import os
 import time
 import base64
 from typing import Any
@@ -47,4 +48,26 @@ def verify_token(token: str) -> dict[str, Any] | None:
 
 
 def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+    """PBKDF2-HMAC-SHA256 密码哈希（含随机 salt）"""
+    salt = os.urandom(16)
+    dk = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, iterations=600000)
+    return f"pbkdf2:sha256:600000:{salt.hex()}:{dk.hex()}"
+
+
+def verify_password(password: str, hashed: str) -> bool:
+    """验证 PBKDF2 密码哈希（兼容旧版 SHA256）"""
+    # 旧版 SHA256 兼容
+    if not hashed.startswith("pbkdf2:"):
+        return hashed == hashlib.sha256(password.encode()).hexdigest()
+    # PBKDF2 验证
+    try:
+        parts = hashed.split(":")
+        if len(parts) < 5 or parts[0] != "pbkdf2" or parts[1] != "sha256":
+            return False
+        iterations = int(parts[2])
+        salt = bytes.fromhex(parts[3])
+        expected = parts[4]
+        dk = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, iterations=iterations)
+        return dk.hex() == expected
+    except (ValueError, IndexError):
+        return False

@@ -1,0 +1,135 @@
+tables:
+  - name: "Customer_Master_Index"
+    role: dim
+    description: "customer master index"
+    columns:
+      - name: "master_customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "master customer id"
+        alias: ["master_customer_id"]
+        sync: false
+      - name: "cmi_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cmi details"
+        alias: ["cmi_details"]
+        sync: false
+  - name: "CMI_Cross_References"
+    role: dim
+    description: "cmi cross references"
+    columns:
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+      - name: "master_customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "master customer id"
+        alias: ["master_customer_id"]
+        sync: false
+      - name: "source_system_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "source system code"
+        alias: ["source_system_code"]
+        sync: true
+  - name: "Council_Tax"
+    role: dim
+    description: "council tax"
+    columns:
+      - name: "council_tax_id"
+        role: foreign_key
+        type: FLOAT
+        description: "council tax id"
+        alias: ["council_tax_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+  - name: "Business_Rates"
+    role: dim
+    description: "business rates"
+    columns:
+      - name: "business_rates_id"
+        role: foreign_key
+        type: FLOAT
+        description: "business rates id"
+        alias: ["business_rates_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+  - name: "Benefits_Overpayments"
+    role: fact
+    description: "benefits overpayments"
+    columns:
+      - name: "council_tax_id"
+        role: foreign_key
+        type: FLOAT
+        description: "council tax id"
+        alias: ["council_tax_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+  - name: "Parking_Fines"
+    role: dim
+    description: "parking fines"
+    columns:
+      - name: "council_tax_id"
+        role: foreign_key
+        type: FLOAT
+        description: "council tax id"
+        alias: ["council_tax_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+  - name: "Rent_Arrears"
+    role: dim
+    description: "rent arrears"
+    columns:
+      - name: "council_tax_id"
+        role: foreign_key
+        type: FLOAT
+        description: "council tax id"
+        alias: ["council_tax_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false
+  - name: "Electoral_Register"
+    role: dim
+    description: "electoral register"
+    columns:
+      - name: "electoral_register_id"
+        role: foreign_key
+        type: FLOAT
+        description: "electoral register id"
+        alias: ["electoral_register_id"]
+        sync: false
+      - name: "cmi_cross_ref_id"
+        role: foreign_key
+        type: FLOAT
+        description: "cmi cross ref id"
+        alias: ["cmi_cross_ref_id"]
+        sync: false

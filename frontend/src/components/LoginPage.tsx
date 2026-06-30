@@ -33,7 +33,7 @@ export function LoginPage({ onLogin }: Props) {
     <div className="flex h-dvh items-center justify-center bg-porcelain-50">
       <div className="w-full max-w-sm rounded-lg border border-porcelain-200 bg-white px-8 py-10 shadow-elevated">
         <h1 className="mb-2 text-center text-2xl font-semibold text-porcelain-900">Shopkeeper Agent</h1>
-        <p className="mb-8 text-center text-sm text-porcelain-500">电商智能问数助手</p>
+        <p className="mb-8 text-center text-sm text-porcelain-500">音乐商店智能问数助手</p>
 
         <div className="mb-6 flex rounded-md border border-porcelain-200 p-0.5">
           <button

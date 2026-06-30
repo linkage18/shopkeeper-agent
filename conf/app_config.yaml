@@ -1,4 +1,4 @@
-logging:
+﻿logging:
   file:
     enable: true
     level: INFO
@@ -65,8 +65,8 @@ rag:
     intent_cosine_threshold: 0.65
   chunk:
     max_tokens: 256
-    sentence_delimiters: "[。！？\\n]"
-    comma_delimiters: "[，；、]"
+    sentence_delimiters: "[銆傦紒锛焅\n]"
+    comma_delimiters: "[锛岋紱銆乚"
   qdrant:
     parent_collection: doc_parent_chunks
     sub_collection: doc_sub_chunks
@@ -76,3 +76,4 @@ rag:
     model: BAAI/bge-reranker-v2-m3
     endpoint: http://localhost:8082
     enabled: false
+

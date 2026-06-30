@@ -1,0 +1,75 @@
+tables:
+  - name: "poker_player"
+    role: dim
+    description: "poker player"
+    columns:
+      - name: "Poker_Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "poker player id"
+        alias: ["poker_player_id"]
+        sync: false
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Final_Table_Made"
+        role: dimension
+        type: FLOAT
+        description: "final table made"
+        alias: ["final_table_made"]
+        sync: false
+      - name: "Best_Finish"
+        role: dimension
+        type: FLOAT
+        description: "best finish"
+        alias: ["best_finish"]
+        sync: false
+      - name: "Money_Rank"
+        role: dimension
+        type: FLOAT
+        description: "money rank"
+        alias: ["money_rank"]
+        sync: false
+      - name: "Earnings"
+        role: dimension
+        type: FLOAT
+        description: "earnings"
+        alias: ["earnings"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Birth_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth date"
+        alias: ["birth_date"]
+        sync: false
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false

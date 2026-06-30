@@ -1,0 +1,115 @@
+tables:
+  - name: "artist"
+    role: dim
+    description: "artist"
+    columns:
+      - name: "Artist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artist id"
+        alias: ["artist_id"]
+        sync: false
+      - name: "Artist"
+        role: dimension
+        type: VARCHAR(255)
+        description: "artist"
+        alias: ["artist"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Famous_Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "famous title"
+        alias: ["famous_title"]
+        sync: false
+      - name: "Famous_Release_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "famous release date"
+        alias: ["famous_release_date"]
+        sync: false
+  - name: "volume"
+    role: dim
+    description: "volume"
+    columns:
+      - name: "Volume_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "volume id"
+        alias: ["volume_id"]
+        sync: false
+      - name: "Volume_Issue"
+        role: dimension
+        type: VARCHAR(255)
+        description: "volume issue"
+        alias: ["volume_issue"]
+        sync: false
+      - name: "Issue_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "issue date"
+        alias: ["issue_date"]
+        sync: false
+      - name: "Weeks_on_Top"
+        role: dimension
+        type: FLOAT
+        description: "weeks on top"
+        alias: ["weeks_on_top"]
+        sync: false
+      - name: "Song"
+        role: dimension
+        type: VARCHAR(255)
+        description: "song"
+        alias: ["song"]
+        sync: false
+      - name: "Artist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artist id"
+        alias: ["artist_id"]
+        sync: false
+  - name: "music_festival"
+    role: dim
+    description: "music festival"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Music_Festival"
+        role: dimension
+        type: VARCHAR(255)
+        description: "music festival"
+        alias: ["music_festival"]
+        sync: false
+      - name: "Date_of_ceremony"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date of ceremony"
+        alias: ["date_of_ceremony"]
+        sync: false
+      - name: "Category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "category"
+        alias: ["category"]
+        sync: true
+      - name: "Volume"
+        role: dimension
+        type: FLOAT
+        description: "volume"
+        alias: ["volume"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false

@@ -1,0 +1,320 @@
+tables:
+  - name: "author"
+    role: dim
+    description: "author"
+    columns:
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "homepage"
+        role: dimension
+        type: VARCHAR(255)
+        description: "homepage"
+        alias: ["homepage"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "oid"
+        role: primary_key
+        type: FLOAT
+        description: "oid"
+        alias: ["oid"]
+        sync: false
+  - name: "conference"
+    role: dim
+    description: "conference"
+    columns:
+      - name: "cid"
+        role: primary_key
+        type: FLOAT
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "homepage"
+        role: dimension
+        type: VARCHAR(255)
+        description: "homepage"
+        alias: ["homepage"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "domain"
+    role: dim
+    description: "domain"
+    columns:
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "domain_author"
+    role: dim
+    description: "domain author"
+    columns:
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+  - name: "domain_conference"
+    role: dim
+    description: "domain conference"
+    columns:
+      - name: "cid"
+        role: primary_key
+        type: FLOAT
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+  - name: "journal"
+    role: dim
+    description: "journal"
+    columns:
+      - name: "homepage"
+        role: dimension
+        type: VARCHAR(255)
+        description: "homepage"
+        alias: ["homepage"]
+        sync: false
+      - name: "jid"
+        role: primary_key
+        type: FLOAT
+        description: "jid"
+        alias: ["jid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "domain_journal"
+    role: dim
+    description: "domain journal"
+    columns:
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+      - name: "jid"
+        role: primary_key
+        type: FLOAT
+        description: "jid"
+        alias: ["jid"]
+        sync: false
+  - name: "keyword"
+    role: dim
+    description: "keyword"
+    columns:
+      - name: "keyword"
+        role: dimension
+        type: VARCHAR(255)
+        description: "keyword"
+        alias: ["keyword"]
+        sync: false
+      - name: "kid"
+        role: primary_key
+        type: FLOAT
+        description: "kid"
+        alias: ["kid"]
+        sync: false
+  - name: "domain_keyword"
+    role: dim
+    description: "domain keyword"
+    columns:
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+      - name: "kid"
+        role: primary_key
+        type: FLOAT
+        description: "kid"
+        alias: ["kid"]
+        sync: false
+  - name: "publication"
+    role: dim
+    description: "publication"
+    columns:
+      - name: "abstract"
+        role: dimension
+        type: VARCHAR(255)
+        description: "abstract"
+        alias: ["abstract"]
+        sync: false
+      - name: "cid"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "citation_num"
+        role: dimension
+        type: FLOAT
+        description: "citation num"
+        alias: ["citation_num"]
+        sync: false
+      - name: "jid"
+        role: primary_key
+        type: FLOAT
+        description: "jid"
+        alias: ["jid"]
+        sync: false
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+      - name: "reference_num"
+        role: dimension
+        type: FLOAT
+        description: "reference num"
+        alias: ["reference_num"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "domain_publication"
+    role: dim
+    description: "domain publication"
+    columns:
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+  - name: "organization"
+    role: dim
+    description: "organization"
+    columns:
+      - name: "continent"
+        role: dimension
+        type: VARCHAR(255)
+        description: "continent"
+        alias: ["continent"]
+        sync: false
+      - name: "homepage"
+        role: dimension
+        type: VARCHAR(255)
+        description: "homepage"
+        alias: ["homepage"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "oid"
+        role: primary_key
+        type: FLOAT
+        description: "oid"
+        alias: ["oid"]
+        sync: false
+  - name: "publication_keyword"
+    role: dim
+    description: "publication keyword"
+    columns:
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+      - name: "kid"
+        role: primary_key
+        type: FLOAT
+        description: "kid"
+        alias: ["kid"]
+        sync: false
+  - name: "writes"
+    role: dim
+    description: "writes"
+    columns:
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+  - name: "cite"
+    role: dim
+    description: "cite"
+    columns:
+      - name: "cited"
+        role: dimension
+        type: FLOAT
+        description: "cited"
+        alias: ["cited"]
+        sync: false
+      - name: "citing"
+        role: dimension
+        type: FLOAT
+        description: "citing"
+        alias: ["citing"]
+        sync: false
+
+metrics:
+  - name: "publication_year"
+    description: year from publication
+    relevant_columns:
+      - publication.year
+    alias: [year]

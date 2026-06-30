@@ -1,0 +1,104 @@
+tables:
+  - name: "driver"
+    role: dim
+    description: "driver"
+    columns:
+      - name: "Driver_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "driver id"
+        alias: ["driver_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Party"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party"
+        alias: ["party"]
+        sync: false
+      - name: "Home_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "home city"
+        alias: ["home_city"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "school"
+    role: dim
+    description: "school"
+    columns:
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "Grade"
+        role: dimension
+        type: VARCHAR(255)
+        description: "grade"
+        alias: ["grade"]
+        sync: false
+      - name: "School"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school"
+        alias: ["school"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+  - name: "school_bus"
+    role: dim
+    description: "school bus"
+    columns:
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "Driver_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "driver id"
+        alias: ["driver_id"]
+        sync: false
+      - name: "Years_Working"
+        role: measure
+        type: FLOAT
+        description: "years working"
+        alias: ["years_working"]
+        sync: false
+      - name: "If_full_time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "if full time"
+        alias: ["if_full_time"]
+        sync: false
+
+metrics:
+  - name: "school_bus_years_working"
+    description: years working from school_bus
+    relevant_columns:
+      - school_bus.Years_Working
+    alias: [years_working]

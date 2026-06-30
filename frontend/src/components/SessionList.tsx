@@ -3,6 +3,7 @@
  * 显示当前和历史对话，支持切换、删除、新建
  * Impeccable 设计 — 金箔金/铜绿/暖黑漆器
  */
+import React from "react";
 import { MessageSquarePlus, MessageSquare, Trash2 } from "lucide-react";
 import { cn } from "../lib/format";
 import type { SessionListItem } from "../types/agent";
@@ -49,11 +50,14 @@ export function SessionList({ sessions, currentId, onSelect, onNew, onDelete }: 
   );
 }
 
-function SessionRow({ session, isActive, onSelect, onDelete }: {
+const SessionRow = React.memo(function SessionRow({ session, isActive, onSelect, onDelete }: {
   session: SessionListItem; isActive: boolean; onSelect: () => void; onDelete: () => void;
 }) {
   return (
     <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}
       className={cn(
         "group flex cursor-pointer items-center border-l-2 px-3 py-2.5 text-left transition",
         isActive
@@ -86,4 +90,4 @@ function SessionRow({ session, isActive, onSelect, onDelete }: {
       </button>
     </div>
   );
-}
+});

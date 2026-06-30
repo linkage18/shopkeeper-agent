@@ -1,0 +1,196 @@
+tables:
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "City_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "Hanzi"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hanzi"
+        alias: ["hanzi"]
+        sync: false
+      - name: "Hanyu_Pinyin"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hanyu pinyin"
+        alias: ["hanyu_pinyin"]
+        sync: false
+      - name: "Regional_Population"
+        role: measure
+        type: FLOAT
+        description: "regional population"
+        alias: ["regional_population"]
+        sync: false
+      - name: "GDP"
+        role: measure
+        type: FLOAT
+        description: "gdp"
+        alias: ["gdp"]
+        sync: false
+  - name: "match"
+    role: dim
+    description: "match"
+    columns:
+      - name: "Match_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "match id"
+        alias: ["match_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Venue"
+        role: dimension
+        type: VARCHAR(255)
+        description: "venue"
+        alias: ["venue"]
+        sync: false
+      - name: "Score"
+        role: dimension
+        type: VARCHAR(255)
+        description: "score"
+        alias: ["score"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+      - name: "Competition"
+        role: dimension
+        type: VARCHAR(255)
+        description: "competition"
+        alias: ["competition"]
+        sync: false
+  - name: "temperature"
+    role: dim
+    description: "temperature"
+    columns:
+      - name: "City_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "Jan"
+        role: dimension
+        type: FLOAT
+        description: "jan"
+        alias: ["jan"]
+        sync: false
+      - name: "Feb"
+        role: dimension
+        type: FLOAT
+        description: "feb"
+        alias: ["feb"]
+        sync: false
+      - name: "Mar"
+        role: dimension
+        type: FLOAT
+        description: "mar"
+        alias: ["mar"]
+        sync: false
+      - name: "Apr"
+        role: dimension
+        type: FLOAT
+        description: "apr"
+        alias: ["apr"]
+        sync: false
+      - name: "Jun"
+        role: dimension
+        type: FLOAT
+        description: "jun"
+        alias: ["jun"]
+        sync: false
+      - name: "Jul"
+        role: dimension
+        type: FLOAT
+        description: "jul"
+        alias: ["jul"]
+        sync: false
+      - name: "Aug"
+        role: dimension
+        type: FLOAT
+        description: "aug"
+        alias: ["aug"]
+        sync: false
+      - name: "Sep"
+        role: dimension
+        type: FLOAT
+        description: "sep"
+        alias: ["sep"]
+        sync: false
+      - name: "Oct"
+        role: dimension
+        type: FLOAT
+        description: "oct"
+        alias: ["oct"]
+        sync: false
+      - name: "Nov"
+        role: dimension
+        type: FLOAT
+        description: "nov"
+        alias: ["nov"]
+        sync: false
+      - name: "Dec"
+        role: dimension
+        type: FLOAT
+        description: "dec"
+        alias: ["dec"]
+        sync: false
+  - name: "hosting_city"
+    role: dim
+    description: "hosting city"
+    columns:
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Match_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "match id"
+        alias: ["match_id"]
+        sync: false
+      - name: "Host_City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "host city"
+        alias: ["host_city"]
+        sync: true
+
+metrics:
+  - name: "city_regional_population"
+    description: regional population from city
+    relevant_columns:
+      - city.Regional_Population
+    alias: [regional_population]
+  - name: "city_gdp"
+    description: gdp from city
+    relevant_columns:
+      - city.GDP
+    alias: [gdp]
+  - name: "hosting_city_year"
+    description: year from hosting_city
+    relevant_columns:
+      - hosting_city.Year
+    alias: [year]

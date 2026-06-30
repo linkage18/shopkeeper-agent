@@ -1,0 +1,282 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "line_1_number_building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1 number building"
+        alias: ["line_1_number_building"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "zip_postcode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip postcode"
+        alias: ["zip_postcode"]
+        sync: true
+      - name: "state_province_county"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province county"
+        alias: ["state_province_county"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "staff_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff address id"
+        alias: ["staff_address_id"]
+        sync: false
+      - name: "nickname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nickname"
+        alias: ["nickname"]
+        sync: true
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "date_of_birth"
+        role: dimension
+        type: DATETIME
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+      - name: "date_joined_staff"
+        role: dimension
+        type: DATETIME
+        description: "date joined staff"
+        alias: ["date_joined_staff"]
+        sync: false
+      - name: "date_left_staff"
+        role: dimension
+        type: DATETIME
+        description: "date left staff"
+        alias: ["date_left_staff"]
+        sync: false
+  - name: "Vehicles"
+    role: dim
+    description: "vehicles"
+    columns:
+      - name: "vehicle_id"
+        role: foreign_key
+        type: FLOAT
+        description: "vehicle id"
+        alias: ["vehicle_id"]
+        sync: false
+      - name: "vehicle_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "vehicle details"
+        alias: ["vehicle_details"]
+        sync: false
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer address id"
+        alias: ["customer_address_id"]
+        sync: false
+      - name: "customer_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer status code"
+        alias: ["customer_status_code"]
+        sync: true
+      - name: "date_became_customer"
+        role: dimension
+        type: DATETIME
+        description: "date became customer"
+        alias: ["date_became_customer"]
+        sync: false
+      - name: "date_of_birth"
+        role: dimension
+        type: DATETIME
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "amount_outstanding"
+        role: measure
+        type: FLOAT
+        description: "amount outstanding"
+        alias: ["amount_outstanding"]
+        sync: false
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "phone_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+      - name: "cell_mobile_phone_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell mobile phone number"
+        alias: ["cell_mobile_phone_number"]
+        sync: false
+  - name: "Customer_Payments"
+    role: fact
+    description: "customer payments"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "datetime_payment"
+        role: dimension
+        type: DATETIME
+        description: "datetime payment"
+        alias: ["datetime_payment"]
+        sync: false
+      - name: "payment_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "amount_payment"
+        role: measure
+        type: FLOAT
+        description: "amount payment"
+        alias: ["amount_payment"]
+        sync: false
+  - name: "Lessons"
+    role: dim
+    description: "lessons"
+    columns:
+      - name: "lesson_id"
+        role: foreign_key
+        type: FLOAT
+        description: "lesson id"
+        alias: ["lesson_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "lesson_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lesson status code"
+        alias: ["lesson_status_code"]
+        sync: true
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "vehicle_id"
+        role: foreign_key
+        type: FLOAT
+        description: "vehicle id"
+        alias: ["vehicle_id"]
+        sync: false
+      - name: "lesson_date"
+        role: dimension
+        type: DATETIME
+        description: "lesson date"
+        alias: ["lesson_date"]
+        sync: false
+      - name: "lesson_time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lesson time"
+        alias: ["lesson_time"]
+        sync: false
+      - name: "price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+
+metrics:
+  - name: "customers_amount_outstanding"
+    description: amount outstanding from customers
+    relevant_columns:
+      - Customers.amount_outstanding
+    alias: [amount_outstanding]
+  - name: "customer_payments_amount_payment"
+    description: amount payment from customer_payments
+    relevant_columns:
+      - Customer_Payments.amount_payment
+    alias: [amount_payment]
+  - name: "lessons_price"
+    description: price from lessons
+    relevant_columns:
+      - Lessons.price
+    alias: [price]

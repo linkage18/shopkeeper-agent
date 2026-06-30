@@ -1,0 +1,155 @@
+tables:
+  - name: "country"
+    role: dim
+    description: "country"
+    columns:
+      - name: "Country_id"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "Country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "Capital"
+        role: dimension
+        type: VARCHAR(255)
+        description: "capital"
+        alias: ["capital"]
+        sync: false
+      - name: "Official_native_language"
+        role: dimension
+        type: VARCHAR(255)
+        description: "official native language"
+        alias: ["official_native_language"]
+        sync: true
+  - name: "team"
+    role: dim
+    description: "team"
+    columns:
+      - name: "Team_id"
+        role: foreign_key
+        type: FLOAT
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "match_season"
+    role: dim
+    description: "match season"
+    columns:
+      - name: "Season"
+        role: dimension
+        type: FLOAT
+        description: "season"
+        alias: ["season"]
+        sync: false
+      - name: "Player"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player"
+        alias: ["player"]
+        sync: false
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "Country"
+        role: measure
+        type: FLOAT
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Team"
+        role: dimension
+        type: FLOAT
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Draft_Pick_Number"
+        role: measure
+        type: FLOAT
+        description: "draft pick number"
+        alias: ["draft_pick_number"]
+        sync: false
+      - name: "Draft_Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "draft class"
+        alias: ["draft_class"]
+        sync: false
+      - name: "College"
+        role: dimension
+        type: VARCHAR(255)
+        description: "college"
+        alias: ["college"]
+        sync: false
+  - name: "player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "Player"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player"
+        alias: ["player"]
+        sync: false
+      - name: "Years_Played"
+        role: dimension
+        type: VARCHAR(255)
+        description: "years played"
+        alias: ["years_played"]
+        sync: false
+      - name: "Total_WL"
+        role: dimension
+        type: VARCHAR(255)
+        description: "total wl"
+        alias: ["total_wl"]
+        sync: false
+      - name: "Singles_WL"
+        role: dimension
+        type: VARCHAR(255)
+        description: "singles wl"
+        alias: ["singles_wl"]
+        sync: false
+      - name: "Doubles_WL"
+        role: dimension
+        type: VARCHAR(255)
+        description: "doubles wl"
+        alias: ["doubles_wl"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: FLOAT
+        description: "team"
+        alias: ["team"]
+        sync: false
+
+metrics:
+  - name: "match_season_country"
+    description: country from match_season
+    relevant_columns:
+      - match_season.Country
+    alias: [country]
+  - name: "match_season_draft_pick_number"
+    description: draft pick number from match_season
+    relevant_columns:
+      - match_season.Draft_Pick_Number
+    alias: [draft_pick_number]

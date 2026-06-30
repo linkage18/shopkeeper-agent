@@ -1,0 +1,351 @@
+tables:
+  - name: "Discount_Coupons"
+    role: dim
+    description: "discount coupons"
+    columns:
+      - name: "coupon_id"
+        role: foreign_key
+        type: FLOAT
+        description: "coupon id"
+        alias: ["coupon_id"]
+        sync: false
+      - name: "date_issued"
+        role: dimension
+        type: DATETIME
+        description: "date issued"
+        alias: ["date_issued"]
+        sync: false
+      - name: "coupon_amount"
+        role: measure
+        type: FLOAT
+        description: "coupon amount"
+        alias: ["coupon_amount"]
+        sync: false
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "coupon_id"
+        role: foreign_key
+        type: FLOAT
+        description: "coupon id"
+        alias: ["coupon_id"]
+        sync: false
+      - name: "good_or_bad_customer"
+        role: dimension
+        type: VARCHAR(255)
+        description: "good or bad customer"
+        alias: ["good_or_bad_customer"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "gender_mf"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender mf"
+        alias: ["gender_mf"]
+        sync: true
+      - name: "date_became_customer"
+        role: dimension
+        type: DATETIME
+        description: "date became customer"
+        alias: ["date_became_customer"]
+        sync: false
+      - name: "date_last_hire"
+        role: dimension
+        type: DATETIME
+        description: "date last hire"
+        alias: ["date_last_hire"]
+        sync: false
+  - name: "Bookings"
+    role: dim
+    description: "bookings"
+    columns:
+      - name: "booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "booking_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "booking status code"
+        alias: ["booking_status_code"]
+        sync: true
+      - name: "returned_damaged_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "returned damaged yn"
+        alias: ["returned_damaged_yn"]
+        sync: false
+      - name: "booking_start_date"
+        role: dimension
+        type: DATETIME
+        description: "booking start date"
+        alias: ["booking_start_date"]
+        sync: false
+      - name: "booking_end_date"
+        role: dimension
+        type: DATETIME
+        description: "booking end date"
+        alias: ["booking_end_date"]
+        sync: false
+      - name: "count_hired"
+        role: dimension
+        type: VARCHAR(255)
+        description: "count hired"
+        alias: ["count_hired"]
+        sync: false
+      - name: "amount_payable"
+        role: measure
+        type: FLOAT
+        description: "amount payable"
+        alias: ["amount_payable"]
+        sync: false
+      - name: "amount_of_discount"
+        role: measure
+        type: FLOAT
+        description: "amount of discount"
+        alias: ["amount_of_discount"]
+        sync: false
+      - name: "amount_outstanding"
+        role: measure
+        type: FLOAT
+        description: "amount outstanding"
+        alias: ["amount_outstanding"]
+        sync: false
+      - name: "amount_of_refund"
+        role: measure
+        type: FLOAT
+        description: "amount of refund"
+        alias: ["amount_of_refund"]
+        sync: false
+  - name: "Products_for_Hire"
+    role: dim
+    description: "products for hire"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product type code"
+        alias: ["product_type_code"]
+        sync: true
+      - name: "daily_hire_cost"
+        role: measure
+        type: FLOAT
+        description: "daily hire cost"
+        alias: ["daily_hire_cost"]
+        sync: false
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product description"
+        alias: ["product_description"]
+        sync: false
+  - name: "Payments"
+    role: fact
+    description: "payments"
+    columns:
+      - name: "payment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "payment id"
+        alias: ["payment_id"]
+        sync: false
+      - name: "booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "payment_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment type code"
+        alias: ["payment_type_code"]
+        sync: true
+      - name: "amount_paid_in_full_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "amount paid in full yn"
+        alias: ["amount_paid_in_full_yn"]
+        sync: false
+      - name: "payment_date"
+        role: dimension
+        type: DATETIME
+        description: "payment date"
+        alias: ["payment_date"]
+        sync: false
+      - name: "amount_due"
+        role: measure
+        type: FLOAT
+        description: "amount due"
+        alias: ["amount_due"]
+        sync: false
+      - name: "amount_paid"
+        role: measure
+        type: FLOAT
+        description: "amount paid"
+        alias: ["amount_paid"]
+        sync: false
+  - name: "Products_Booked"
+    role: dim
+    description: "products booked"
+    columns:
+      - name: "booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "returned_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "returned yn"
+        alias: ["returned_yn"]
+        sync: false
+      - name: "returned_late_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "returned late yn"
+        alias: ["returned_late_yn"]
+        sync: false
+      - name: "booked_count"
+        role: measure
+        type: FLOAT
+        description: "booked count"
+        alias: ["booked_count"]
+        sync: false
+      - name: "booked_amount"
+        role: measure
+        type: FLOAT
+        description: "booked amount"
+        alias: ["booked_amount"]
+        sync: false
+  - name: "View_Product_Availability"
+    role: dim
+    description: "view product availability"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "status_date"
+        role: dimension
+        type: DATETIME
+        description: "status date"
+        alias: ["status_date"]
+        sync: true
+      - name: "available_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "available yn"
+        alias: ["available_yn"]
+        sync: false
+
+metrics:
+  - name: "discount_coupons_coupon_amount"
+    description: coupon amount from discount_coupons
+    relevant_columns:
+      - Discount_Coupons.coupon_amount
+    alias: [coupon_amount]
+  - name: "bookings_amount_payable"
+    description: amount payable from bookings
+    relevant_columns:
+      - Bookings.amount_payable
+    alias: [amount_payable]
+  - name: "bookings_amount_of_discount"
+    description: amount of discount from bookings
+    relevant_columns:
+      - Bookings.amount_of_discount
+    alias: [amount_of_discount]
+  - name: "bookings_amount_outstanding"
+    description: amount outstanding from bookings
+    relevant_columns:
+      - Bookings.amount_outstanding
+    alias: [amount_outstanding]
+  - name: "bookings_amount_of_refund"
+    description: amount of refund from bookings
+    relevant_columns:
+      - Bookings.amount_of_refund
+    alias: [amount_of_refund]
+  - name: "products_for_hire_daily_hire_cost"
+    description: daily hire cost from products_for_hire
+    relevant_columns:
+      - Products_for_Hire.daily_hire_cost
+    alias: [daily_hire_cost]
+  - name: "payments_amount_due"
+    description: amount due from payments
+    relevant_columns:
+      - Payments.amount_due
+    alias: [amount_due]
+  - name: "payments_amount_paid"
+    description: amount paid from payments
+    relevant_columns:
+      - Payments.amount_paid
+    alias: [amount_paid]
+  - name: "products_booked_booked_count"
+    description: booked count from products_booked
+    relevant_columns:
+      - Products_Booked.booked_count
+    alias: [booked_count]
+  - name: "products_booked_booked_amount"
+    description: booked amount from products_booked
+    relevant_columns:
+      - Products_Booked.booked_amount
+    alias: [booked_amount]

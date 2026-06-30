@@ -1,0 +1,248 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "address_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address details"
+        alias: ["address_details"]
+        sync: false
+  - name: "Locations"
+    role: dim
+    description: "locations"
+    columns:
+      - name: "Location_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "Product_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product type code"
+        alias: ["product_type_code"]
+        sync: true
+      - name: "Product_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "Product_Price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+  - name: "Parties"
+    role: dim
+    description: "parties"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Party_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party details"
+        alias: ["party_details"]
+        sync: false
+  - name: "Assets"
+    role: dim
+    description: "assets"
+    columns:
+      - name: "Asset_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "asset id"
+        alias: ["asset_id"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Channels"
+    role: dim
+    description: "channels"
+    columns:
+      - name: "Channel_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "channel id"
+        alias: ["channel_id"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Finances"
+    role: dim
+    description: "finances"
+    columns:
+      - name: "Finance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "finance id"
+        alias: ["finance_id"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Events"
+    role: dim
+    description: "events"
+    columns:
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+      - name: "Address_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "Channel_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "channel id"
+        alias: ["channel_id"]
+        sync: false
+      - name: "Event_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "event type code"
+        alias: ["event_type_code"]
+        sync: true
+      - name: "Finance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "finance id"
+        alias: ["finance_id"]
+        sync: false
+      - name: "Location_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+  - name: "Products_in_Events"
+    role: dim
+    description: "products in events"
+    columns:
+      - name: "Product_in_Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product in event id"
+        alias: ["product_in_event_id"]
+        sync: false
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+  - name: "Parties_in_Events"
+    role: dim
+    description: "parties in events"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+      - name: "Role_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+  - name: "Agreements"
+    role: dim
+    description: "agreements"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+  - name: "Assets_in_Events"
+    role: dim
+    description: "assets in events"
+    columns:
+      - name: "Asset_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "asset id"
+        alias: ["asset_id"]
+        sync: false
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+
+metrics:
+  - name: "products_product_price"
+    description: product price from products
+    relevant_columns:
+      - Products.Product_Price
+    alias: [product_price]

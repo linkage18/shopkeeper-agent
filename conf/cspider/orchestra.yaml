@@ -1,0 +1,167 @@
+tables:
+  - name: "conductor"
+    role: dim
+    description: "conductor"
+    columns:
+      - name: "Conductor_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "conductor id"
+        alias: ["conductor_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Year_of_Work"
+        role: measure
+        type: FLOAT
+        description: "year of work"
+        alias: ["year_of_work"]
+        sync: false
+  - name: "orchestra"
+    role: dim
+    description: "orchestra"
+    columns:
+      - name: "Orchestra_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "orchestra id"
+        alias: ["orchestra_id"]
+        sync: false
+      - name: "Orchestra"
+        role: dimension
+        type: VARCHAR(255)
+        description: "orchestra"
+        alias: ["orchestra"]
+        sync: false
+      - name: "Conductor_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "conductor id"
+        alias: ["conductor_id"]
+        sync: false
+      - name: "Record_Company"
+        role: dimension
+        type: VARCHAR(255)
+        description: "record company"
+        alias: ["record_company"]
+        sync: true
+      - name: "Year_of_Founded"
+        role: measure
+        type: FLOAT
+        description: "year of founded"
+        alias: ["year_of_founded"]
+        sync: false
+      - name: "Major_Record_Format"
+        role: dimension
+        type: VARCHAR(255)
+        description: "major record format"
+        alias: ["major_record_format"]
+        sync: false
+  - name: "performance"
+    role: dim
+    description: "performance"
+    columns:
+      - name: "Performance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performance id"
+        alias: ["performance_id"]
+        sync: false
+      - name: "Orchestra_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "orchestra id"
+        alias: ["orchestra_id"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Official_ratings_(millions)"
+        role: dimension
+        type: FLOAT
+        description: "official ratings (millions)"
+        alias: ["official_ratings_(millions)"]
+        sync: false
+      - name: "Weekly_rank"
+        role: dimension
+        type: VARCHAR(255)
+        description: "weekly rank"
+        alias: ["weekly_rank"]
+        sync: false
+      - name: "Share"
+        role: dimension
+        type: VARCHAR(255)
+        description: "share"
+        alias: ["share"]
+        sync: false
+  - name: "show"
+    role: dim
+    description: "show"
+    columns:
+      - name: "Show_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "show id"
+        alias: ["show_id"]
+        sync: false
+      - name: "Performance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performance id"
+        alias: ["performance_id"]
+        sync: false
+      - name: "If_first_show"
+        role: dimension
+        type: VARCHAR(255)
+        description: "if first show"
+        alias: ["if_first_show"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+      - name: "Attendance"
+        role: dimension
+        type: FLOAT
+        description: "attendance"
+        alias: ["attendance"]
+        sync: false
+
+metrics:
+  - name: "conductor_year_of_work"
+    description: year of work from conductor
+    relevant_columns:
+      - conductor.Year_of_Work
+    alias: [year_of_work]
+  - name: "orchestra_year_of_founded"
+    description: year of founded from orchestra
+    relevant_columns:
+      - orchestra.Year_of_Founded
+    alias: [year_of_founded]

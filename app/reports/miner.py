@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 from app.knowledge.manager import save_knowledge
 from app.knowledge.models import KnowledgeEntry
 
@@ -20,7 +20,7 @@ async def extract_knowledge_from_report(params: dict, results: dict[str, list[di
     )
     try:
         import json
-        resp = await llm.ainvoke(prompt)
+        resp = await get_llm().ainvoke(prompt)
         data = json.loads(resp.content.strip().strip("```json").strip("```").strip())
         if data.get("has_knowledge"):
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -30,5 +30,6 @@ async def extract_knowledge_from_report(params: dict, results: dict[str, list[di
                 created_at=now, status="pending",
             )
             save_knowledge(entry, user_id, is_shared=True)
-    except Exception:
-        pass
+    except Exception as e:
+        from app.core.log import logger
+        logger.warning(f"Knowledge extraction from report failed: {e}")

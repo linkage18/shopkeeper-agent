@@ -1,0 +1,98 @@
+tables:
+  - name: "phone"
+    role: dim
+    description: "phone"
+    columns:
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Phone_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "phone id"
+        alias: ["phone_id"]
+        sync: false
+      - name: "Memory_in_G"
+        role: dimension
+        type: FLOAT
+        description: "memory in g"
+        alias: ["memory_in_g"]
+        sync: false
+      - name: "Carrier"
+        role: dimension
+        type: VARCHAR(255)
+        description: "carrier"
+        alias: ["carrier"]
+        sync: false
+      - name: "Price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+  - name: "market"
+    role: dim
+    description: "market"
+    columns:
+      - name: "Market_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "market id"
+        alias: ["market_id"]
+        sync: false
+      - name: "District"
+        role: dimension
+        type: VARCHAR(255)
+        description: "district"
+        alias: ["district"]
+        sync: false
+      - name: "Num_of_employees"
+        role: dimension
+        type: FLOAT
+        description: "num of employees"
+        alias: ["num_of_employees"]
+        sync: false
+      - name: "Num_of_shops"
+        role: dimension
+        type: FLOAT
+        description: "num of shops"
+        alias: ["num_of_shops"]
+        sync: false
+      - name: "Ranking"
+        role: dimension
+        type: FLOAT
+        description: "ranking"
+        alias: ["ranking"]
+        sync: false
+  - name: "phone_market"
+    role: dim
+    description: "phone market"
+    columns:
+      - name: "Market_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "market id"
+        alias: ["market_id"]
+        sync: false
+      - name: "Phone_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "phone id"
+        alias: ["phone_id"]
+        sync: false
+      - name: "Num_of_stock"
+        role: dimension
+        type: FLOAT
+        description: "num of stock"
+        alias: ["num_of_stock"]
+        sync: false
+
+metrics:
+  - name: "phone_price"
+    description: price from phone
+    relevant_columns:
+      - phone.Price
+    alias: [price]

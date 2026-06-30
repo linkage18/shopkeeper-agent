@@ -1,0 +1,98 @@
+tables:
+  - name: "party"
+    role: dim
+    description: "party"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Party_Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party theme"
+        alias: ["party_theme"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "First_year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first year"
+        alias: ["first_year"]
+        sync: false
+      - name: "Last_year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last year"
+        alias: ["last_year"]
+        sync: false
+      - name: "Number_of_hosts"
+        role: measure
+        type: FLOAT
+        description: "number of hosts"
+        alias: ["number_of_hosts"]
+        sync: false
+  - name: "host"
+    role: dim
+    description: "host"
+    columns:
+      - name: "Host_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "host id"
+        alias: ["host_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: VARCHAR(255)
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "party_host"
+    role: dim
+    description: "party host"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Host_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "host id"
+        alias: ["host_id"]
+        sync: false
+      - name: "Is_Main_in_Charge"
+        role: dimension
+        type: VARCHAR(255)
+        description: "is main in charge"
+        alias: ["is_main_in_charge"]
+        sync: false
+
+metrics:
+  - name: "party_number_of_hosts"
+    description: number of hosts from party
+    relevant_columns:
+      - party.Number_of_hosts
+    alias: [number_of_hosts]

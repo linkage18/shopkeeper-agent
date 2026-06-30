@@ -1,0 +1,143 @@
+tables:
+  - name: "stadium"
+    role: dim
+    description: "stadium"
+    columns:
+      - name: "Stadium_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "stadium id"
+        alias: ["stadium_id"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Capacity"
+        role: dimension
+        type: FLOAT
+        description: "capacity"
+        alias: ["capacity"]
+        sync: true
+      - name: "Highest"
+        role: dimension
+        type: FLOAT
+        description: "highest"
+        alias: ["highest"]
+        sync: false
+      - name: "Lowest"
+        role: dimension
+        type: FLOAT
+        description: "lowest"
+        alias: ["lowest"]
+        sync: false
+      - name: "Average"
+        role: dimension
+        type: FLOAT
+        description: "average"
+        alias: ["average"]
+        sync: false
+  - name: "singer"
+    role: dim
+    description: "singer"
+    columns:
+      - name: "Singer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "singer id"
+        alias: ["singer_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Song_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "song name"
+        alias: ["song_name"]
+        sync: true
+      - name: "Song_release_year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "song release year"
+        alias: ["song_release_year"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Is_male"
+        role: dimension
+        type: VARCHAR(255)
+        description: "is male"
+        alias: ["is_male"]
+        sync: false
+  - name: "concert"
+    role: dim
+    description: "concert"
+    columns:
+      - name: "concert_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "concert id"
+        alias: ["concert_id"]
+        sync: false
+      - name: "concert_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "concert name"
+        alias: ["concert_name"]
+        sync: true
+      - name: "Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "theme"
+        alias: ["theme"]
+        sync: false
+      - name: "Stadium_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "stadium id"
+        alias: ["stadium_id"]
+        sync: false
+      - name: "Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "singer_in_concert"
+    role: dim
+    description: "singer in concert"
+    columns:
+      - name: "concert_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "concert id"
+        alias: ["concert_id"]
+        sync: false
+      - name: "Singer_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "singer id"
+        alias: ["singer_id"]
+        sync: false

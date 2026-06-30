@@ -1,0 +1,133 @@
+tables:
+  - name: "bank"
+    role: dim
+    description: "bank"
+    columns:
+      - name: "branch_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "bname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bname"
+        alias: ["bname"]
+        sync: true
+      - name: "no_of_customers"
+        role: dimension
+        type: FLOAT
+        description: "no of customers"
+        alias: ["no_of_customers"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+  - name: "customer"
+    role: dim
+    description: "customer"
+    columns:
+      - name: "cust_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "cust id"
+        alias: ["cust_id"]
+        sync: false
+      - name: "cust_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cust name"
+        alias: ["cust_name"]
+        sync: true
+      - name: "acc_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "acc type"
+        alias: ["acc_type"]
+        sync: true
+      - name: "acc_bal"
+        role: dimension
+        type: FLOAT
+        description: "acc bal"
+        alias: ["acc_bal"]
+        sync: false
+      - name: "no_of_loans"
+        role: dimension
+        type: FLOAT
+        description: "no of loans"
+        alias: ["no_of_loans"]
+        sync: false
+      - name: "credit_score"
+        role: measure
+        type: FLOAT
+        description: "credit score"
+        alias: ["credit_score"]
+        sync: false
+      - name: "branch_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+  - name: "loan"
+    role: dim
+    description: "loan"
+    columns:
+      - name: "loan_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "loan id"
+        alias: ["loan_id"]
+        sync: false
+      - name: "loan_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "loan type"
+        alias: ["loan_type"]
+        sync: true
+      - name: "cust_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "cust id"
+        alias: ["cust_id"]
+        sync: false
+      - name: "branch_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "amount"
+        role: measure
+        type: FLOAT
+        description: "amount"
+        alias: ["amount"]
+        sync: false
+
+metrics:
+  - name: "customer_credit_score"
+    description: credit score from customer
+    relevant_columns:
+      - customer.credit_score
+    alias: [credit_score]
+  - name: "loan_amount"
+    description: amount from loan
+    relevant_columns:
+      - loan.amount
+    alias: [amount]

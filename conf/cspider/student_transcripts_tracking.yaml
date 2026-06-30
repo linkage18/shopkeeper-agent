@@ -1,0 +1,381 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1"
+        alias: ["line_1"]
+        sync: false
+      - name: "line_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 2"
+        alias: ["line_2"]
+        sync: false
+      - name: "line_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 3"
+        alias: ["line_3"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "zip_postcode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip postcode"
+        alias: ["zip_postcode"]
+        sync: true
+      - name: "state_province_county"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province county"
+        alias: ["state_province_county"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "other_address_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other address details"
+        alias: ["other_address_details"]
+        sync: false
+  - name: "Courses"
+    role: dim
+    description: "courses"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "course_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course name"
+        alias: ["course_name"]
+        sync: true
+      - name: "course_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course description"
+        alias: ["course_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Departments"
+    role: dim
+    description: "departments"
+    columns:
+      - name: "department_id"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "department_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "department name"
+        alias: ["department_name"]
+        sync: true
+      - name: "department_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "department description"
+        alias: ["department_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Degree_Programs"
+    role: dim
+    description: "degree programs"
+    columns:
+      - name: "degree_program_id"
+        role: foreign_key
+        type: FLOAT
+        description: "degree program id"
+        alias: ["degree_program_id"]
+        sync: false
+      - name: "department_id"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "degree_summary_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "degree summary name"
+        alias: ["degree_summary_name"]
+        sync: true
+      - name: "degree_summary_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "degree summary description"
+        alias: ["degree_summary_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Sections"
+    role: dim
+    description: "sections"
+    columns:
+      - name: "section_id"
+        role: foreign_key
+        type: FLOAT
+        description: "section id"
+        alias: ["section_id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "section_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "section name"
+        alias: ["section_name"]
+        sync: true
+      - name: "section_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "section description"
+        alias: ["section_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Semesters"
+    role: dim
+    description: "semesters"
+    columns:
+      - name: "semester_id"
+        role: foreign_key
+        type: FLOAT
+        description: "semester id"
+        alias: ["semester_id"]
+        sync: false
+      - name: "semester_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "semester name"
+        alias: ["semester_name"]
+        sync: true
+      - name: "semester_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "semester description"
+        alias: ["semester_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Students"
+    role: dim
+    description: "students"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "current_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "current address id"
+        alias: ["current_address_id"]
+        sync: false
+      - name: "permanent_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "permanent address id"
+        alias: ["permanent_address_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "cell_mobile_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell mobile number"
+        alias: ["cell_mobile_number"]
+        sync: false
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "ssn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+      - name: "date_first_registered"
+        role: dimension
+        type: DATETIME
+        description: "date first registered"
+        alias: ["date_first_registered"]
+        sync: false
+      - name: "date_left"
+        role: dimension
+        type: DATETIME
+        description: "date left"
+        alias: ["date_left"]
+        sync: false
+      - name: "other_student_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other student details"
+        alias: ["other_student_details"]
+        sync: false
+  - name: "Student_Enrolment"
+    role: dim
+    description: "student enrolment"
+    columns:
+      - name: "student_enrolment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student enrolment id"
+        alias: ["student_enrolment_id"]
+        sync: false
+      - name: "degree_program_id"
+        role: foreign_key
+        type: FLOAT
+        description: "degree program id"
+        alias: ["degree_program_id"]
+        sync: false
+      - name: "semester_id"
+        role: foreign_key
+        type: FLOAT
+        description: "semester id"
+        alias: ["semester_id"]
+        sync: false
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Student_Enrolment_Courses"
+    role: dim
+    description: "student enrolment courses"
+    columns:
+      - name: "student_course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student course id"
+        alias: ["student_course_id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "student_enrolment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student enrolment id"
+        alias: ["student_enrolment_id"]
+        sync: false
+  - name: "Transcripts"
+    role: dim
+    description: "transcripts"
+    columns:
+      - name: "transcript_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transcript id"
+        alias: ["transcript_id"]
+        sync: false
+      - name: "transcript_date"
+        role: dimension
+        type: DATETIME
+        description: "transcript date"
+        alias: ["transcript_date"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Transcript_Contents"
+    role: dim
+    description: "transcript contents"
+    columns:
+      - name: "student_course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student course id"
+        alias: ["student_course_id"]
+        sync: false
+      - name: "transcript_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transcript id"
+        alias: ["transcript_id"]
+        sync: false

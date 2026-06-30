@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 
 intent_router = APIRouter(prefix="/api/intent", tags=["intent"])
 
@@ -29,7 +29,7 @@ async def classify_intent(req: IntentReq):
         f"问题：{req.query}\n\n"
         f"意图："
     )
-    resp = await llm.ainvoke(prompt)
+    resp = await get_llm().ainvoke(prompt)
     intent = resp.content.strip().lower()
     if intent not in ("sql", "rag", "report"):
         intent = "sql"

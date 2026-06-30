@@ -1,0 +1,81 @@
+tables:
+  - name: "wrestler"
+    role: dim
+    description: "wrestler"
+    columns:
+      - name: "Wrestler_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "wrestler id"
+        alias: ["wrestler_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Reign"
+        role: dimension
+        type: VARCHAR(255)
+        description: "reign"
+        alias: ["reign"]
+        sync: false
+      - name: "Days_held"
+        role: dimension
+        type: VARCHAR(255)
+        description: "days held"
+        alias: ["days_held"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Event"
+        role: dimension
+        type: VARCHAR(255)
+        description: "event"
+        alias: ["event"]
+        sync: false
+  - name: "Elimination"
+    role: dim
+    description: "elimination"
+    columns:
+      - name: "Elimination_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "elimination id"
+        alias: ["elimination_id"]
+        sync: false
+      - name: "Wrestler_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "wrestler id"
+        alias: ["wrestler_id"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Eliminated_By"
+        role: dimension
+        type: VARCHAR(255)
+        description: "eliminated by"
+        alias: ["eliminated_by"]
+        sync: false
+      - name: "Elimination_Move"
+        role: dimension
+        type: VARCHAR(255)
+        description: "elimination move"
+        alias: ["elimination_move"]
+        sync: false
+      - name: "Time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false

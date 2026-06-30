@@ -52,7 +52,7 @@ async def _update_conversation_history(state: dict, answer: str, sources: list):
 
 async def _update_session_summary(state: dict) -> dict:
     """每 3 轮用 LLM 压缩历史对话为摘要"""
-    from app.agent.llm import llm as shared_llm
+    from app.agent.llm import get_llm
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import PromptTemplate
     

@@ -1,0 +1,64 @@
+tables:
+  - name: "Person"
+    role: dim
+    description: "person"
+    columns:
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "job"
+        role: dimension
+        type: VARCHAR(255)
+        description: "job"
+        alias: ["job"]
+        sync: false
+  - name: "PersonFriend"
+    role: dim
+    description: "personfriend"
+    columns:
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "friend"
+        role: dimension
+        type: VARCHAR(255)
+        description: "friend"
+        alias: ["friend"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+
+metrics:
+  - name: "personfriend_year"
+    description: year from personfriend
+    relevant_columns:
+      - PersonFriend.year
+    alias: [year]

@@ -1,0 +1,133 @@
+tables:
+  - name: "company"
+    role: dim
+    description: "company"
+    columns:
+      - name: "Company_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "Company"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company"
+        alias: ["company"]
+        sync: true
+      - name: "Headquarters"
+        role: dimension
+        type: VARCHAR(255)
+        description: "headquarters"
+        alias: ["headquarters"]
+        sync: false
+      - name: "Main_Industry"
+        role: dimension
+        type: VARCHAR(255)
+        description: "main industry"
+        alias: ["main_industry"]
+        sync: false
+      - name: "Sales_billion"
+        role: dimension
+        type: FLOAT
+        description: "sales billion"
+        alias: ["sales_billion"]
+        sync: false
+      - name: "Profits_billion"
+        role: dimension
+        type: FLOAT
+        description: "profits billion"
+        alias: ["profits_billion"]
+        sync: false
+      - name: "Assets_billion"
+        role: dimension
+        type: FLOAT
+        description: "assets billion"
+        alias: ["assets_billion"]
+        sync: false
+      - name: "Market_Value"
+        role: dimension
+        type: FLOAT
+        description: "market value"
+        alias: ["market_value"]
+        sync: false
+  - name: "gas_station"
+    role: dim
+    description: "gas station"
+    columns:
+      - name: "Station_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+      - name: "Open_Year"
+        role: measure
+        type: FLOAT
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Manager_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "manager name"
+        alias: ["manager_name"]
+        sync: true
+      - name: "Vice_Manager_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "vice manager name"
+        alias: ["vice_manager_name"]
+        sync: true
+      - name: "Representative_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "representative name"
+        alias: ["representative_name"]
+        sync: true
+  - name: "station_company"
+    role: dim
+    description: "station company"
+    columns:
+      - name: "Station_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+      - name: "Company_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true
+      - name: "Rank_of_the_Year"
+        role: measure
+        type: FLOAT
+        description: "rank of the year"
+        alias: ["rank_of_the_year"]
+        sync: false
+
+metrics:
+  - name: "gas_station_open_year"
+    description: open year from gas_station
+    relevant_columns:
+      - gas_station.Open_Year
+    alias: [open_year]
+  - name: "station_company_rank_of_the_year"
+    description: rank of the year from station_company
+    relevant_columns:
+      - station_company.Rank_of_the_Year
+    alias: [rank_of_the_year]

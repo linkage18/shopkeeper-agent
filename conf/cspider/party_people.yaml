@@ -1,0 +1,137 @@
+tables:
+  - name: "region"
+    role: dim
+    description: "region"
+    columns:
+      - name: "Region_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+      - name: "Region_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region name"
+        alias: ["region_name"]
+        sync: true
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Label"
+        role: dimension
+        type: VARCHAR(255)
+        description: "label"
+        alias: ["label"]
+        sync: false
+      - name: "Format"
+        role: dimension
+        type: VARCHAR(255)
+        description: "format"
+        alias: ["format"]
+        sync: false
+      - name: "Catalogue"
+        role: dimension
+        type: VARCHAR(255)
+        description: "catalogue"
+        alias: ["catalogue"]
+        sync: false
+  - name: "party"
+    role: dim
+    description: "party"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Minister"
+        role: dimension
+        type: VARCHAR(255)
+        description: "minister"
+        alias: ["minister"]
+        sync: false
+      - name: "Took_office"
+        role: dimension
+        type: VARCHAR(255)
+        description: "took office"
+        alias: ["took_office"]
+        sync: false
+      - name: "Left_office"
+        role: dimension
+        type: VARCHAR(255)
+        description: "left office"
+        alias: ["left_office"]
+        sync: false
+      - name: "Region_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+      - name: "Party_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party name"
+        alias: ["party_name"]
+        sync: true
+  - name: "member"
+    role: dim
+    description: "member"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Member_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "member name"
+        alias: ["member_name"]
+        sync: true
+      - name: "Party_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "In_office"
+        role: dimension
+        type: VARCHAR(255)
+        description: "in office"
+        alias: ["in_office"]
+        sync: false
+  - name: "party_events"
+    role: dim
+    description: "party events"
+    columns:
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+      - name: "Event_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "event name"
+        alias: ["event_name"]
+        sync: true
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Member_in_charge_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member in charge id"
+        alias: ["member_in_charge_id"]
+        sync: false

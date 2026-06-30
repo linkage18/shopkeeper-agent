@@ -1,0 +1,265 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1"
+        alias: ["line_1"]
+        sync: false
+      - name: "line_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 2"
+        alias: ["line_2"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "zip_postcode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip postcode"
+        alias: ["zip_postcode"]
+        sync: true
+      - name: "state_province_county"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province county"
+        alias: ["state_province_county"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "People"
+    role: dim
+    description: "people"
+    columns:
+      - name: "person_id"
+        role: foreign_key
+        type: FLOAT
+        description: "person id"
+        alias: ["person_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "cell_mobile_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell mobile number"
+        alias: ["cell_mobile_number"]
+        sync: false
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "login_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "login name"
+        alias: ["login_name"]
+        sync: true
+      - name: "password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "password"
+        alias: ["password"]
+        sync: false
+  - name: "Students"
+    role: dim
+    description: "students"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "student_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "student details"
+        alias: ["student_details"]
+        sync: false
+  - name: "Courses"
+    role: dim
+    description: "courses"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "course_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course name"
+        alias: ["course_name"]
+        sync: true
+      - name: "course_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course description"
+        alias: ["course_description"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "People_Addresses"
+    role: dim
+    description: "people addresses"
+    columns:
+      - name: "person_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "person address id"
+        alias: ["person_address_id"]
+        sync: false
+      - name: "person_id"
+        role: foreign_key
+        type: FLOAT
+        description: "person id"
+        alias: ["person_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "date_from"
+        role: dimension
+        type: DATETIME
+        description: "date from"
+        alias: ["date_from"]
+        sync: false
+      - name: "date_to"
+        role: dimension
+        type: DATETIME
+        description: "date to"
+        alias: ["date_to"]
+        sync: false
+  - name: "Student_Course_Registrations"
+    role: fact
+    description: "student course registrations"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "registration_date"
+        role: dimension
+        type: DATETIME
+        description: "registration date"
+        alias: ["registration_date"]
+        sync: false
+  - name: "Student_Course_Attendance"
+    role: dim
+    description: "student course attendance"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "date_of_attendance"
+        role: dimension
+        type: DATETIME
+        description: "date of attendance"
+        alias: ["date_of_attendance"]
+        sync: false
+  - name: "Candidates"
+    role: dim
+    description: "candidates"
+    columns:
+      - name: "candidate_id"
+        role: foreign_key
+        type: FLOAT
+        description: "candidate id"
+        alias: ["candidate_id"]
+        sync: false
+      - name: "candidate_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "candidate details"
+        alias: ["candidate_details"]
+        sync: false
+  - name: "Candidate_Assessments"
+    role: dim
+    description: "candidate assessments"
+    columns:
+      - name: "candidate_id"
+        role: foreign_key
+        type: FLOAT
+        description: "candidate id"
+        alias: ["candidate_id"]
+        sync: false
+      - name: "qualification"
+        role: dimension
+        type: VARCHAR(255)
+        description: "qualification"
+        alias: ["qualification"]
+        sync: false
+      - name: "assessment_date"
+        role: dimension
+        type: DATETIME
+        description: "assessment date"
+        alias: ["assessment_date"]
+        sync: false
+      - name: "asessment_outcome_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "asessment outcome code"
+        alias: ["asessment_outcome_code"]
+        sync: true

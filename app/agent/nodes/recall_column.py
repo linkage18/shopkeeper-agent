@@ -11,7 +11,7 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 from app.agent.state import DataAgentState
 from app.core.log import logger
 from app.entities.column_info import ColumnInfo
@@ -41,7 +41,7 @@ async def recall_column(state: DataAgentState, runtime: Runtime[DataAgentContext
         # 提示词要求模型只输出 JSON 数组，解析后 result 就是 list[str]
         output_parser = JsonOutputParser()
         # LCEL 管道：填充提示词 -> 调用模型 -> 解析 JSON
-        chain = prompt | llm | output_parser
+        chain = prompt | get_llm() | output_parser
 
         result = await chain.ainvoke({"query": query})
 
@@ -67,5 +67,6 @@ async def recall_column(state: DataAgentState, runtime: Runtime[DataAgentContext
         return {"retrieved_column_infos": retrieved_column_infos}
     except Exception as e:
         logger.error(f"{step} failed: {e}")
-        writer({"type": "progress", "step": step, "status": "error"})
-        raise
+        writer({"type": "progress", "step": step, "status": "skipped"})
+        logger.warning(f"{step} skipped due to connection error")
+        return {"retrieved_column_infos": []}

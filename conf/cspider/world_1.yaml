@@ -1,0 +1,184 @@
+tables:
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "CountryCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "countrycode"
+        alias: ["countrycode"]
+        sync: true
+      - name: "District"
+        role: dimension
+        type: VARCHAR(255)
+        description: "district"
+        alias: ["district"]
+        sync: false
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+  - name: "country"
+    role: dim
+    description: "country"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Continent"
+        role: dimension
+        type: VARCHAR(255)
+        description: "continent"
+        alias: ["continent"]
+        sync: false
+      - name: "Region"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region"
+        alias: ["region"]
+        sync: false
+      - name: "SurfaceArea"
+        role: measure
+        type: FLOAT
+        description: "surfacearea"
+        alias: ["surfacearea"]
+        sync: false
+      - name: "IndepYear"
+        role: measure
+        type: FLOAT
+        description: "indepyear"
+        alias: ["indepyear"]
+        sync: false
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "LifeExpectancy"
+        role: measure
+        type: FLOAT
+        description: "lifeexpectancy"
+        alias: ["lifeexpectancy"]
+        sync: false
+      - name: "GNP"
+        role: dimension
+        type: FLOAT
+        description: "gnp"
+        alias: ["gnp"]
+        sync: false
+      - name: "GNPOld"
+        role: dimension
+        type: FLOAT
+        description: "gnpold"
+        alias: ["gnpold"]
+        sync: false
+      - name: "LocalName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "localname"
+        alias: ["localname"]
+        sync: true
+      - name: "GovernmentForm"
+        role: dimension
+        type: VARCHAR(255)
+        description: "governmentform"
+        alias: ["governmentform"]
+        sync: false
+      - name: "HeadOfState"
+        role: dimension
+        type: VARCHAR(255)
+        description: "headofstate"
+        alias: ["headofstate"]
+        sync: true
+      - name: "Capital"
+        role: dimension
+        type: FLOAT
+        description: "capital"
+        alias: ["capital"]
+        sync: false
+      - name: "Code2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "code2"
+        alias: ["code2"]
+        sync: true
+  - name: "countrylanguage"
+    role: dim
+    description: "countrylanguage"
+    columns:
+      - name: "CountryCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "countrycode"
+        alias: ["countrycode"]
+        sync: true
+      - name: "Language"
+        role: dimension
+        type: VARCHAR(255)
+        description: "language"
+        alias: ["language"]
+        sync: true
+      - name: "IsOfficial"
+        role: dimension
+        type: VARCHAR(255)
+        description: "isofficial"
+        alias: ["isofficial"]
+        sync: false
+      - name: "Percentage"
+        role: dimension
+        type: FLOAT
+        description: "percentage"
+        alias: ["percentage"]
+        sync: false
+
+metrics:
+  - name: "city_population"
+    description: population from city
+    relevant_columns:
+      - city.Population
+    alias: [population]
+  - name: "country_surfacearea"
+    description: surfacearea from country
+    relevant_columns:
+      - country.SurfaceArea
+    alias: [surfacearea]
+  - name: "country_indepyear"
+    description: indepyear from country
+    relevant_columns:
+      - country.IndepYear
+    alias: [indepyear]
+  - name: "country_population"
+    description: population from country
+    relevant_columns:
+      - country.Population
+    alias: [population]
+  - name: "country_lifeexpectancy"
+    description: lifeexpectancy from country
+    relevant_columns:
+      - country.LifeExpectancy
+    alias: [lifeexpectancy]

@@ -1,0 +1,221 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Customer_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer details"
+        alias: ["customer_details"]
+        sync: false
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "Staff_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "Staff_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff details"
+        alias: ["staff_details"]
+        sync: false
+  - name: "Policies"
+    role: dim
+    description: "policies"
+    columns:
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Policy_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "policy type code"
+        alias: ["policy_type_code"]
+        sync: true
+      - name: "Start_Date"
+        role: dimension
+        type: DATETIME
+        description: "start date"
+        alias: ["start_date"]
+        sync: false
+      - name: "End_Date"
+        role: dimension
+        type: DATETIME
+        description: "end date"
+        alias: ["end_date"]
+        sync: false
+  - name: "Claim_Headers"
+    role: dim
+    description: "claim headers"
+    columns:
+      - name: "Claim_Header_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim header id"
+        alias: ["claim_header_id"]
+        sync: false
+      - name: "Claim_Status_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "claim status code"
+        alias: ["claim_status_code"]
+        sync: true
+      - name: "Claim_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "claim type code"
+        alias: ["claim_type_code"]
+        sync: true
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Date_of_Claim"
+        role: dimension
+        type: DATETIME
+        description: "date of claim"
+        alias: ["date_of_claim"]
+        sync: false
+      - name: "Date_of_Settlement"
+        role: dimension
+        type: DATETIME
+        description: "date of settlement"
+        alias: ["date_of_settlement"]
+        sync: false
+      - name: "Amount_Claimed"
+        role: measure
+        type: FLOAT
+        description: "amount claimed"
+        alias: ["amount_claimed"]
+        sync: false
+      - name: "Amount_Piad"
+        role: measure
+        type: FLOAT
+        description: "amount piad"
+        alias: ["amount_piad"]
+        sync: false
+  - name: "Claims_Documents"
+    role: dim
+    description: "claims documents"
+    columns:
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "Document_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "Created_by_Staff_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "created by staff id"
+        alias: ["created_by_staff_id"]
+        sync: false
+      - name: "Created_Date"
+        role: dimension
+        type: FLOAT
+        description: "created date"
+        alias: ["created_date"]
+        sync: false
+  - name: "Claims_Processing_Stages"
+    role: dim
+    description: "claims processing stages"
+    columns:
+      - name: "Claim_Stage_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim stage id"
+        alias: ["claim_stage_id"]
+        sync: false
+      - name: "Next_Claim_Stage_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "next claim stage id"
+        alias: ["next_claim_stage_id"]
+        sync: false
+      - name: "Claim_Status_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "claim status name"
+        alias: ["claim_status_name"]
+        sync: true
+      - name: "Claim_Status_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "claim status description"
+        alias: ["claim_status_description"]
+        sync: true
+  - name: "Claims_Processing"
+    role: dim
+    description: "claims processing"
+    columns:
+      - name: "Claim_Processing_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim processing id"
+        alias: ["claim_processing_id"]
+        sync: false
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "Claim_Outcome_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "claim outcome code"
+        alias: ["claim_outcome_code"]
+        sync: true
+      - name: "Claim_Stage_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim stage id"
+        alias: ["claim_stage_id"]
+        sync: false
+      - name: "Staff_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+
+metrics:
+  - name: "claim_headers_amount_claimed"
+    description: amount claimed from claim_headers
+    relevant_columns:
+      - Claim_Headers.Amount_Claimed
+    alias: [amount_claimed]
+  - name: "claim_headers_amount_piad"
+    description: amount piad from claim_headers
+    relevant_columns:
+      - Claim_Headers.Amount_Piad
+    alias: [amount_piad]

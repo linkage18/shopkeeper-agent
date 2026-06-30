@@ -1,0 +1,227 @@
+tables:
+  - name: "Attribute_Definitions"
+    role: dim
+    description: "attribute definitions"
+    columns:
+      - name: "attribute_id"
+        role: foreign_key
+        type: FLOAT
+        description: "attribute id"
+        alias: ["attribute_id"]
+        sync: false
+      - name: "attribute_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attribute name"
+        alias: ["attribute_name"]
+        sync: true
+      - name: "attribute_data_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attribute data type"
+        alias: ["attribute_data_type"]
+        sync: true
+  - name: "Catalogs"
+    role: fact
+    description: "catalogs"
+    columns:
+      - name: "catalog_id"
+        role: foreign_key
+        type: FLOAT
+        description: "catalog id"
+        alias: ["catalog_id"]
+        sync: false
+      - name: "catalog_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "catalog name"
+        alias: ["catalog_name"]
+        sync: true
+      - name: "catalog_publisher"
+        role: dimension
+        type: VARCHAR(255)
+        description: "catalog publisher"
+        alias: ["catalog_publisher"]
+        sync: false
+      - name: "date_of_publication"
+        role: dimension
+        type: DATETIME
+        description: "date of publication"
+        alias: ["date_of_publication"]
+        sync: false
+      - name: "date_of_latest_revision"
+        role: dimension
+        type: DATETIME
+        description: "date of latest revision"
+        alias: ["date_of_latest_revision"]
+        sync: false
+  - name: "Catalog_Structure"
+    role: fact
+    description: "catalog structure"
+    columns:
+      - name: "catalog_level_number"
+        role: measure
+        type: FLOAT
+        description: "catalog level number"
+        alias: ["catalog_level_number"]
+        sync: false
+      - name: "catalog_id"
+        role: foreign_key
+        type: FLOAT
+        description: "catalog id"
+        alias: ["catalog_id"]
+        sync: false
+      - name: "catalog_level_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "catalog level name"
+        alias: ["catalog_level_name"]
+        sync: true
+  - name: "Catalog_Contents"
+    role: fact
+    description: "catalog contents"
+    columns:
+      - name: "catalog_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "catalog entry id"
+        alias: ["catalog_entry_id"]
+        sync: false
+      - name: "catalog_level_number"
+        role: measure
+        type: FLOAT
+        description: "catalog level number"
+        alias: ["catalog_level_number"]
+        sync: false
+      - name: "parent_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "parent entry id"
+        alias: ["parent_entry_id"]
+        sync: false
+      - name: "previous_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "previous entry id"
+        alias: ["previous_entry_id"]
+        sync: false
+      - name: "next_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "next entry id"
+        alias: ["next_entry_id"]
+        sync: false
+      - name: "catalog_entry_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "catalog entry name"
+        alias: ["catalog_entry_name"]
+        sync: true
+      - name: "product_stock_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product stock number"
+        alias: ["product_stock_number"]
+        sync: false
+      - name: "price_in_dollars"
+        role: measure
+        type: FLOAT
+        description: "price in dollars"
+        alias: ["price_in_dollars"]
+        sync: false
+      - name: "price_in_euros"
+        role: measure
+        type: FLOAT
+        description: "price in euros"
+        alias: ["price_in_euros"]
+        sync: false
+      - name: "price_in_pounds"
+        role: measure
+        type: FLOAT
+        description: "price in pounds"
+        alias: ["price_in_pounds"]
+        sync: false
+      - name: "capacity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "capacity"
+        alias: ["capacity"]
+        sync: true
+      - name: "length"
+        role: dimension
+        type: VARCHAR(255)
+        description: "length"
+        alias: ["length"]
+        sync: false
+      - name: "height"
+        role: dimension
+        type: VARCHAR(255)
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "width"
+        role: dimension
+        type: VARCHAR(255)
+        description: "width"
+        alias: ["width"]
+        sync: false
+  - name: "Catalog_Contents_Additional_Attributes"
+    role: fact
+    description: "catalog contents additional attributes"
+    columns:
+      - name: "catalog_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "catalog entry id"
+        alias: ["catalog_entry_id"]
+        sync: false
+      - name: "catalog_level_number"
+        role: measure
+        type: FLOAT
+        description: "catalog level number"
+        alias: ["catalog_level_number"]
+        sync: false
+      - name: "attribute_id"
+        role: foreign_key
+        type: FLOAT
+        description: "attribute id"
+        alias: ["attribute_id"]
+        sync: false
+      - name: "attribute_value"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attribute value"
+        alias: ["attribute_value"]
+        sync: false
+
+metrics:
+  - name: "catalog_structure_catalog_level_number"
+    description: catalog level number from catalog_structure
+    relevant_columns:
+      - Catalog_Structure.catalog_level_number
+    alias: [catalog_level_number]
+  - name: "catalog_contents_catalog_level_number"
+    description: catalog level number from catalog_contents
+    relevant_columns:
+      - Catalog_Contents.catalog_level_number
+    alias: [catalog_level_number]
+  - name: "catalog_contents_price_in_dollars"
+    description: price in dollars from catalog_contents
+    relevant_columns:
+      - Catalog_Contents.price_in_dollars
+    alias: [price_in_dollars]
+  - name: "catalog_contents_price_in_euros"
+    description: price in euros from catalog_contents
+    relevant_columns:
+      - Catalog_Contents.price_in_euros
+    alias: [price_in_euros]
+  - name: "catalog_contents_price_in_pounds"
+    description: price in pounds from catalog_contents
+    relevant_columns:
+      - Catalog_Contents.price_in_pounds
+    alias: [price_in_pounds]
+  - name: "catalog_contents_additional_attributes_catalog_level_number"
+    description: catalog level number from catalog_contents_additional_attributes
+    relevant_columns:
+      - Catalog_Contents_Additional_Attributes.catalog_level_number
+    alias: [catalog_level_number]

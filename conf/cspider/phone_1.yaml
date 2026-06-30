@@ -1,0 +1,146 @@
+tables:
+  - name: "chip_model"
+    role: dim
+    description: "chip model"
+    columns:
+      - name: "Model_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "model name"
+        alias: ["model_name"]
+        sync: true
+      - name: "Launch_year"
+        role: measure
+        type: FLOAT
+        description: "launch year"
+        alias: ["launch_year"]
+        sync: false
+      - name: "RAM_MiB"
+        role: dimension
+        type: FLOAT
+        description: "ram mib"
+        alias: ["ram_mib"]
+        sync: false
+      - name: "ROM_MiB"
+        role: dimension
+        type: FLOAT
+        description: "rom mib"
+        alias: ["rom_mib"]
+        sync: false
+      - name: "Slots"
+        role: dimension
+        type: VARCHAR(255)
+        description: "slots"
+        alias: ["slots"]
+        sync: false
+      - name: "WiFi"
+        role: dimension
+        type: VARCHAR(255)
+        description: "wifi"
+        alias: ["wifi"]
+        sync: false
+      - name: "Bluetooth"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bluetooth"
+        alias: ["bluetooth"]
+        sync: false
+  - name: "screen_mode"
+    role: dim
+    description: "screen mode"
+    columns:
+      - name: "Graphics_mode"
+        role: dimension
+        type: FLOAT
+        description: "graphics mode"
+        alias: ["graphics_mode"]
+        sync: false
+      - name: "Char_cells"
+        role: dimension
+        type: VARCHAR(255)
+        description: "char cells"
+        alias: ["char_cells"]
+        sync: false
+      - name: "Pixels"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pixels"
+        alias: ["pixels"]
+        sync: false
+      - name: "Hardware_colours"
+        role: dimension
+        type: FLOAT
+        description: "hardware colours"
+        alias: ["hardware_colours"]
+        sync: false
+      - name: "used_kb"
+        role: dimension
+        type: FLOAT
+        description: "used kb"
+        alias: ["used_kb"]
+        sync: false
+      - name: "map"
+        role: dimension
+        type: VARCHAR(255)
+        description: "map"
+        alias: ["map"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+  - name: "phone"
+    role: dim
+    description: "phone"
+    columns:
+      - name: "Company_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company name"
+        alias: ["company_name"]
+        sync: true
+      - name: "Hardware_Model_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hardware model name"
+        alias: ["hardware_model_name"]
+        sync: true
+      - name: "Accreditation_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "accreditation type"
+        alias: ["accreditation_type"]
+        sync: true
+      - name: "Accreditation_level"
+        role: dimension
+        type: VARCHAR(255)
+        description: "accreditation level"
+        alias: ["accreditation_level"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "chip_model"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chip model"
+        alias: ["chip_model"]
+        sync: false
+      - name: "screen_mode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "screen mode"
+        alias: ["screen_mode"]
+        sync: false
+
+metrics:
+  - name: "chip_model_launch_year"
+    description: launch year from chip_model
+    relevant_columns:
+      - chip_model.Launch_year
+    alias: [launch_year]

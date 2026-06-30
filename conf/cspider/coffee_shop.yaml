@@ -1,0 +1,143 @@
+tables:
+  - name: "shop"
+    role: dim
+    description: "shop"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "Num_of_staff"
+        role: dimension
+        type: VARCHAR(255)
+        description: "num of staff"
+        alias: ["num_of_staff"]
+        sync: false
+      - name: "Score"
+        role: measure
+        type: FLOAT
+        description: "score"
+        alias: ["score"]
+        sync: false
+      - name: "Open_Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+  - name: "member"
+    role: dim
+    description: "member"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Membership_card"
+        role: dimension
+        type: VARCHAR(255)
+        description: "membership card"
+        alias: ["membership_card"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Time_of_purchase"
+        role: dimension
+        type: FLOAT
+        description: "time of purchase"
+        alias: ["time_of_purchase"]
+        sync: false
+      - name: "Level_of_membership"
+        role: dimension
+        type: FLOAT
+        description: "level of membership"
+        alias: ["level_of_membership"]
+        sync: false
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+  - name: "happy_hour"
+    role: dim
+    description: "happy hour"
+    columns:
+      - name: "HH_ID"
+        role: primary_key
+        type: FLOAT
+        description: "hh id"
+        alias: ["hh_id"]
+        sync: false
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Month"
+        role: dimension
+        type: VARCHAR(255)
+        description: "month"
+        alias: ["month"]
+        sync: false
+      - name: "Num_of_shaff_in_charge"
+        role: dimension
+        type: FLOAT
+        description: "num of shaff in charge"
+        alias: ["num_of_shaff_in_charge"]
+        sync: false
+  - name: "happy_hour_member"
+    role: dim
+    description: "happy hour member"
+    columns:
+      - name: "HH_ID"
+        role: primary_key
+        type: FLOAT
+        description: "hh id"
+        alias: ["hh_id"]
+        sync: false
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Total_amount"
+        role: measure
+        type: FLOAT
+        description: "total amount"
+        alias: ["total_amount"]
+        sync: false
+
+metrics:
+  - name: "shop_score"
+    description: score from shop
+    relevant_columns:
+      - shop.Score
+    alias: [score]
+  - name: "happy_hour_member_total_amount"
+    description: total amount from happy_hour_member
+    relevant_columns:
+      - happy_hour_member.Total_amount
+    alias: [total_amount]

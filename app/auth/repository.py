@@ -1,15 +1,17 @@
+from typing import Union
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.auth.models import User
-from app.auth.jwt import hash_password
+from app.auth.jwt import hash_password, verify_password
 
 
 class AuthRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def register(self, username: str, password: str, role: str = "user") -> User | str:
+    async def register(self, username: str, password: str, role: str = "user") -> Union[User, str]:
         existing = await self.session.execute(select(User).where(User.username == username))
         if existing.scalar_one_or_none():
             return "用户名已存在"
@@ -22,7 +24,7 @@ class AuthRepository:
     async def login(self, username: str, password: str) -> User | None:
         result = await self.session.execute(select(User).where(User.username == username))
         user = result.scalar_one_or_none()
-        if user and user.password_hash == hash_password(password):
+        if user and verify_password(password, user.password_hash):
             return user
         return None
 

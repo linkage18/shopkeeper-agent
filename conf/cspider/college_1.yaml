@@ -1,0 +1,287 @@
+tables:
+  - name: "CLASS"
+    role: dim
+    description: "class"
+    columns:
+      - name: "CLASS_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class code"
+        alias: ["class_code"]
+        sync: true
+      - name: "CRS_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "crs code"
+        alias: ["crs_code"]
+        sync: true
+      - name: "CLASS_SECTION"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class section"
+        alias: ["class_section"]
+        sync: false
+      - name: "CLASS_TIME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class time"
+        alias: ["class_time"]
+        sync: false
+      - name: "CLASS_ROOM"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class room"
+        alias: ["class_room"]
+        sync: false
+      - name: "PROF_NUM"
+        role: dimension
+        type: FLOAT
+        description: "prof num"
+        alias: ["prof_num"]
+        sync: false
+  - name: "COURSE"
+    role: dim
+    description: "course"
+    columns:
+      - name: "CRS_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "crs code"
+        alias: ["crs_code"]
+        sync: true
+      - name: "DEPT_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept code"
+        alias: ["dept_code"]
+        sync: true
+      - name: "CRS_DESCRIPTION"
+        role: dimension
+        type: VARCHAR(255)
+        description: "crs description"
+        alias: ["crs_description"]
+        sync: false
+      - name: "CRS_CREDIT"
+        role: dimension
+        type: FLOAT
+        description: "crs credit"
+        alias: ["crs_credit"]
+        sync: false
+  - name: "DEPARTMENT"
+    role: dim
+    description: "department"
+    columns:
+      - name: "DEPT_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept code"
+        alias: ["dept_code"]
+        sync: true
+      - name: "DEPT_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept name"
+        alias: ["dept_name"]
+        sync: true
+      - name: "SCHOOL_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school code"
+        alias: ["school_code"]
+        sync: true
+      - name: "EMP_NUM"
+        role: dimension
+        type: FLOAT
+        description: "emp num"
+        alias: ["emp_num"]
+        sync: false
+      - name: "DEPT_ADDRESS"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept address"
+        alias: ["dept_address"]
+        sync: false
+      - name: "DEPT_EXTENSION"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept extension"
+        alias: ["dept_extension"]
+        sync: false
+  - name: "EMPLOYEE"
+    role: dim
+    description: "employee"
+    columns:
+      - name: "EMP_NUM"
+        role: dimension
+        type: FLOAT
+        description: "emp num"
+        alias: ["emp_num"]
+        sync: false
+      - name: "EMP_LNAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "emp lname"
+        alias: ["emp_lname"]
+        sync: true
+      - name: "EMP_FNAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "emp fname"
+        alias: ["emp_fname"]
+        sync: true
+      - name: "EMP_INITIAL"
+        role: dimension
+        type: VARCHAR(255)
+        description: "emp initial"
+        alias: ["emp_initial"]
+        sync: false
+      - name: "EMP_JOBCODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "emp jobcode"
+        alias: ["emp_jobcode"]
+        sync: true
+      - name: "EMP_HIREDATE"
+        role: dimension
+        type: DATETIME
+        description: "emp hiredate"
+        alias: ["emp_hiredate"]
+        sync: false
+      - name: "EMP_DOB"
+        role: dimension
+        type: DATETIME
+        description: "emp dob"
+        alias: ["emp_dob"]
+        sync: false
+  - name: "ENROLL"
+    role: dim
+    description: "enroll"
+    columns:
+      - name: "CLASS_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class code"
+        alias: ["class_code"]
+        sync: true
+      - name: "STU_NUM"
+        role: dimension
+        type: FLOAT
+        description: "stu num"
+        alias: ["stu_num"]
+        sync: false
+      - name: "ENROLL_GRADE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "enroll grade"
+        alias: ["enroll_grade"]
+        sync: false
+  - name: "PROFESSOR"
+    role: dim
+    description: "professor"
+    columns:
+      - name: "EMP_NUM"
+        role: dimension
+        type: FLOAT
+        description: "emp num"
+        alias: ["emp_num"]
+        sync: false
+      - name: "DEPT_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept code"
+        alias: ["dept_code"]
+        sync: true
+      - name: "PROF_OFFICE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "prof office"
+        alias: ["prof_office"]
+        sync: false
+      - name: "PROF_EXTENSION"
+        role: dimension
+        type: VARCHAR(255)
+        description: "prof extension"
+        alias: ["prof_extension"]
+        sync: false
+      - name: "PROF_HIGH_DEGREE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "prof high degree"
+        alias: ["prof_high_degree"]
+        sync: false
+  - name: "STUDENT"
+    role: dim
+    description: "student"
+    columns:
+      - name: "STU_NUM"
+        role: dimension
+        type: FLOAT
+        description: "stu num"
+        alias: ["stu_num"]
+        sync: false
+      - name: "STU_LNAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stu lname"
+        alias: ["stu_lname"]
+        sync: true
+      - name: "STU_FNAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stu fname"
+        alias: ["stu_fname"]
+        sync: true
+      - name: "STU_INIT"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stu init"
+        alias: ["stu_init"]
+        sync: false
+      - name: "STU_DOB"
+        role: dimension
+        type: DATETIME
+        description: "stu dob"
+        alias: ["stu_dob"]
+        sync: false
+      - name: "STU_HRS"
+        role: dimension
+        type: FLOAT
+        description: "stu hrs"
+        alias: ["stu_hrs"]
+        sync: false
+      - name: "STU_CLASS"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stu class"
+        alias: ["stu_class"]
+        sync: false
+      - name: "STU_GPA"
+        role: dimension
+        type: FLOAT
+        description: "stu gpa"
+        alias: ["stu_gpa"]
+        sync: false
+      - name: "STU_TRANSFER"
+        role: dimension
+        type: FLOAT
+        description: "stu transfer"
+        alias: ["stu_transfer"]
+        sync: false
+      - name: "DEPT_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept code"
+        alias: ["dept_code"]
+        sync: true
+      - name: "STU_PHONE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stu phone"
+        alias: ["stu_phone"]
+        sync: false
+      - name: "PROF_NUM"
+        role: dimension
+        type: FLOAT
+        description: "prof num"
+        alias: ["prof_num"]
+        sync: false

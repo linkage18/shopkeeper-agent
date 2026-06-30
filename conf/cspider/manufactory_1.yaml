@@ -1,0 +1,70 @@
+tables:
+  - name: "Manufacturers"
+    role: dim
+    description: "manufacturers"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: FLOAT
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Headquarter"
+        role: dimension
+        type: VARCHAR(255)
+        description: "headquarter"
+        alias: ["headquarter"]
+        sync: false
+      - name: "Founder"
+        role: dimension
+        type: VARCHAR(255)
+        description: "founder"
+        alias: ["founder"]
+        sync: false
+      - name: "Revenue"
+        role: dimension
+        type: FLOAT
+        description: "revenue"
+        alias: ["revenue"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: FLOAT
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+      - name: "Manufacturer"
+        role: dimension
+        type: FLOAT
+        description: "manufacturer"
+        alias: ["manufacturer"]
+        sync: false
+
+metrics:
+  - name: "products_price"
+    description: price from products
+    relevant_columns:
+      - Products.Price
+    alias: [price]

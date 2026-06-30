@@ -1,0 +1,92 @@
+tables:
+  - name: "museum"
+    role: dim
+    description: "museum"
+    columns:
+      - name: "Museum_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "museum id"
+        alias: ["museum_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Num_of_Staff"
+        role: dimension
+        type: FLOAT
+        description: "num of staff"
+        alias: ["num_of_staff"]
+        sync: false
+      - name: "Open_Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+  - name: "visitor"
+    role: dim
+    description: "visitor"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Level_of_membership"
+        role: dimension
+        type: FLOAT
+        description: "level of membership"
+        alias: ["level_of_membership"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "visit"
+    role: dim
+    description: "visit"
+    columns:
+      - name: "Museum_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "museum id"
+        alias: ["museum_id"]
+        sync: false
+      - name: "visitor_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "visitor id"
+        alias: ["visitor_id"]
+        sync: false
+      - name: "Num_of_Ticket"
+        role: dimension
+        type: FLOAT
+        description: "num of ticket"
+        alias: ["num_of_ticket"]
+        sync: false
+      - name: "Total_spent"
+        role: measure
+        type: FLOAT
+        description: "total spent"
+        alias: ["total_spent"]
+        sync: false
+
+metrics:
+  - name: "visit_total_spent"
+    description: total spent from visit
+    relevant_columns:
+      - visit.Total_spent
+    alias: [total_spent]

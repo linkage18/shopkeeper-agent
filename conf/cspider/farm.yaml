@@ -1,0 +1,193 @@
+tables:
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "City_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "Official_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "official name"
+        alias: ["official_name"]
+        sync: true
+      - name: "Status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status"
+        alias: ["status"]
+        sync: true
+      - name: "Area_km_2"
+        role: measure
+        type: FLOAT
+        description: "area km 2"
+        alias: ["area_km_2"]
+        sync: false
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "Census_Ranking"
+        role: dimension
+        type: VARCHAR(255)
+        description: "census ranking"
+        alias: ["census_ranking"]
+        sync: false
+  - name: "farm"
+    role: dim
+    description: "farm"
+    columns:
+      - name: "Farm_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "farm id"
+        alias: ["farm_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Total_Horses"
+        role: measure
+        type: FLOAT
+        description: "total horses"
+        alias: ["total_horses"]
+        sync: false
+      - name: "Working_Horses"
+        role: dimension
+        type: FLOAT
+        description: "working horses"
+        alias: ["working_horses"]
+        sync: false
+      - name: "Total_Cattle"
+        role: measure
+        type: FLOAT
+        description: "total cattle"
+        alias: ["total_cattle"]
+        sync: false
+      - name: "Oxen"
+        role: dimension
+        type: FLOAT
+        description: "oxen"
+        alias: ["oxen"]
+        sync: false
+      - name: "Bulls"
+        role: dimension
+        type: FLOAT
+        description: "bulls"
+        alias: ["bulls"]
+        sync: false
+      - name: "Cows"
+        role: dimension
+        type: FLOAT
+        description: "cows"
+        alias: ["cows"]
+        sync: false
+      - name: "Pigs"
+        role: dimension
+        type: FLOAT
+        description: "pigs"
+        alias: ["pigs"]
+        sync: false
+      - name: "Sheep_and_Goats"
+        role: dimension
+        type: FLOAT
+        description: "sheep and goats"
+        alias: ["sheep_and_goats"]
+        sync: false
+  - name: "farm_competition"
+    role: dim
+    description: "farm competition"
+    columns:
+      - name: "Competition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "competition id"
+        alias: ["competition_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "theme"
+        alias: ["theme"]
+        sync: false
+      - name: "Host_city_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "host city id"
+        alias: ["host_city_id"]
+        sync: true
+      - name: "Hosts"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hosts"
+        alias: ["hosts"]
+        sync: false
+  - name: "competition_record"
+    role: fact
+    description: "competition record"
+    columns:
+      - name: "Competition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "competition id"
+        alias: ["competition_id"]
+        sync: false
+      - name: "Farm_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "farm id"
+        alias: ["farm_id"]
+        sync: false
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+
+metrics:
+  - name: "city_area_km_2"
+    description: area km 2 from city
+    relevant_columns:
+      - city.Area_km_2
+    alias: [area_km_2]
+  - name: "city_population"
+    description: population from city
+    relevant_columns:
+      - city.Population
+    alias: [population]
+  - name: "farm_year"
+    description: year from farm
+    relevant_columns:
+      - farm.Year
+    alias: [year]
+  - name: "farm_total_horses"
+    description: total horses from farm
+    relevant_columns:
+      - farm.Total_Horses
+    alias: [total_horses]
+  - name: "farm_total_cattle"
+    description: total cattle from farm
+    relevant_columns:
+      - farm.Total_Cattle
+    alias: [total_cattle]
+  - name: "farm_competition_year"
+    description: year from farm_competition
+    relevant_columns:
+      - farm_competition.Year
+    alias: [year]

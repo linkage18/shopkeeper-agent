@@ -1,0 +1,133 @@
+tables:
+  - name: "airport"
+    role: dim
+    description: "airport"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "IATA"
+        role: dimension
+        type: VARCHAR(255)
+        description: "iata"
+        alias: ["iata"]
+        sync: false
+      - name: "ICAO"
+        role: dimension
+        type: VARCHAR(255)
+        description: "icao"
+        alias: ["icao"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "operate_company"
+    role: dim
+    description: "operate company"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Principal_activities"
+        role: dimension
+        type: VARCHAR(255)
+        description: "principal activities"
+        alias: ["principal_activities"]
+        sync: false
+      - name: "Incorporated_in"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incorporated in"
+        alias: ["incorporated_in"]
+        sync: false
+      - name: "Group_Equity_Shareholding"
+        role: dimension
+        type: FLOAT
+        description: "group equity shareholding"
+        alias: ["group_equity_shareholding"]
+        sync: false
+  - name: "flight"
+    role: dim
+    description: "flight"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Vehicle_Flight_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "vehicle flight number"
+        alias: ["vehicle_flight_number"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Pilot"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pilot"
+        alias: ["pilot"]
+        sync: false
+      - name: "Velocity"
+        role: dimension
+        type: FLOAT
+        description: "velocity"
+        alias: ["velocity"]
+        sync: true
+      - name: "Altitude"
+        role: dimension
+        type: FLOAT
+        description: "altitude"
+        alias: ["altitude"]
+        sync: false
+      - name: "airport_id"
+        role: foreign_key
+        type: FLOAT
+        description: "airport id"
+        alias: ["airport_id"]
+        sync: false
+      - name: "company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true

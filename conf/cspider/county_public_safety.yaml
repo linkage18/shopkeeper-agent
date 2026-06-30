@@ -1,0 +1,129 @@
+tables:
+  - name: "county_public_safety"
+    role: dim
+    description: "county public safety"
+    columns:
+      - name: "County_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "county id"
+        alias: ["county_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "Police_officers"
+        role: dimension
+        type: FLOAT
+        description: "police officers"
+        alias: ["police_officers"]
+        sync: false
+      - name: "Residents_per_officer"
+        role: dimension
+        type: FLOAT
+        description: "residents per officer"
+        alias: ["residents_per_officer"]
+        sync: false
+      - name: "Case_burden"
+        role: dimension
+        type: FLOAT
+        description: "case burden"
+        alias: ["case_burden"]
+        sync: false
+      - name: "Crime_rate"
+        role: measure
+        type: FLOAT
+        description: "crime rate"
+        alias: ["crime_rate"]
+        sync: false
+      - name: "Police_force"
+        role: dimension
+        type: VARCHAR(255)
+        description: "police force"
+        alias: ["police_force"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "City_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "County_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "county id"
+        alias: ["county_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "White"
+        role: dimension
+        type: FLOAT
+        description: "white"
+        alias: ["white"]
+        sync: false
+      - name: "Black"
+        role: dimension
+        type: FLOAT
+        description: "black"
+        alias: ["black"]
+        sync: false
+      - name: "Amerindian"
+        role: dimension
+        type: FLOAT
+        description: "amerindian"
+        alias: ["amerindian"]
+        sync: false
+      - name: "Asian"
+        role: dimension
+        type: FLOAT
+        description: "asian"
+        alias: ["asian"]
+        sync: false
+      - name: "Multiracial"
+        role: dimension
+        type: FLOAT
+        description: "multiracial"
+        alias: ["multiracial"]
+        sync: false
+      - name: "Hispanic"
+        role: dimension
+        type: FLOAT
+        description: "hispanic"
+        alias: ["hispanic"]
+        sync: false
+
+metrics:
+  - name: "county_public_safety_population"
+    description: population from county_public_safety
+    relevant_columns:
+      - county_public_safety.Population
+    alias: [population]
+  - name: "county_public_safety_crime_rate"
+    description: crime rate from county_public_safety
+    relevant_columns:
+      - county_public_safety.Crime_rate
+    alias: [crime_rate]

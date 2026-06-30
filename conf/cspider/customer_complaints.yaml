@@ -1,0 +1,210 @@
+tables:
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "phone_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer type code"
+        alias: ["customer_type_code"]
+        sync: true
+      - name: "address_line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address line 1"
+        alias: ["address_line_1"]
+        sync: false
+      - name: "address_line_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address line 2"
+        alias: ["address_line_2"]
+        sync: false
+      - name: "town_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "town city"
+        alias: ["town_city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "phone_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "parent_product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "parent product id"
+        alias: ["parent_product_id"]
+        sync: false
+      - name: "product_category_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category code"
+        alias: ["product_category_code"]
+        sync: true
+      - name: "date_product_first_available"
+        role: dimension
+        type: DATETIME
+        description: "date product first available"
+        alias: ["date_product_first_available"]
+        sync: false
+      - name: "date_product_discontinued"
+        role: dimension
+        type: DATETIME
+        description: "date product discontinued"
+        alias: ["date_product_discontinued"]
+        sync: false
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product description"
+        alias: ["product_description"]
+        sync: false
+      - name: "product_price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+  - name: "Complaints"
+    role: dim
+    description: "complaints"
+    columns:
+      - name: "complaint_id"
+        role: foreign_key
+        type: FLOAT
+        description: "complaint id"
+        alias: ["complaint_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "complaint_outcome_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "complaint outcome code"
+        alias: ["complaint_outcome_code"]
+        sync: true
+      - name: "complaint_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "complaint status code"
+        alias: ["complaint_status_code"]
+        sync: true
+      - name: "complaint_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "complaint type code"
+        alias: ["complaint_type_code"]
+        sync: true
+      - name: "date_complaint_raised"
+        role: dimension
+        type: DATETIME
+        description: "date complaint raised"
+        alias: ["date_complaint_raised"]
+        sync: false
+      - name: "date_complaint_closed"
+        role: dimension
+        type: DATETIME
+        description: "date complaint closed"
+        alias: ["date_complaint_closed"]
+        sync: false
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+
+metrics:
+  - name: "products_product_price"
+    description: product price from products
+    relevant_columns:
+      - Products.product_price
+    alias: [product_price]

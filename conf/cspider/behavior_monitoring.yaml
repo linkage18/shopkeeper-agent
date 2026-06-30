@@ -1,0 +1,429 @@
+tables:
+  - name: "Ref_Address_Types"
+    role: dim
+    description: "ref address types"
+    columns:
+      - name: "address_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address type code"
+        alias: ["address_type_code"]
+        sync: true
+      - name: "address_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address type description"
+        alias: ["address_type_description"]
+        sync: true
+  - name: "Ref_Detention_Type"
+    role: dim
+    description: "ref detention type"
+    columns:
+      - name: "detention_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "detention type code"
+        alias: ["detention_type_code"]
+        sync: true
+      - name: "detention_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "detention type description"
+        alias: ["detention_type_description"]
+        sync: true
+  - name: "Ref_Incident_Type"
+    role: dim
+    description: "ref incident type"
+    columns:
+      - name: "incident_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incident type code"
+        alias: ["incident_type_code"]
+        sync: true
+      - name: "incident_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incident type description"
+        alias: ["incident_type_description"]
+        sync: true
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1"
+        alias: ["line_1"]
+        sync: false
+      - name: "line_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 2"
+        alias: ["line_2"]
+        sync: false
+      - name: "line_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 3"
+        alias: ["line_3"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "zip_postcode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip postcode"
+        alias: ["zip_postcode"]
+        sync: true
+      - name: "state_province_county"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province county"
+        alias: ["state_province_county"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "other_address_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other address details"
+        alias: ["other_address_details"]
+        sync: false
+  - name: "Students"
+    role: dim
+    description: "students"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "cell_mobile_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell mobile number"
+        alias: ["cell_mobile_number"]
+        sync: false
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "date_first_rental"
+        role: dimension
+        type: DATETIME
+        description: "date first rental"
+        alias: ["date_first_rental"]
+        sync: false
+      - name: "date_left_university"
+        role: dimension
+        type: DATETIME
+        description: "date left university"
+        alias: ["date_left_university"]
+        sync: false
+      - name: "other_student_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other student details"
+        alias: ["other_student_details"]
+        sync: false
+  - name: "Teachers"
+    role: dim
+    description: "teachers"
+    columns:
+      - name: "teacher_id"
+        role: foreign_key
+        type: FLOAT
+        description: "teacher id"
+        alias: ["teacher_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "cell_mobile_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell mobile number"
+        alias: ["cell_mobile_number"]
+        sync: false
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Assessment_Notes"
+    role: dim
+    description: "assessment notes"
+    columns:
+      - name: "notes_id"
+        role: foreign_key
+        type: FLOAT
+        description: "notes id"
+        alias: ["notes_id"]
+        sync: false
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "teacher_id"
+        role: foreign_key
+        type: FLOAT
+        description: "teacher id"
+        alias: ["teacher_id"]
+        sync: false
+      - name: "date_of_notes"
+        role: dimension
+        type: DATETIME
+        description: "date of notes"
+        alias: ["date_of_notes"]
+        sync: false
+      - name: "text_of_notes"
+        role: dimension
+        type: VARCHAR(255)
+        description: "text of notes"
+        alias: ["text_of_notes"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Behavior_Incident"
+    role: dim
+    description: "behavior incident"
+    columns:
+      - name: "incident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "incident id"
+        alias: ["incident_id"]
+        sync: false
+      - name: "incident_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incident type code"
+        alias: ["incident_type_code"]
+        sync: true
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "date_incident_start"
+        role: dimension
+        type: DATETIME
+        description: "date incident start"
+        alias: ["date_incident_start"]
+        sync: false
+      - name: "date_incident_end"
+        role: dimension
+        type: DATETIME
+        description: "date incident end"
+        alias: ["date_incident_end"]
+        sync: false
+      - name: "incident_summary"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incident summary"
+        alias: ["incident_summary"]
+        sync: false
+      - name: "recommendations"
+        role: dimension
+        type: VARCHAR(255)
+        description: "recommendations"
+        alias: ["recommendations"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Detention"
+    role: dim
+    description: "detention"
+    columns:
+      - name: "detention_id"
+        role: foreign_key
+        type: FLOAT
+        description: "detention id"
+        alias: ["detention_id"]
+        sync: false
+      - name: "detention_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "detention type code"
+        alias: ["detention_type_code"]
+        sync: true
+      - name: "teacher_id"
+        role: foreign_key
+        type: FLOAT
+        description: "teacher id"
+        alias: ["teacher_id"]
+        sync: false
+      - name: "datetime_detention_start"
+        role: dimension
+        type: DATETIME
+        description: "datetime detention start"
+        alias: ["datetime_detention_start"]
+        sync: false
+      - name: "datetime_detention_end"
+        role: dimension
+        type: DATETIME
+        description: "datetime detention end"
+        alias: ["datetime_detention_end"]
+        sync: false
+      - name: "detention_summary"
+        role: dimension
+        type: VARCHAR(255)
+        description: "detention summary"
+        alias: ["detention_summary"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Student_Addresses"
+    role: dim
+    description: "student addresses"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "date_address_from"
+        role: dimension
+        type: DATETIME
+        description: "date address from"
+        alias: ["date_address_from"]
+        sync: false
+      - name: "date_address_to"
+        role: dimension
+        type: DATETIME
+        description: "date address to"
+        alias: ["date_address_to"]
+        sync: false
+      - name: "monthly_rental"
+        role: dimension
+        type: FLOAT
+        description: "monthly rental"
+        alias: ["monthly_rental"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Students_in_Detention"
+    role: dim
+    description: "students in detention"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "detention_id"
+        role: foreign_key
+        type: FLOAT
+        description: "detention id"
+        alias: ["detention_id"]
+        sync: false
+      - name: "incident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "incident id"
+        alias: ["incident_id"]
+        sync: false

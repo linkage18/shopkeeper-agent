@@ -1,0 +1,138 @@
+tables:
+  - name: "train"
+    role: dim
+    description: "train"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "train_number"
+        role: measure
+        type: FLOAT
+        description: "train number"
+        alias: ["train_number"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "origin"
+        role: dimension
+        type: VARCHAR(255)
+        description: "origin"
+        alias: ["origin"]
+        sync: false
+      - name: "destination"
+        role: dimension
+        type: VARCHAR(255)
+        description: "destination"
+        alias: ["destination"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "interval"
+        role: dimension
+        type: VARCHAR(255)
+        description: "interval"
+        alias: ["interval"]
+        sync: false
+  - name: "station"
+    role: dim
+    description: "station"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "network_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "network name"
+        alias: ["network_name"]
+        sync: true
+      - name: "services"
+        role: dimension
+        type: VARCHAR(255)
+        description: "services"
+        alias: ["services"]
+        sync: false
+      - name: "local_authority"
+        role: dimension
+        type: VARCHAR(255)
+        description: "local authority"
+        alias: ["local_authority"]
+        sync: false
+  - name: "route"
+    role: dim
+    description: "route"
+    columns:
+      - name: "train_id"
+        role: foreign_key
+        type: FLOAT
+        description: "train id"
+        alias: ["train_id"]
+        sync: false
+      - name: "station_id"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+  - name: "weekly_weather"
+    role: dim
+    description: "weekly weather"
+    columns:
+      - name: "station_id"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+      - name: "day_of_week"
+        role: dimension
+        type: VARCHAR(255)
+        description: "day of week"
+        alias: ["day_of_week"]
+        sync: false
+      - name: "high_temperature"
+        role: dimension
+        type: FLOAT
+        description: "high temperature"
+        alias: ["high_temperature"]
+        sync: false
+      - name: "low_temperature"
+        role: dimension
+        type: FLOAT
+        description: "low temperature"
+        alias: ["low_temperature"]
+        sync: false
+      - name: "precipitation"
+        role: dimension
+        type: FLOAT
+        description: "precipitation"
+        alias: ["precipitation"]
+        sync: false
+      - name: "wind_speed_mph"
+        role: dimension
+        type: FLOAT
+        description: "wind speed mph"
+        alias: ["wind_speed_mph"]
+        sync: false
+
+metrics:
+  - name: "train_train_number"
+    description: train number from train
+    relevant_columns:
+      - train.train_number
+    alias: [train_number]

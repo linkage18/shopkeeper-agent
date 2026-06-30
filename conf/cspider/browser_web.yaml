@@ -1,0 +1,86 @@
+tables:
+  - name: "Web_client_accelerator"
+    role: dim
+    description: "web client accelerator"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Operating_system"
+        role: dimension
+        type: VARCHAR(255)
+        description: "operating system"
+        alias: ["operating_system"]
+        sync: false
+      - name: "Client"
+        role: dimension
+        type: VARCHAR(255)
+        description: "client"
+        alias: ["client"]
+        sync: false
+      - name: "Connection"
+        role: dimension
+        type: VARCHAR(255)
+        description: "connection"
+        alias: ["connection"]
+        sync: false
+  - name: "browser"
+    role: dim
+    description: "browser"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "market_share"
+        role: dimension
+        type: FLOAT
+        description: "market share"
+        alias: ["market_share"]
+        sync: false
+  - name: "accelerator_compatible_browser"
+    role: dim
+    description: "accelerator compatible browser"
+    columns:
+      - name: "accelerator_id"
+        role: foreign_key
+        type: FLOAT
+        description: "accelerator id"
+        alias: ["accelerator_id"]
+        sync: false
+      - name: "browser_id"
+        role: foreign_key
+        type: FLOAT
+        description: "browser id"
+        alias: ["browser_id"]
+        sync: false
+      - name: "compatible_since_year"
+        role: measure
+        type: FLOAT
+        description: "compatible since year"
+        alias: ["compatible_since_year"]
+        sync: false
+
+metrics:
+  - name: "accelerator_compatible_browser_compatible_since_year"
+    description: compatible since year from accelerator_compatible_browser
+    relevant_columns:
+      - accelerator_compatible_browser.compatible_since_year
+    alias: [compatible_since_year]

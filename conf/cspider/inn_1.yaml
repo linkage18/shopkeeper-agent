@@ -1,0 +1,117 @@
+tables:
+  - name: "Rooms"
+    role: dim
+    description: "rooms"
+    columns:
+      - name: "RoomId"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "roomid"
+        alias: ["roomid"]
+        sync: false
+      - name: "roomName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "roomname"
+        alias: ["roomname"]
+        sync: true
+      - name: "beds"
+        role: dimension
+        type: FLOAT
+        description: "beds"
+        alias: ["beds"]
+        sync: false
+      - name: "bedType"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bedtype"
+        alias: ["bedtype"]
+        sync: true
+      - name: "maxOccupancy"
+        role: dimension
+        type: FLOAT
+        description: "maxoccupancy"
+        alias: ["maxoccupancy"]
+        sync: false
+      - name: "basePrice"
+        role: measure
+        type: FLOAT
+        description: "baseprice"
+        alias: ["baseprice"]
+        sync: false
+      - name: "decor"
+        role: dimension
+        type: VARCHAR(255)
+        description: "decor"
+        alias: ["decor"]
+        sync: false
+  - name: "Reservations"
+    role: fact
+    description: "reservations"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: FLOAT
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Room"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room"
+        alias: ["room"]
+        sync: false
+      - name: "CheckIn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "checkin"
+        alias: ["checkin"]
+        sync: false
+      - name: "CheckOut"
+        role: dimension
+        type: VARCHAR(255)
+        description: "checkout"
+        alias: ["checkout"]
+        sync: false
+      - name: "Rate"
+        role: measure
+        type: FLOAT
+        description: "rate"
+        alias: ["rate"]
+        sync: false
+      - name: "LastName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+      - name: "FirstName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "Adults"
+        role: dimension
+        type: FLOAT
+        description: "adults"
+        alias: ["adults"]
+        sync: false
+      - name: "Kids"
+        role: dimension
+        type: FLOAT
+        description: "kids"
+        alias: ["kids"]
+        sync: false
+
+metrics:
+  - name: "rooms_baseprice"
+    description: baseprice from rooms
+    relevant_columns:
+      - Rooms.basePrice
+    alias: [baseprice]
+  - name: "reservations_rate"
+    description: rate from reservations
+    relevant_columns:
+      - Reservations.Rate
+    alias: [rate]

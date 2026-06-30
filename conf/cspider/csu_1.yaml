@@ -1,0 +1,205 @@
+tables:
+  - name: "Campuses"
+    role: dim
+    description: "campuses"
+    columns:
+      - name: "Id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Campus"
+        role: dimension
+        type: VARCHAR(255)
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "County"
+        role: dimension
+        type: VARCHAR(255)
+        description: "county"
+        alias: ["county"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "csu_fees"
+    role: dim
+    description: "csu fees"
+    columns:
+      - name: "Campus"
+        role: dimension
+        type: FLOAT
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "CampusFee"
+        role: measure
+        type: FLOAT
+        description: "campusfee"
+        alias: ["campusfee"]
+        sync: false
+  - name: "degrees"
+    role: dim
+    description: "degrees"
+    columns:
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Campus"
+        role: dimension
+        type: FLOAT
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Degrees"
+        role: dimension
+        type: FLOAT
+        description: "degrees"
+        alias: ["degrees"]
+        sync: false
+  - name: "discipline_enrollments"
+    role: fact
+    description: "discipline enrollments"
+    columns:
+      - name: "Campus"
+        role: dimension
+        type: FLOAT
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Discipline"
+        role: dimension
+        type: FLOAT
+        description: "discipline"
+        alias: ["discipline"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Undergraduate"
+        role: dimension
+        type: FLOAT
+        description: "undergraduate"
+        alias: ["undergraduate"]
+        sync: false
+      - name: "Graduate"
+        role: dimension
+        type: FLOAT
+        description: "graduate"
+        alias: ["graduate"]
+        sync: false
+  - name: "enrollments"
+    role: fact
+    description: "enrollments"
+    columns:
+      - name: "Campus"
+        role: dimension
+        type: FLOAT
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "TotalEnrollment_AY"
+        role: measure
+        type: FLOAT
+        description: "totalenrollment ay"
+        alias: ["totalenrollment_ay"]
+        sync: false
+      - name: "FTE_AY"
+        role: dimension
+        type: FLOAT
+        description: "fte ay"
+        alias: ["fte_ay"]
+        sync: false
+  - name: "faculty"
+    role: dim
+    description: "faculty"
+    columns:
+      - name: "Campus"
+        role: dimension
+        type: FLOAT
+        description: "campus"
+        alias: ["campus"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Faculty"
+        role: dimension
+        type: FLOAT
+        description: "faculty"
+        alias: ["faculty"]
+        sync: false
+
+metrics:
+  - name: "campuses_year"
+    description: year from campuses
+    relevant_columns:
+      - Campuses.Year
+    alias: [year]
+  - name: "csu_fees_year"
+    description: year from csu_fees
+    relevant_columns:
+      - csu_fees.Year
+    alias: [year]
+  - name: "csu_fees_campusfee"
+    description: campusfee from csu_fees
+    relevant_columns:
+      - csu_fees.CampusFee
+    alias: [campusfee]
+  - name: "degrees_year"
+    description: year from degrees
+    relevant_columns:
+      - degrees.Year
+    alias: [year]
+  - name: "discipline_enrollments_year"
+    description: year from discipline_enrollments
+    relevant_columns:
+      - discipline_enrollments.Year
+    alias: [year]
+  - name: "enrollments_year"
+    description: year from enrollments
+    relevant_columns:
+      - enrollments.Year
+    alias: [year]
+  - name: "enrollments_totalenrollment_ay"
+    description: totalenrollment ay from enrollments
+    relevant_columns:
+      - enrollments.TotalEnrollment_AY
+    alias: [totalenrollment_ay]
+  - name: "faculty_year"
+    description: year from faculty
+    relevant_columns:
+      - faculty.Year
+    alias: [year]

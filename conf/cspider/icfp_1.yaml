@@ -1,0 +1,89 @@
+tables:
+  - name: "Inst"
+    role: dim
+    description: "inst"
+    columns:
+      - name: "instID"
+        role: primary_key
+        type: FLOAT
+        description: "instid"
+        alias: ["instid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "Authors"
+    role: dim
+    description: "authors"
+    columns:
+      - name: "authID"
+        role: primary_key
+        type: FLOAT
+        description: "authid"
+        alias: ["authid"]
+        sync: false
+      - name: "lname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+  - name: "Papers"
+    role: dim
+    description: "papers"
+    columns:
+      - name: "paperID"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+  - name: "Authorship"
+    role: dim
+    description: "authorship"
+    columns:
+      - name: "authID"
+        role: primary_key
+        type: FLOAT
+        description: "authid"
+        alias: ["authid"]
+        sync: false
+      - name: "instID"
+        role: primary_key
+        type: FLOAT
+        description: "instid"
+        alias: ["instid"]
+        sync: false
+      - name: "paperID"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "authOrder"
+        role: dimension
+        type: FLOAT
+        description: "authorder"
+        alias: ["authorder"]
+        sync: false

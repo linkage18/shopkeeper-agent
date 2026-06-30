@@ -1,0 +1,125 @@
+tables:
+  - name: "flight"
+    role: dim
+    description: "flight"
+    columns:
+      - name: "flno"
+        role: dimension
+        type: FLOAT
+        description: "flno"
+        alias: ["flno"]
+        sync: false
+      - name: "origin"
+        role: dimension
+        type: VARCHAR(255)
+        description: "origin"
+        alias: ["origin"]
+        sync: false
+      - name: "destination"
+        role: dimension
+        type: VARCHAR(255)
+        description: "destination"
+        alias: ["destination"]
+        sync: false
+      - name: "distance"
+        role: dimension
+        type: FLOAT
+        description: "distance"
+        alias: ["distance"]
+        sync: false
+      - name: "departure_date"
+        role: dimension
+        type: DATETIME
+        description: "departure date"
+        alias: ["departure_date"]
+        sync: false
+      - name: "arrival_date"
+        role: dimension
+        type: DATETIME
+        description: "arrival date"
+        alias: ["arrival_date"]
+        sync: false
+      - name: "price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+  - name: "aircraft"
+    role: dim
+    description: "aircraft"
+    columns:
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "distance"
+        role: dimension
+        type: FLOAT
+        description: "distance"
+        alias: ["distance"]
+        sync: false
+  - name: "employee"
+    role: dim
+    description: "employee"
+    columns:
+      - name: "eid"
+        role: primary_key
+        type: FLOAT
+        description: "eid"
+        alias: ["eid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "salary"
+        role: measure
+        type: FLOAT
+        description: "salary"
+        alias: ["salary"]
+        sync: false
+  - name: "certificate"
+    role: dim
+    description: "certificate"
+    columns:
+      - name: "eid"
+        role: primary_key
+        type: FLOAT
+        description: "eid"
+        alias: ["eid"]
+        sync: false
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+
+metrics:
+  - name: "flight_price"
+    description: price from flight
+    relevant_columns:
+      - flight.price
+    alias: [price]
+  - name: "employee_salary"
+    description: salary from employee
+    relevant_columns:
+      - employee.salary
+    alias: [salary]

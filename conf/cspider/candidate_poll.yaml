@@ -1,0 +1,115 @@
+tables:
+  - name: "candidate"
+    role: dim
+    description: "candidate"
+    columns:
+      - name: "Candidate_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "candidate id"
+        alias: ["candidate_id"]
+        sync: false
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Poll_Source"
+        role: dimension
+        type: VARCHAR(255)
+        description: "poll source"
+        alias: ["poll_source"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Support_rate"
+        role: measure
+        type: FLOAT
+        description: "support rate"
+        alias: ["support_rate"]
+        sync: false
+      - name: "Consider_rate"
+        role: measure
+        type: FLOAT
+        description: "consider rate"
+        alias: ["consider_rate"]
+        sync: false
+      - name: "Oppose_rate"
+        role: measure
+        type: FLOAT
+        description: "oppose rate"
+        alias: ["oppose_rate"]
+        sync: false
+      - name: "Unsure_rate"
+        role: measure
+        type: FLOAT
+        description: "unsure rate"
+        alias: ["unsure_rate"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Date_of_Birth"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+
+metrics:
+  - name: "candidate_support_rate"
+    description: support rate from candidate
+    relevant_columns:
+      - candidate.Support_rate
+    alias: [support_rate]
+  - name: "candidate_consider_rate"
+    description: consider rate from candidate
+    relevant_columns:
+      - candidate.Consider_rate
+    alias: [consider_rate]
+  - name: "candidate_oppose_rate"
+    description: oppose rate from candidate
+    relevant_columns:
+      - candidate.Oppose_rate
+    alias: [oppose_rate]
+  - name: "candidate_unsure_rate"
+    description: unsure rate from candidate
+    relevant_columns:
+      - candidate.Unsure_rate
+    alias: [unsure_rate]

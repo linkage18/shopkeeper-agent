@@ -1,0 +1,73 @@
+tables:
+  - name: "course"
+    role: dim
+    description: "course"
+    columns:
+      - name: "Course_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "Staring_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staring date"
+        alias: ["staring_date"]
+        sync: false
+      - name: "Course"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course"
+        alias: ["course"]
+        sync: false
+  - name: "teacher"
+    role: dim
+    description: "teacher"
+    columns:
+      - name: "Teacher_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "teacher id"
+        alias: ["teacher_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: VARCHAR(255)
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Hometown"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hometown"
+        alias: ["hometown"]
+        sync: false
+  - name: "course_arrange"
+    role: dim
+    description: "course arrange"
+    columns:
+      - name: "Course_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "Teacher_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "teacher id"
+        alias: ["teacher_id"]
+        sync: false
+      - name: "Grade"
+        role: dimension
+        type: FLOAT
+        description: "grade"
+        alias: ["grade"]
+        sync: false

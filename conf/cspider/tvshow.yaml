@@ -1,0 +1,163 @@
+tables:
+  - name: "TV_Channel"
+    role: dim
+    description: "tv channel"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "series_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "series name"
+        alias: ["series_name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Language"
+        role: dimension
+        type: VARCHAR(255)
+        description: "language"
+        alias: ["language"]
+        sync: true
+      - name: "Content"
+        role: dimension
+        type: VARCHAR(255)
+        description: "content"
+        alias: ["content"]
+        sync: false
+      - name: "Pixel_aspect_ratio_PAR"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pixel aspect ratio par"
+        alias: ["pixel_aspect_ratio_par"]
+        sync: false
+      - name: "Hight_definition_TV"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hight definition tv"
+        alias: ["hight_definition_tv"]
+        sync: false
+      - name: "Pay_per_view_PPV"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pay per view ppv"
+        alias: ["pay_per_view_ppv"]
+        sync: false
+      - name: "Package_Option"
+        role: dimension
+        type: VARCHAR(255)
+        description: "package option"
+        alias: ["package_option"]
+        sync: false
+  - name: "TV_series"
+    role: dim
+    description: "tv series"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Episode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "episode"
+        alias: ["episode"]
+        sync: false
+      - name: "Air_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "air date"
+        alias: ["air_date"]
+        sync: false
+      - name: "Rating"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "Share"
+        role: dimension
+        type: FLOAT
+        description: "share"
+        alias: ["share"]
+        sync: false
+      - name: "18_49_Rating_Share"
+        role: dimension
+        type: VARCHAR(255)
+        description: "18 49 rating share"
+        alias: ["18_49_rating_share"]
+        sync: false
+      - name: "Viewers_m"
+        role: dimension
+        type: VARCHAR(255)
+        description: "viewers m"
+        alias: ["viewers_m"]
+        sync: false
+      - name: "Weekly_Rank"
+        role: dimension
+        type: FLOAT
+        description: "weekly rank"
+        alias: ["weekly_rank"]
+        sync: false
+      - name: "Channel"
+        role: dimension
+        type: VARCHAR(255)
+        description: "channel"
+        alias: ["channel"]
+        sync: false
+  - name: "Cartoon"
+    role: dim
+    description: "cartoon"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Directed_by"
+        role: dimension
+        type: VARCHAR(255)
+        description: "directed by"
+        alias: ["directed_by"]
+        sync: false
+      - name: "Written_by"
+        role: dimension
+        type: VARCHAR(255)
+        description: "written by"
+        alias: ["written_by"]
+        sync: false
+      - name: "Original_air_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "original air date"
+        alias: ["original_air_date"]
+        sync: false
+      - name: "Production_code"
+        role: dimension
+        type: FLOAT
+        description: "production code"
+        alias: ["production_code"]
+        sync: true
+      - name: "Channel"
+        role: dimension
+        type: VARCHAR(255)
+        description: "channel"
+        alias: ["channel"]
+        sync: false

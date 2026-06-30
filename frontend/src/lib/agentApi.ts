@@ -4,6 +4,7 @@
  */
 import type { AgentEvent } from "../types/agent";
 import { authHeaders } from "./authApi";
+import { parseSseChunk } from "./sse";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
 
@@ -59,22 +60,3 @@ export async function streamQuery(query: string, options: QueryOptions) {
   }
 }
 
-function parseSseChunk(chunk: string): AgentEvent | null {
-  const payload = chunk
-    .split("\n")
-    .filter((line) => line.startsWith("data:"))
-    .map((line) => line.replace(/^data:\s?/, ""))
-    .join("\n")
-    .trim();
-
-  if (!payload) return null;
-
-  try {
-    return JSON.parse(payload) as AgentEvent;
-  } catch {
-    return {
-      type: "error",
-      message: `无法解析后端事件：${payload}`,
-    };
-  }
-}

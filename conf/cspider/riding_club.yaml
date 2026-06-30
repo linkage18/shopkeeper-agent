@@ -1,0 +1,195 @@
+tables:
+  - name: "player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "Sponsor_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sponsor name"
+        alias: ["sponsor_name"]
+        sync: true
+      - name: "Player_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player name"
+        alias: ["player_name"]
+        sync: true
+      - name: "Gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "Residence"
+        role: dimension
+        type: VARCHAR(255)
+        description: "residence"
+        alias: ["residence"]
+        sync: false
+      - name: "Occupation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "occupation"
+        alias: ["occupation"]
+        sync: false
+      - name: "Votes"
+        role: dimension
+        type: FLOAT
+        description: "votes"
+        alias: ["votes"]
+        sync: false
+      - name: "Rank"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+  - name: "club"
+    role: dim
+    description: "club"
+    columns:
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "Club_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "club name"
+        alias: ["club_name"]
+        sync: true
+      - name: "Region"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region"
+        alias: ["region"]
+        sync: false
+      - name: "Start_year"
+        role: measure
+        type: FLOAT
+        description: "start year"
+        alias: ["start_year"]
+        sync: false
+  - name: "coach"
+    role: dim
+    description: "coach"
+    columns:
+      - name: "Coach_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "coach id"
+        alias: ["coach_id"]
+        sync: false
+      - name: "Coach_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "coach name"
+        alias: ["coach_name"]
+        sync: true
+      - name: "Gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+  - name: "player_coach"
+    role: dim
+    description: "player coach"
+    columns:
+      - name: "Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "Coach_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "coach id"
+        alias: ["coach_id"]
+        sync: false
+      - name: "Starting_year"
+        role: measure
+        type: FLOAT
+        description: "starting year"
+        alias: ["starting_year"]
+        sync: false
+  - name: "match_result"
+    role: dim
+    description: "match result"
+    columns:
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "Gold"
+        role: dimension
+        type: FLOAT
+        description: "gold"
+        alias: ["gold"]
+        sync: false
+      - name: "Big_Silver"
+        role: dimension
+        type: FLOAT
+        description: "big silver"
+        alias: ["big_silver"]
+        sync: false
+      - name: "Small_Silver"
+        role: dimension
+        type: FLOAT
+        description: "small silver"
+        alias: ["small_silver"]
+        sync: false
+      - name: "Bronze"
+        role: dimension
+        type: FLOAT
+        description: "bronze"
+        alias: ["bronze"]
+        sync: false
+      - name: "Points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+
+metrics:
+  - name: "club_start_year"
+    description: start year from club
+    relevant_columns:
+      - club.Start_year
+    alias: [start_year]
+  - name: "player_coach_starting_year"
+    description: starting year from player_coach
+    relevant_columns:
+      - player_coach.Starting_year
+    alias: [starting_year]

@@ -1,0 +1,144 @@
+tables:
+  - name: "book_club"
+    role: dim
+    description: "book club"
+    columns:
+      - name: "book_club_id"
+        role: foreign_key
+        type: FLOAT
+        description: "book club id"
+        alias: ["book_club_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Author_or_Editor"
+        role: dimension
+        type: VARCHAR(255)
+        description: "author or editor"
+        alias: ["author_or_editor"]
+        sync: false
+      - name: "Book_Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "book title"
+        alias: ["book_title"]
+        sync: false
+      - name: "Publisher"
+        role: dimension
+        type: VARCHAR(255)
+        description: "publisher"
+        alias: ["publisher"]
+        sync: false
+      - name: "Category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "category"
+        alias: ["category"]
+        sync: true
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+  - name: "movie"
+    role: dim
+    description: "movie"
+    columns:
+      - name: "movie_id"
+        role: foreign_key
+        type: FLOAT
+        description: "movie id"
+        alias: ["movie_id"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Director"
+        role: dimension
+        type: VARCHAR(255)
+        description: "director"
+        alias: ["director"]
+        sync: false
+      - name: "Budget_million"
+        role: measure
+        type: FLOAT
+        description: "budget million"
+        alias: ["budget_million"]
+        sync: false
+      - name: "Gross_worldwide"
+        role: dimension
+        type: FLOAT
+        description: "gross worldwide"
+        alias: ["gross_worldwide"]
+        sync: false
+  - name: "culture_company"
+    role: dim
+    description: "culture company"
+    columns:
+      - name: "Company_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company name"
+        alias: ["company_name"]
+        sync: true
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Incorporated_in"
+        role: dimension
+        type: VARCHAR(255)
+        description: "incorporated in"
+        alias: ["incorporated_in"]
+        sync: false
+      - name: "Group_Equity_Shareholding"
+        role: dimension
+        type: FLOAT
+        description: "group equity shareholding"
+        alias: ["group_equity_shareholding"]
+        sync: false
+      - name: "book_club_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "book club id"
+        alias: ["book_club_id"]
+        sync: false
+      - name: "movie_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "movie id"
+        alias: ["movie_id"]
+        sync: false
+
+metrics:
+  - name: "book_club_year"
+    description: year from book_club
+    relevant_columns:
+      - book_club.Year
+    alias: [year]
+  - name: "movie_year"
+    description: year from movie
+    relevant_columns:
+      - movie.Year
+    alias: [year]
+  - name: "movie_budget_million"
+    description: budget million from movie
+    relevant_columns:
+      - movie.Budget_million
+    alias: [budget_million]

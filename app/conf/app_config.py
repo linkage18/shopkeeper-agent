@@ -1,4 +1,4 @@
-"""
+﻿"""
 应用主配置
 
 定义 conf/app_config.yaml 在程序中的结构化配置对象
@@ -6,7 +6,7 @@
 就可以按属性方式读取日志 MySQL Qdrant Embedding Elasticsearch 和 LLM 配置
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -53,11 +53,14 @@ class DBConfig:
 
 @dataclass
 class QdrantConfig:
-    """Qdrant 连接与向量维度配置"""
+    """Qdrant 连接与集合配置"""
 
     host: str
     port: int
     embedding_size: int
+    column_collection: str = "column_info_collection"
+    metric_collection: str = "metric_info_collection"
+    cache_collection: str = "query_cache"
 
 
 @dataclass
@@ -192,6 +195,3 @@ schema = OmegaConf.structured(AppConfig)
 # 把配置结构和配置值合并，再转换成可以直接按属性访问的对象
 app_config: AppConfig = OmegaConf.to_object(OmegaConf.merge(schema, context))
 
-if __name__ == "__main__":
-    # 简单测试：验证配置是否能正常读取
-    print(app_config.es.host)

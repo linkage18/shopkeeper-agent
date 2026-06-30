@@ -1,0 +1,157 @@
+tables:
+  - name: "routes"
+    role: dim
+    description: "routes"
+    columns:
+      - name: "rid"
+        role: primary_key
+        type: FLOAT
+        description: "rid"
+        alias: ["rid"]
+        sync: false
+      - name: "dst_apid"
+        role: dimension
+        type: FLOAT
+        description: "dst apid"
+        alias: ["dst_apid"]
+        sync: false
+      - name: "dst_ap"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dst ap"
+        alias: ["dst_ap"]
+        sync: false
+      - name: "src_apid"
+        role: dimension
+        type: FLOAT
+        description: "src apid"
+        alias: ["src_apid"]
+        sync: false
+      - name: "src_ap"
+        role: dimension
+        type: VARCHAR(255)
+        description: "src ap"
+        alias: ["src_ap"]
+        sync: false
+      - name: "alid"
+        role: primary_key
+        type: FLOAT
+        description: "alid"
+        alias: ["alid"]
+        sync: false
+      - name: "airline"
+        role: dimension
+        type: VARCHAR(255)
+        description: "airline"
+        alias: ["airline"]
+        sync: false
+      - name: "codeshare"
+        role: dimension
+        type: VARCHAR(255)
+        description: "codeshare"
+        alias: ["codeshare"]
+        sync: true
+  - name: "airports"
+    role: dim
+    description: "airports"
+    columns:
+      - name: "apid"
+        role: primary_key
+        type: FLOAT
+        description: "apid"
+        alias: ["apid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "x"
+        role: dimension
+        type: FLOAT
+        description: "x"
+        alias: ["x"]
+        sync: false
+      - name: "y"
+        role: dimension
+        type: FLOAT
+        description: "y"
+        alias: ["y"]
+        sync: false
+      - name: "elevation"
+        role: dimension
+        type: FLOAT
+        description: "elevation"
+        alias: ["elevation"]
+        sync: false
+      - name: "iata"
+        role: dimension
+        type: VARCHAR(255)
+        description: "iata"
+        alias: ["iata"]
+        sync: false
+      - name: "icao"
+        role: dimension
+        type: VARCHAR(255)
+        description: "icao"
+        alias: ["icao"]
+        sync: false
+  - name: "airlines"
+    role: fact
+    description: "airlines"
+    columns:
+      - name: "alid"
+        role: primary_key
+        type: FLOAT
+        description: "alid"
+        alias: ["alid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "iata"
+        role: dimension
+        type: VARCHAR(255)
+        description: "iata"
+        alias: ["iata"]
+        sync: false
+      - name: "icao"
+        role: dimension
+        type: VARCHAR(255)
+        description: "icao"
+        alias: ["icao"]
+        sync: false
+      - name: "callsign"
+        role: dimension
+        type: VARCHAR(255)
+        description: "callsign"
+        alias: ["callsign"]
+        sync: false
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "active"
+        role: dimension
+        type: VARCHAR(255)
+        description: "active"
+        alias: ["active"]
+        sync: false

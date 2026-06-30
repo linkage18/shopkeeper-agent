@@ -1,0 +1,265 @@
+tables:
+  - name: "Ref_Feature_Types"
+    role: dim
+    description: "ref feature types"
+    columns:
+      - name: "feature_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature type code"
+        alias: ["feature_type_code"]
+        sync: true
+      - name: "feature_type_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature type name"
+        alias: ["feature_type_name"]
+        sync: true
+  - name: "Ref_Property_Types"
+    role: dim
+    description: "ref property types"
+    columns:
+      - name: "property_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property type code"
+        alias: ["property_type_code"]
+        sync: true
+      - name: "property_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property type description"
+        alias: ["property_type_description"]
+        sync: true
+  - name: "Other_Available_Features"
+    role: dim
+    description: "other available features"
+    columns:
+      - name: "feature_id"
+        role: foreign_key
+        type: FLOAT
+        description: "feature id"
+        alias: ["feature_id"]
+        sync: false
+      - name: "feature_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature type code"
+        alias: ["feature_type_code"]
+        sync: true
+      - name: "feature_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature name"
+        alias: ["feature_name"]
+        sync: true
+      - name: "feature_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature description"
+        alias: ["feature_description"]
+        sync: false
+  - name: "Properties"
+    role: dim
+    description: "properties"
+    columns:
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "property_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property type code"
+        alias: ["property_type_code"]
+        sync: true
+      - name: "date_on_market"
+        role: dimension
+        type: DATETIME
+        description: "date on market"
+        alias: ["date_on_market"]
+        sync: false
+      - name: "date_sold"
+        role: dimension
+        type: DATETIME
+        description: "date sold"
+        alias: ["date_sold"]
+        sync: false
+      - name: "property_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property name"
+        alias: ["property_name"]
+        sync: true
+      - name: "property_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property address"
+        alias: ["property_address"]
+        sync: false
+      - name: "room_count"
+        role: measure
+        type: FLOAT
+        description: "room count"
+        alias: ["room_count"]
+        sync: false
+      - name: "vendor_requested_price"
+        role: measure
+        type: FLOAT
+        description: "vendor requested price"
+        alias: ["vendor_requested_price"]
+        sync: false
+      - name: "buyer_offered_price"
+        role: measure
+        type: FLOAT
+        description: "buyer offered price"
+        alias: ["buyer_offered_price"]
+        sync: false
+      - name: "agreed_selling_price"
+        role: measure
+        type: FLOAT
+        description: "agreed selling price"
+        alias: ["agreed_selling_price"]
+        sync: false
+      - name: "apt_feature_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "apt feature 1"
+        alias: ["apt_feature_1"]
+        sync: false
+      - name: "apt_feature_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "apt feature 2"
+        alias: ["apt_feature_2"]
+        sync: false
+      - name: "apt_feature_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "apt feature 3"
+        alias: ["apt_feature_3"]
+        sync: false
+      - name: "fld_feature_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fld feature 1"
+        alias: ["fld_feature_1"]
+        sync: false
+      - name: "fld_feature_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fld feature 2"
+        alias: ["fld_feature_2"]
+        sync: false
+      - name: "fld_feature_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fld feature 3"
+        alias: ["fld_feature_3"]
+        sync: false
+      - name: "hse_feature_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hse feature 1"
+        alias: ["hse_feature_1"]
+        sync: false
+      - name: "hse_feature_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hse feature 2"
+        alias: ["hse_feature_2"]
+        sync: false
+      - name: "hse_feature_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hse feature 3"
+        alias: ["hse_feature_3"]
+        sync: false
+      - name: "oth_feature_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "oth feature 1"
+        alias: ["oth_feature_1"]
+        sync: false
+      - name: "oth_feature_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "oth feature 2"
+        alias: ["oth_feature_2"]
+        sync: false
+      - name: "oth_feature_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "oth feature 3"
+        alias: ["oth_feature_3"]
+        sync: false
+      - name: "shp_feature_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shp feature 1"
+        alias: ["shp_feature_1"]
+        sync: false
+      - name: "shp_feature_2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shp feature 2"
+        alias: ["shp_feature_2"]
+        sync: false
+      - name: "shp_feature_3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shp feature 3"
+        alias: ["shp_feature_3"]
+        sync: false
+      - name: "other_property_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other property details"
+        alias: ["other_property_details"]
+        sync: false
+  - name: "Other_Property_Features"
+    role: dim
+    description: "other property features"
+    columns:
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "feature_id"
+        role: foreign_key
+        type: FLOAT
+        description: "feature id"
+        alias: ["feature_id"]
+        sync: false
+      - name: "property_feature_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property feature description"
+        alias: ["property_feature_description"]
+        sync: false
+
+metrics:
+  - name: "properties_room_count"
+    description: room count from properties
+    relevant_columns:
+      - Properties.room_count
+    alias: [room_count]
+  - name: "properties_vendor_requested_price"
+    description: vendor requested price from properties
+    relevant_columns:
+      - Properties.vendor_requested_price
+    alias: [vendor_requested_price]
+  - name: "properties_buyer_offered_price"
+    description: buyer offered price from properties
+    relevant_columns:
+      - Properties.buyer_offered_price
+    alias: [buyer_offered_price]
+  - name: "properties_agreed_selling_price"
+    description: agreed selling price from properties
+    relevant_columns:
+      - Properties.agreed_selling_price
+    alias: [agreed_selling_price]

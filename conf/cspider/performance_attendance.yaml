@@ -1,0 +1,85 @@
+tables:
+  - name: "member"
+    role: dim
+    description: "member"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Role"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role"
+        alias: ["role"]
+        sync: false
+  - name: "performance"
+    role: dim
+    description: "performance"
+    columns:
+      - name: "Performance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performance id"
+        alias: ["performance_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Host"
+        role: dimension
+        type: VARCHAR(255)
+        description: "host"
+        alias: ["host"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Attendance"
+        role: dimension
+        type: FLOAT
+        description: "attendance"
+        alias: ["attendance"]
+        sync: false
+  - name: "member_attendance"
+    role: dim
+    description: "member attendance"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Performance_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "performance id"
+        alias: ["performance_id"]
+        sync: false
+      - name: "Num_of_Pieces"
+        role: dimension
+        type: FLOAT
+        description: "num of pieces"
+        alias: ["num_of_pieces"]
+        sync: false

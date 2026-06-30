@@ -1,0 +1,186 @@
+tables:
+  - name: "Accounts"
+    role: dim
+    description: "accounts"
+    columns:
+      - name: "account_id"
+        role: foreign_key
+        type: FLOAT
+        description: "account id"
+        alias: ["account_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "account_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "account name"
+        alias: ["account_name"]
+        sync: true
+      - name: "other_account_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other account details"
+        alias: ["other_account_details"]
+        sync: false
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer first name"
+        alias: ["customer_first_name"]
+        sync: true
+      - name: "customer_last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer last name"
+        alias: ["customer_last_name"]
+        sync: true
+      - name: "customer_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer address"
+        alias: ["customer_address"]
+        sync: false
+      - name: "customer_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "customer_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email"
+        alias: ["customer_email"]
+        sync: false
+      - name: "other_customer_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other customer details"
+        alias: ["other_customer_details"]
+        sync: false
+  - name: "Customers_Cards"
+    role: dim
+    description: "customers cards"
+    columns:
+      - name: "card_id"
+        role: foreign_key
+        type: FLOAT
+        description: "card id"
+        alias: ["card_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "card_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "card type code"
+        alias: ["card_type_code"]
+        sync: true
+      - name: "card_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "card number"
+        alias: ["card_number"]
+        sync: false
+      - name: "date_valid_from"
+        role: dimension
+        type: DATETIME
+        description: "date valid from"
+        alias: ["date_valid_from"]
+        sync: false
+      - name: "date_valid_to"
+        role: dimension
+        type: DATETIME
+        description: "date valid to"
+        alias: ["date_valid_to"]
+        sync: false
+      - name: "other_card_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other card details"
+        alias: ["other_card_details"]
+        sync: false
+  - name: "Financial_Transactions"
+    role: fact
+    description: "financial transactions"
+    columns:
+      - name: "transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transaction id"
+        alias: ["transaction_id"]
+        sync: false
+      - name: "previous_transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "previous transaction id"
+        alias: ["previous_transaction_id"]
+        sync: false
+      - name: "account_id"
+        role: foreign_key
+        type: FLOAT
+        description: "account id"
+        alias: ["account_id"]
+        sync: false
+      - name: "card_id"
+        role: foreign_key
+        type: FLOAT
+        description: "card id"
+        alias: ["card_id"]
+        sync: false
+      - name: "transaction_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction type"
+        alias: ["transaction_type"]
+        sync: true
+      - name: "transaction_date"
+        role: dimension
+        type: DATETIME
+        description: "transaction date"
+        alias: ["transaction_date"]
+        sync: false
+      - name: "transaction_amount"
+        role: measure
+        type: FLOAT
+        description: "transaction amount"
+        alias: ["transaction_amount"]
+        sync: false
+      - name: "transaction_comment"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction comment"
+        alias: ["transaction_comment"]
+        sync: false
+      - name: "other_transaction_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other transaction details"
+        alias: ["other_transaction_details"]
+        sync: false
+
+metrics:
+  - name: "financial_transactions_transaction_amount"
+    description: transaction amount from financial_transactions
+    relevant_columns:
+      - Financial_Transactions.transaction_amount
+    alias: [transaction_amount]

@@ -21,6 +21,11 @@ export function summarizeResult(data: unknown) {
     return count > 0 ? `查询完成，${count} 行结果 ${chartHint}` : "查询完成，已生成图表";
   }
 
+  if (data && typeof data === "object" && Array.isArray((data as any).charts) && (data as any).charts.length > 0) {
+    const names = (data as any).charts.map((c: any) => c.chart_name || c.title || "").filter(Boolean).join("、");
+    return `查询完成，已生成 ${(data as any).charts.length} 个图表${names ? `（${names}）` : ""}`;
+  }
+
   if (data && typeof data === "object" && Array.isArray((data as any).rows)) {
     const count = (data as any).row_count ?? (data as any).rows.length;
     return count > 0 ? `查询完成，共 ${count} 行结果。` : "查询完成，结果为空。";

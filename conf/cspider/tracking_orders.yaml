@@ -1,0 +1,203 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "customer_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer details"
+        alias: ["customer_details"]
+        sync: false
+  - name: "Invoices"
+    role: fact
+    description: "invoices"
+    columns:
+      - name: "invoice_number"
+        role: measure
+        type: FLOAT
+        description: "invoice number"
+        alias: ["invoice_number"]
+        sync: false
+      - name: "invoice_date"
+        role: dimension
+        type: DATETIME
+        description: "invoice date"
+        alias: ["invoice_date"]
+        sync: false
+      - name: "invoice_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "invoice details"
+        alias: ["invoice_details"]
+        sync: false
+  - name: "Orders"
+    role: fact
+    description: "orders"
+    columns:
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "order_status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order status"
+        alias: ["order_status"]
+        sync: true
+      - name: "date_order_placed"
+        role: dimension
+        type: DATETIME
+        description: "date order placed"
+        alias: ["date_order_placed"]
+        sync: false
+      - name: "order_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order details"
+        alias: ["order_details"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product details"
+        alias: ["product_details"]
+        sync: false
+  - name: "Order_Items"
+    role: fact
+    description: "order items"
+    columns:
+      - name: "order_item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "order_item_status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order item status"
+        alias: ["order_item_status"]
+        sync: true
+      - name: "order_item_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order item details"
+        alias: ["order_item_details"]
+        sync: false
+  - name: "Shipments"
+    role: fact
+    description: "shipments"
+    columns:
+      - name: "shipment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "shipment id"
+        alias: ["shipment_id"]
+        sync: false
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "invoice_number"
+        role: measure
+        type: FLOAT
+        description: "invoice number"
+        alias: ["invoice_number"]
+        sync: false
+      - name: "shipment_tracking_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipment tracking number"
+        alias: ["shipment_tracking_number"]
+        sync: false
+      - name: "shipment_date"
+        role: dimension
+        type: DATETIME
+        description: "shipment date"
+        alias: ["shipment_date"]
+        sync: false
+      - name: "other_shipment_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other shipment details"
+        alias: ["other_shipment_details"]
+        sync: false
+  - name: "Shipment_Items"
+    role: fact
+    description: "shipment items"
+    columns:
+      - name: "shipment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "shipment id"
+        alias: ["shipment_id"]
+        sync: false
+      - name: "order_item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+
+metrics:
+  - name: "invoices_invoice_number"
+    description: invoice number from invoices
+    relevant_columns:
+      - Invoices.invoice_number
+    alias: [invoice_number]
+  - name: "shipments_invoice_number"
+    description: invoice number from shipments
+    relevant_columns:
+      - Shipments.invoice_number
+    alias: [invoice_number]

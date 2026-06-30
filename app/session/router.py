@@ -2,10 +2,11 @@
 Session 保存路由 — 用于保存 NL2SQL 等非 RAG 的对话历史
 """
 from __future__ import annotations
-from typing import Annotated, Any
+import asyncio
 import json
 from datetime import datetime
 from pathlib import Path
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
@@ -58,7 +59,11 @@ async def save_session(record: SessionRecord, user: Annotated[dict, Depends(requ
         "data": record.data,
         "row_count": record.row_count,
     }
-    with open(fp, "a", encoding="utf-8") as f:
-        f.write(json.dumps(entry, ensure_ascii=False, default=_json_default) + "\n")
+    line = json.dumps(entry, ensure_ascii=False, default=_json_default) + "\n"
+
+    def _append():
+        with fp.open("a", encoding="utf-8") as f:
+            f.write(line)
+    await asyncio.to_thread(_append)
 
     return {"status": "ok", "session_id": session_id}

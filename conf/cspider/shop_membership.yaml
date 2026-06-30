@@ -1,0 +1,132 @@
+tables:
+  - name: "member"
+    role: dim
+    description: "member"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Card_Number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "card number"
+        alias: ["card_number"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Hometown"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hometown"
+        alias: ["hometown"]
+        sync: false
+      - name: "Level"
+        role: dimension
+        type: FLOAT
+        description: "level"
+        alias: ["level"]
+        sync: false
+  - name: "branch"
+    role: dim
+    description: "branch"
+    columns:
+      - name: "Branch_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Open_year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+      - name: "Address_road"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address road"
+        alias: ["address_road"]
+        sync: false
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "membership_amount"
+        role: dimension
+        type: VARCHAR(255)
+        description: "membership amount"
+        alias: ["membership_amount"]
+        sync: false
+  - name: "membership_register_branch"
+    role: dim
+    description: "membership register branch"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Branch_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "Register_Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "register year"
+        alias: ["register_year"]
+        sync: false
+  - name: "purchase"
+    role: fact
+    description: "purchase"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Branch_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "branch id"
+        alias: ["branch_id"]
+        sync: false
+      - name: "Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Total_pounds"
+        role: measure
+        type: FLOAT
+        description: "total pounds"
+        alias: ["total_pounds"]
+        sync: false
+
+metrics:
+  - name: "purchase_total_pounds"
+    description: total pounds from purchase
+    relevant_columns:
+      - purchase.Total_pounds
+    alias: [total_pounds]

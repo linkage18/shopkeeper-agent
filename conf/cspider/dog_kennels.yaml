@@ -1,0 +1,339 @@
+tables:
+  - name: "Breeds"
+    role: dim
+    description: "breeds"
+    columns:
+      - name: "breed_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "breed code"
+        alias: ["breed_code"]
+        sync: true
+      - name: "breed_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "breed name"
+        alias: ["breed_name"]
+        sync: true
+  - name: "Charges"
+    role: dim
+    description: "charges"
+    columns:
+      - name: "charge_id"
+        role: foreign_key
+        type: FLOAT
+        description: "charge id"
+        alias: ["charge_id"]
+        sync: false
+      - name: "charge_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "charge type"
+        alias: ["charge_type"]
+        sync: true
+      - name: "charge_amount"
+        role: measure
+        type: FLOAT
+        description: "charge amount"
+        alias: ["charge_amount"]
+        sync: false
+  - name: "Sizes"
+    role: dim
+    description: "sizes"
+    columns:
+      - name: "size_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "size code"
+        alias: ["size_code"]
+        sync: true
+      - name: "size_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "size description"
+        alias: ["size_description"]
+        sync: false
+  - name: "Treatment_Types"
+    role: dim
+    description: "treatment types"
+    columns:
+      - name: "treatment_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "treatment type code"
+        alias: ["treatment_type_code"]
+        sync: true
+      - name: "treatment_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "treatment type description"
+        alias: ["treatment_type_description"]
+        sync: true
+  - name: "Owners"
+    role: dim
+    description: "owners"
+    columns:
+      - name: "owner_id"
+        role: foreign_key
+        type: FLOAT
+        description: "owner id"
+        alias: ["owner_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "street"
+        role: dimension
+        type: VARCHAR(255)
+        description: "street"
+        alias: ["street"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "zip_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip code"
+        alias: ["zip_code"]
+        sync: true
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "home_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "home phone"
+        alias: ["home_phone"]
+        sync: false
+      - name: "cell_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell number"
+        alias: ["cell_number"]
+        sync: false
+  - name: "Dogs"
+    role: dim
+    description: "dogs"
+    columns:
+      - name: "dog_id"
+        role: primary_key
+        type: FLOAT
+        description: "dog id"
+        alias: ["dog_id"]
+        sync: false
+      - name: "owner_id"
+        role: foreign_key
+        type: FLOAT
+        description: "owner id"
+        alias: ["owner_id"]
+        sync: false
+      - name: "abandoned_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "abandoned yn"
+        alias: ["abandoned_yn"]
+        sync: false
+      - name: "breed_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "breed code"
+        alias: ["breed_code"]
+        sync: true
+      - name: "size_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "size code"
+        alias: ["size_code"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "age"
+        role: dimension
+        type: VARCHAR(255)
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "date_of_birth"
+        role: dimension
+        type: DATETIME
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "weight"
+        role: dimension
+        type: VARCHAR(255)
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "date_arrived"
+        role: dimension
+        type: DATETIME
+        description: "date arrived"
+        alias: ["date_arrived"]
+        sync: false
+      - name: "date_adopted"
+        role: dimension
+        type: DATETIME
+        description: "date adopted"
+        alias: ["date_adopted"]
+        sync: false
+      - name: "date_departed"
+        role: dimension
+        type: DATETIME
+        description: "date departed"
+        alias: ["date_departed"]
+        sync: false
+  - name: "Professionals"
+    role: dim
+    description: "professionals"
+    columns:
+      - name: "professional_id"
+        role: foreign_key
+        type: FLOAT
+        description: "professional id"
+        alias: ["professional_id"]
+        sync: false
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "street"
+        role: dimension
+        type: VARCHAR(255)
+        description: "street"
+        alias: ["street"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "zip_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip code"
+        alias: ["zip_code"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "home_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "home phone"
+        alias: ["home_phone"]
+        sync: false
+      - name: "cell_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cell number"
+        alias: ["cell_number"]
+        sync: false
+  - name: "Treatments"
+    role: dim
+    description: "treatments"
+    columns:
+      - name: "treatment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "treatment id"
+        alias: ["treatment_id"]
+        sync: false
+      - name: "dog_id"
+        role: primary_key
+        type: FLOAT
+        description: "dog id"
+        alias: ["dog_id"]
+        sync: false
+      - name: "professional_id"
+        role: foreign_key
+        type: FLOAT
+        description: "professional id"
+        alias: ["professional_id"]
+        sync: false
+      - name: "treatment_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "treatment type code"
+        alias: ["treatment_type_code"]
+        sync: true
+      - name: "date_of_treatment"
+        role: dimension
+        type: DATETIME
+        description: "date of treatment"
+        alias: ["date_of_treatment"]
+        sync: false
+      - name: "cost_of_treatment"
+        role: measure
+        type: FLOAT
+        description: "cost of treatment"
+        alias: ["cost_of_treatment"]
+        sync: false
+
+metrics:
+  - name: "charges_charge_amount"
+    description: charge amount from charges
+    relevant_columns:
+      - Charges.charge_amount
+    alias: [charge_amount]
+  - name: "treatments_cost_of_treatment"
+    description: cost of treatment from treatments
+    relevant_columns:
+      - Treatments.cost_of_treatment
+    alias: [cost_of_treatment]

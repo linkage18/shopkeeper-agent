@@ -1,0 +1,73 @@
+tables:
+  - name: "journal"
+    role: dim
+    description: "journal"
+    columns:
+      - name: "Journal_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "journal id"
+        alias: ["journal_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "theme"
+        alias: ["theme"]
+        sync: false
+      - name: "Sales"
+        role: dimension
+        type: FLOAT
+        description: "sales"
+        alias: ["sales"]
+        sync: false
+  - name: "editor"
+    role: dim
+    description: "editor"
+    columns:
+      - name: "Editor_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "editor id"
+        alias: ["editor_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "journal_committee"
+    role: dim
+    description: "journal committee"
+    columns:
+      - name: "Editor_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "editor id"
+        alias: ["editor_id"]
+        sync: false
+      - name: "Journal_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "journal id"
+        alias: ["journal_id"]
+        sync: false
+      - name: "Work_Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "work type"
+        alias: ["work_type"]
+        sync: true

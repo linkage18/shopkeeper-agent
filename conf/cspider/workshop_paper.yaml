@@ -1,0 +1,86 @@
+tables:
+  - name: "workshop"
+    role: dim
+    description: "workshop"
+    columns:
+      - name: "Workshop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "workshop id"
+        alias: ["workshop_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Venue"
+        role: dimension
+        type: VARCHAR(255)
+        description: "venue"
+        alias: ["venue"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "submission"
+    role: dim
+    description: "submission"
+    columns:
+      - name: "Submission_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "submission id"
+        alias: ["submission_id"]
+        sync: false
+      - name: "Scores"
+        role: measure
+        type: FLOAT
+        description: "scores"
+        alias: ["scores"]
+        sync: false
+      - name: "Author"
+        role: dimension
+        type: VARCHAR(255)
+        description: "author"
+        alias: ["author"]
+        sync: false
+      - name: "College"
+        role: dimension
+        type: VARCHAR(255)
+        description: "college"
+        alias: ["college"]
+        sync: false
+  - name: "Acceptance"
+    role: dim
+    description: "acceptance"
+    columns:
+      - name: "Submission_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "submission id"
+        alias: ["submission_id"]
+        sync: false
+      - name: "Workshop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "workshop id"
+        alias: ["workshop_id"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+
+metrics:
+  - name: "submission_scores"
+    description: scores from submission
+    relevant_columns:
+      - submission.Scores
+    alias: [scores]

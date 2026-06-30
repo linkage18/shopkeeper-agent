@@ -1,16 +1,20 @@
+﻿"""电商问数 Agent 使用的大模型实例
+
+包装 LLM 以自动记录 Token 消耗，保持与 LangChain LCEL 兼容（返回 AIMessage），
+并提供可注入接口，方便测试时替换为 mock。
 """
-电商问数 Agent 使用的大模型实例
-包装 LLM 以自动记录 Token 消耗，保持与 LangChain LCEL 兼容（返回 AIMessage）
-"""
-from langchain.chat_models import init_chat_model
-from langchain_core.language_models import BaseChatModel
+
+from __future__ import annotations
+from contextvars import ContextVar
 from typing import Any
 
+from langchain.chat_models import init_chat_model
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage
 from langchain_core.runnables import Runnable
 
 from app.conf.app_config import app_config
-from app.report_agent.token_counter import token_counter
+from app.core.token_counter import token_counter
 
 
 class TracedLLM(Runnable):
@@ -56,17 +60,53 @@ class TracedLLM(Runnable):
         return getattr(self._llm, name)
 
 
-# 统一从配置读取模型三件套，节点只复用 llm，不重复初始化模型连接
-_raw_llm = init_chat_model(
-    model=app_config.llm.model_name,
-    model_provider="openai",
-    base_url=app_config.llm.base_url,
-    api_key=app_config.llm.api_key,
-    temperature=0,
-)
+# ---------------------------------------------------------------------------
+# 可替换的 LLM 实例
+#
+# 模块加载时用默认配置创建 LLM；测试时可通过 override_llm() 注入 mock，
+# 无需修改任何节点代码。
+# ---------------------------------------------------------------------------
+_llm_var: ContextVar[TracedLLM | None] = ContextVar("traced_llm", default=None)
 
-# 对外暴露包装后的 llm 实例
-llm = TracedLLM(_raw_llm)
 
-if __name__ == "__main__":
-    print(llm.invoke("你好"))
+def _create_default_llm() -> TracedLLM:
+    """根据全局配置创建 LLM 实例"""
+    raw_llm = init_chat_model(
+        model=app_config.llm.model_name,
+        model_provider="openai",
+        base_url=app_config.llm.base_url,
+        api_key=app_config.llm.api_key,
+        temperature=0,
+    )
+    return TracedLLM(raw_llm)
+
+
+def get_llm() -> TracedLLM:
+    """获取当前 LLM 实例
+
+    优先返回通过 override_llm() 注入的实例，否则懒加载默认实例。
+    所有使用方应调用 get_llm() 而非直接引用模块级变量。
+    """
+    traced = _llm_var.get()
+    if traced is not None:
+        return traced
+    traced = _create_default_llm()
+    _llm_var.set(traced)
+    return traced
+
+
+def override_llm(mock_llm: TracedLLM):
+    """注入 mock LLM（用于测试）
+
+    返回 token，调用方可用 reset_llm(token) 恢复。
+    """
+    return _llm_var.set(mock_llm)
+
+
+def reset_llm(token):
+    """恢复被 override 的 LLM 实例"""
+    _llm_var.reset(token)
+
+
+# 向后兼容 — 仍被 tests/test_llm.py 使用
+llm = get_llm()

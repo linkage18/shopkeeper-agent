@@ -1,0 +1,285 @@
+tables:
+  - name: "Premises"
+    role: dim
+    description: "premises"
+    columns:
+      - name: "premise_id"
+        role: foreign_key
+        type: FLOAT
+        description: "premise id"
+        alias: ["premise_id"]
+        sync: false
+      - name: "premises_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "premises type"
+        alias: ["premises_type"]
+        sync: true
+      - name: "premise_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "premise details"
+        alias: ["premise_details"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category"
+        alias: ["product_category"]
+        sync: true
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "payment_method"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method"
+        alias: ["payment_method"]
+        sync: false
+      - name: "customer_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "customer_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "customer_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email"
+        alias: ["customer_email"]
+        sync: false
+      - name: "customer_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer address"
+        alias: ["customer_address"]
+        sync: false
+      - name: "customer_login"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer login"
+        alias: ["customer_login"]
+        sync: false
+      - name: "customer_password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer password"
+        alias: ["customer_password"]
+        sync: false
+  - name: "Mailshot_Campaigns"
+    role: dim
+    description: "mailshot campaigns"
+    columns:
+      - name: "mailshot_id"
+        role: foreign_key
+        type: FLOAT
+        description: "mailshot id"
+        alias: ["mailshot_id"]
+        sync: false
+      - name: "product_category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category"
+        alias: ["product_category"]
+        sync: true
+      - name: "mailshot_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "mailshot name"
+        alias: ["mailshot_name"]
+        sync: true
+      - name: "mailshot_start_date"
+        role: dimension
+        type: DATETIME
+        description: "mailshot start date"
+        alias: ["mailshot_start_date"]
+        sync: false
+      - name: "mailshot_end_date"
+        role: dimension
+        type: DATETIME
+        description: "mailshot end date"
+        alias: ["mailshot_end_date"]
+        sync: false
+  - name: "Customer_Addresses"
+    role: dim
+    description: "customer addresses"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "premise_id"
+        role: foreign_key
+        type: FLOAT
+        description: "premise id"
+        alias: ["premise_id"]
+        sync: false
+      - name: "date_address_from"
+        role: dimension
+        type: DATETIME
+        description: "date address from"
+        alias: ["date_address_from"]
+        sync: false
+      - name: "address_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address type code"
+        alias: ["address_type_code"]
+        sync: true
+      - name: "date_address_to"
+        role: dimension
+        type: DATETIME
+        description: "date address to"
+        alias: ["date_address_to"]
+        sync: false
+  - name: "Customer_Orders"
+    role: fact
+    description: "customer orders"
+    columns:
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "order_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order status code"
+        alias: ["order_status_code"]
+        sync: true
+      - name: "shipping_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipping method code"
+        alias: ["shipping_method_code"]
+        sync: true
+      - name: "order_placed_datetime"
+        role: dimension
+        type: DATETIME
+        description: "order placed datetime"
+        alias: ["order_placed_datetime"]
+        sync: false
+      - name: "order_delivered_datetime"
+        role: dimension
+        type: DATETIME
+        description: "order delivered datetime"
+        alias: ["order_delivered_datetime"]
+        sync: false
+      - name: "order_shipping_charges"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order shipping charges"
+        alias: ["order_shipping_charges"]
+        sync: false
+  - name: "Mailshot_Customers"
+    role: dim
+    description: "mailshot customers"
+    columns:
+      - name: "mailshot_id"
+        role: foreign_key
+        type: FLOAT
+        description: "mailshot id"
+        alias: ["mailshot_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "outcome_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "outcome code"
+        alias: ["outcome_code"]
+        sync: true
+      - name: "mailshot_customer_date"
+        role: dimension
+        type: DATETIME
+        description: "mailshot customer date"
+        alias: ["mailshot_customer_date"]
+        sync: false
+  - name: "Order_Items"
+    role: fact
+    description: "order items"
+    columns:
+      - name: "item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "item id"
+        alias: ["item_id"]
+        sync: false
+      - name: "order_item_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order item status code"
+        alias: ["order_item_status_code"]
+        sync: true
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "item_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "item status code"
+        alias: ["item_status_code"]
+        sync: true
+      - name: "item_delivered_datetime"
+        role: dimension
+        type: DATETIME
+        description: "item delivered datetime"
+        alias: ["item_delivered_datetime"]
+        sync: false
+      - name: "item_order_quantity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "item order quantity"
+        alias: ["item_order_quantity"]
+        sync: false

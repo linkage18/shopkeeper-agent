@@ -1,0 +1,81 @@
+tables:
+  - name: "election"
+    role: dim
+    description: "election"
+    columns:
+      - name: "Election_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "election id"
+        alias: ["election_id"]
+        sync: false
+      - name: "Representative_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "representative id"
+        alias: ["representative_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Votes"
+        role: dimension
+        type: FLOAT
+        description: "votes"
+        alias: ["votes"]
+        sync: false
+      - name: "Vote_Percent"
+        role: dimension
+        type: FLOAT
+        description: "vote percent"
+        alias: ["vote_percent"]
+        sync: false
+      - name: "Seats"
+        role: dimension
+        type: FLOAT
+        description: "seats"
+        alias: ["seats"]
+        sync: false
+      - name: "Place"
+        role: dimension
+        type: FLOAT
+        description: "place"
+        alias: ["place"]
+        sync: false
+  - name: "representative"
+    role: dim
+    description: "representative"
+    columns:
+      - name: "Representative_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "representative id"
+        alias: ["representative_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "State"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "Party"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party"
+        alias: ["party"]
+        sync: false
+      - name: "Lifespan"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lifespan"
+        alias: ["lifespan"]
+        sync: false

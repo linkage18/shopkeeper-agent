@@ -1,4 +1,4 @@
-"""
+﻿"""
 电商问数 Agent 状态定义
 
 State 是 LangGraph 各节点之间传递和更新的共享数据
@@ -65,6 +65,7 @@ class DataAgentState(TypedDict):
 
     query: str  # 用户输入的查询
     keywords: list[str]  # 抽取的关键词
+    memory_context: str  # 检索到的记忆上下文（由 QueryService 注入，generate_sql 使用）
     retrieved_column_infos: list[ColumnInfo]  # 检索到的字段信息
     retrieved_metric_infos: list[MetricInfo]  # 检索到的指标信息
     retrieved_value_infos: list[ValueInfo]  # 检索到的取值信息
@@ -79,3 +80,4 @@ class DataAgentState(TypedDict):
     error: str  # 校验SQL时出现的错误信息
     retry_count: int  # SQL 修正重试次数（上限 2 次）
     fatal_error: str  # 最终无法执行的错误信息（重试用尽后设置）
+

@@ -1,0 +1,69 @@
+tables:
+  - name: "entrepreneur"
+    role: dim
+    description: "entrepreneur"
+    columns:
+      - name: "Entrepreneur_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "entrepreneur id"
+        alias: ["entrepreneur_id"]
+        sync: false
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Company"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company"
+        alias: ["company"]
+        sync: true
+      - name: "Money_Requested"
+        role: dimension
+        type: FLOAT
+        description: "money requested"
+        alias: ["money_requested"]
+        sync: false
+      - name: "Investor"
+        role: dimension
+        type: VARCHAR(255)
+        description: "investor"
+        alias: ["investor"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "Date_of_Birth"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false

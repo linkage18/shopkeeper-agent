@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 from app.conf.app_config import app_config
 from app.knowledge.manager import save_knowledge
 from app.knowledge.models import KnowledgeEntry
@@ -18,7 +18,7 @@ async def extract_knowledge(query: str, sql: str, result: str, user_id: str):
         f"如果没有，返回 {{\"has_knowledge\": false}}"
     )
     try:
-        resp = await llm.ainvoke(prompt)
+        resp = await get_llm().ainvoke(prompt)
         import json
         data = json.loads(resp.content.strip().strip("```json").strip("```").strip())
         if data.get("has_knowledge"):
@@ -34,5 +34,6 @@ async def extract_knowledge(query: str, sql: str, result: str, user_id: str):
                 status="pending",
             )
             save_knowledge(entry, user_id, is_shared=True)
-    except Exception:
-        pass
+    except Exception as e:
+        from app.core.log import logger
+        logger.warning(f"Knowledge extraction failed: {e}")

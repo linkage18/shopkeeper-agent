@@ -4,6 +4,7 @@
  */
 import type { AgentEvent, RagResultEvent, SourceRef } from "../types/agent";
 import { authHeaders } from "./authApi";
+import { parseSseChunk } from "./sse";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
 
@@ -46,7 +47,7 @@ export async function streamRagQuery(query: string, sessionId: string, options: 
     buffer = chunks.pop() ?? "";
 
     for (const chunk of chunks) {
-      const event = parseRagSseChunk(chunk);
+      const event = parseSseChunk<AgentEvent | RagResultEvent>(chunk);
       if (event) {
         options.onEvent(event);
       }
@@ -54,25 +55,6 @@ export async function streamRagQuery(query: string, sessionId: string, options: 
   }
 }
 
-function parseRagSseChunk(chunk: string): AgentEvent | RagResultEvent | null {
-  const payload = chunk
-    .split("\n")
-    .filter((line) => line.startsWith("data:"))
-    .map((line) => line.replace(/^data:\s?/, ""))
-    .join("\n")
-    .trim();
-
-  if (!payload) return null;
-
-  try {
-    return JSON.parse(payload) as AgentEvent | RagResultEvent;
-  } catch {
-    return {
-      type: "error",
-      message: `无法解析后端事件：${payload}`,
-    };
-  }
-}
 
 export async function uploadFile(file: File): Promise<{ status: string; result: Record<string, unknown> }> {
   const form = new FormData();

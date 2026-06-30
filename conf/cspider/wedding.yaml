@@ -1,0 +1,104 @@
+tables:
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Is_Male"
+        role: dimension
+        type: VARCHAR(255)
+        description: "is male"
+        alias: ["is_male"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "church"
+    role: dim
+    description: "church"
+    columns:
+      - name: "Church_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "church id"
+        alias: ["church_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Organized_by"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organized by"
+        alias: ["organized_by"]
+        sync: false
+      - name: "Open_Date"
+        role: dimension
+        type: FLOAT
+        description: "open date"
+        alias: ["open_date"]
+        sync: false
+      - name: "Continuation_of"
+        role: dimension
+        type: VARCHAR(255)
+        description: "continuation of"
+        alias: ["continuation_of"]
+        sync: false
+  - name: "wedding"
+    role: dim
+    description: "wedding"
+    columns:
+      - name: "Church_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "church id"
+        alias: ["church_id"]
+        sync: false
+      - name: "Male_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "male id"
+        alias: ["male_id"]
+        sync: false
+      - name: "Female_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "female id"
+        alias: ["female_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+
+metrics:
+  - name: "wedding_year"
+    description: year from wedding
+    relevant_columns:
+      - wedding.Year
+    alias: [year]

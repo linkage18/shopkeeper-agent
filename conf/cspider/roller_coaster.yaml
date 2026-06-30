@@ -1,0 +1,105 @@
+tables:
+  - name: "roller_coaster"
+    role: dim
+    description: "roller coaster"
+    columns:
+      - name: "Roller_Coaster_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "roller coaster id"
+        alias: ["roller_coaster_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Park"
+        role: dimension
+        type: VARCHAR(255)
+        description: "park"
+        alias: ["park"]
+        sync: false
+      - name: "Country_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "Length"
+        role: dimension
+        type: FLOAT
+        description: "length"
+        alias: ["length"]
+        sync: false
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Speed"
+        role: dimension
+        type: VARCHAR(255)
+        description: "speed"
+        alias: ["speed"]
+        sync: false
+      - name: "Opened"
+        role: dimension
+        type: VARCHAR(255)
+        description: "opened"
+        alias: ["opened"]
+        sync: false
+      - name: "Status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status"
+        alias: ["status"]
+        sync: true
+  - name: "country"
+    role: dim
+    description: "country"
+    columns:
+      - name: "Country_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "Area"
+        role: measure
+        type: FLOAT
+        description: "area"
+        alias: ["area"]
+        sync: false
+      - name: "Languages"
+        role: dimension
+        type: VARCHAR(255)
+        description: "languages"
+        alias: ["languages"]
+        sync: true
+
+metrics:
+  - name: "country_population"
+    description: population from country
+    relevant_columns:
+      - country.Population
+    alias: [population]
+  - name: "country_area"
+    description: area from country
+    relevant_columns:
+      - country.Area
+    alias: [area]

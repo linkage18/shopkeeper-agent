@@ -1,0 +1,109 @@
+tables:
+  - name: "station"
+    role: dim
+    description: "station"
+    columns:
+      - name: "Station_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Annual_entry_exit"
+        role: dimension
+        type: FLOAT
+        description: "annual entry exit"
+        alias: ["annual_entry_exit"]
+        sync: false
+      - name: "Annual_interchanges"
+        role: dimension
+        type: FLOAT
+        description: "annual interchanges"
+        alias: ["annual_interchanges"]
+        sync: false
+      - name: "Total_Passengers"
+        role: measure
+        type: FLOAT
+        description: "total passengers"
+        alias: ["total_passengers"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Main_Services"
+        role: dimension
+        type: VARCHAR(255)
+        description: "main services"
+        alias: ["main_services"]
+        sync: false
+      - name: "Number_of_Platforms"
+        role: measure
+        type: FLOAT
+        description: "number of platforms"
+        alias: ["number_of_platforms"]
+        sync: false
+  - name: "train"
+    role: dim
+    description: "train"
+    columns:
+      - name: "Train_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "train id"
+        alias: ["train_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "Service"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service"
+        alias: ["service"]
+        sync: false
+  - name: "train_station"
+    role: dim
+    description: "train station"
+    columns:
+      - name: "Train_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "train id"
+        alias: ["train_id"]
+        sync: false
+      - name: "Station_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+
+metrics:
+  - name: "station_total_passengers"
+    description: total passengers from station
+    relevant_columns:
+      - station.Total_Passengers
+    alias: [total_passengers]
+  - name: "station_number_of_platforms"
+    description: number of platforms from station
+    relevant_columns:
+      - station.Number_of_Platforms
+    alias: [number_of_platforms]

@@ -1,0 +1,215 @@
+tables:
+  - name: "works_on"
+    role: dim
+    description: "works on"
+    columns:
+      - name: "Essn"
+        role: dimension
+        type: FLOAT
+        description: "essn"
+        alias: ["essn"]
+        sync: false
+      - name: "Pno"
+        role: dimension
+        type: FLOAT
+        description: "pno"
+        alias: ["pno"]
+        sync: false
+      - name: "Hours"
+        role: dimension
+        type: FLOAT
+        description: "hours"
+        alias: ["hours"]
+        sync: false
+  - name: "employee"
+    role: dim
+    description: "employee"
+    columns:
+      - name: "Fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+      - name: "Minit"
+        role: dimension
+        type: VARCHAR(255)
+        description: "minit"
+        alias: ["minit"]
+        sync: false
+      - name: "Lname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "Ssn"
+        role: dimension
+        type: FLOAT
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+      - name: "Bdate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bdate"
+        alias: ["bdate"]
+        sync: false
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Salary"
+        role: measure
+        type: FLOAT
+        description: "salary"
+        alias: ["salary"]
+        sync: false
+      - name: "Super_ssn"
+        role: dimension
+        type: FLOAT
+        description: "super ssn"
+        alias: ["super_ssn"]
+        sync: false
+      - name: "Dno"
+        role: dimension
+        type: FLOAT
+        description: "dno"
+        alias: ["dno"]
+        sync: false
+  - name: "department"
+    role: dim
+    description: "department"
+    columns:
+      - name: "Dname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dname"
+        alias: ["dname"]
+        sync: true
+      - name: "Dnumber"
+        role: measure
+        type: FLOAT
+        description: "dnumber"
+        alias: ["dnumber"]
+        sync: false
+      - name: "Mgr_ssn"
+        role: dimension
+        type: FLOAT
+        description: "mgr ssn"
+        alias: ["mgr_ssn"]
+        sync: false
+      - name: "Mgr_start_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "mgr start date"
+        alias: ["mgr_start_date"]
+        sync: false
+  - name: "project"
+    role: dim
+    description: "project"
+    columns:
+      - name: "Pname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pname"
+        alias: ["pname"]
+        sync: true
+      - name: "Pnumber"
+        role: measure
+        type: FLOAT
+        description: "pnumber"
+        alias: ["pnumber"]
+        sync: false
+      - name: "Plocation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "plocation"
+        alias: ["plocation"]
+        sync: false
+      - name: "Dnum"
+        role: dimension
+        type: FLOAT
+        description: "dnum"
+        alias: ["dnum"]
+        sync: false
+  - name: "dependent"
+    role: dim
+    description: "dependent"
+    columns:
+      - name: "Essn"
+        role: dimension
+        type: FLOAT
+        description: "essn"
+        alias: ["essn"]
+        sync: false
+      - name: "Dependent_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dependent name"
+        alias: ["dependent_name"]
+        sync: true
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Bdate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bdate"
+        alias: ["bdate"]
+        sync: false
+      - name: "Relationship"
+        role: dimension
+        type: VARCHAR(255)
+        description: "relationship"
+        alias: ["relationship"]
+        sync: false
+  - name: "dept_locations"
+    role: dim
+    description: "dept locations"
+    columns:
+      - name: "Dnumber"
+        role: measure
+        type: FLOAT
+        description: "dnumber"
+        alias: ["dnumber"]
+        sync: false
+      - name: "Dlocation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dlocation"
+        alias: ["dlocation"]
+        sync: false
+
+metrics:
+  - name: "employee_salary"
+    description: salary from employee
+    relevant_columns:
+      - employee.Salary
+    alias: [salary]
+  - name: "department_dnumber"
+    description: dnumber from department
+    relevant_columns:
+      - department.Dnumber
+    alias: [dnumber]
+  - name: "project_pnumber"
+    description: pnumber from project
+    relevant_columns:
+      - project.Pnumber
+    alias: [pnumber]
+  - name: "dept_locations_dnumber"
+    description: dnumber from dept_locations
+    relevant_columns:
+      - dept_locations.Dnumber
+    alias: [dnumber]

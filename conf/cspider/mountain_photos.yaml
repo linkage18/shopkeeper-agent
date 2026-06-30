@@ -1,0 +1,109 @@
+tables:
+  - name: "mountain"
+    role: dim
+    description: "mountain"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Prominence"
+        role: dimension
+        type: FLOAT
+        description: "prominence"
+        alias: ["prominence"]
+        sync: false
+      - name: "Range"
+        role: dimension
+        type: VARCHAR(255)
+        description: "range"
+        alias: ["range"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "camera_lens"
+    role: dim
+    description: "camera lens"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "brand"
+        role: dimension
+        type: VARCHAR(255)
+        description: "brand"
+        alias: ["brand"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "focal_length_mm"
+        role: dimension
+        type: FLOAT
+        description: "focal length mm"
+        alias: ["focal_length_mm"]
+        sync: false
+      - name: "max_aperture"
+        role: dimension
+        type: FLOAT
+        description: "max aperture"
+        alias: ["max_aperture"]
+        sync: false
+  - name: "photos"
+    role: dim
+    description: "photos"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "camera_lens_id"
+        role: foreign_key
+        type: FLOAT
+        description: "camera lens id"
+        alias: ["camera_lens_id"]
+        sync: false
+      - name: "mountain_id"
+        role: foreign_key
+        type: FLOAT
+        description: "mountain id"
+        alias: ["mountain_id"]
+        sync: false
+      - name: "color"
+        role: dimension
+        type: VARCHAR(255)
+        description: "color"
+        alias: ["color"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true

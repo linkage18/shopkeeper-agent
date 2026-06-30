@@ -1,11 +1,14 @@
 /**
  * 智能体执行流程图组件
  * 支持 NL2SQL（复杂拓扑）和 RAG（线性流程）两种模式
- * Impeccable 设计 — 金箔金/铜绿/暖黑漆器
+ * GSAP 增强 — 入场 stagger / 连线生长 / 脉冲呼吸 / 图标弹跳
  */
 import { Check, Circle, LoaderCircle, X } from "lucide-react";
 import { cn } from "../lib/format";
 import type { ProgressStatus, StepState } from "../types/agent";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { fadeInUp, pulse, killPulse, bounceIcon, spinIcon, growLine, staggerList } from "../lib/anim";
 
 type FlowStatus = ProgressStatus | "pending";
 
@@ -58,6 +61,26 @@ function NodeIcon({ status }: { status: FlowStatus }) {
 }
 
 function FlowNodeCard({ node, status }: { node: FlowNode; status: FlowStatus }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLSpanElement>(null);
+  const prevStatus = useRef(status);
+
+  useEffect(() => {
+    if (prevStatus.current !== status) {
+      if (status === "running") pulse(cardRef.current);
+      else killPulse(cardRef.current);
+      if (status === "success" || status === "error") {
+        bounceIcon(iconRef.current);
+        spinIcon(iconRef.current);
+      }
+      prevStatus.current = status;
+    }
+  }, [status]);
+
+  useEffect(() => {
+    fadeInUp(cardRef.current, 0, 0.3);
+  }, []);
+
   const width = node.w ?? 156;
   return (
     <div className="absolute -translate-x-1/2" style={{ left: node.x, top: node.y, width }}>
@@ -90,13 +113,29 @@ type StepRailProps = { steps?: StepState[]; mode?: "sql" | "rag" | "report" };
 export function StepRail({ steps = [], mode = "sql" }: StepRailProps) {
   if (steps.length === 0) return null;
   const statusMap = getStatusMap(steps);
+  const railRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (mode === "rag" || mode === "report") {
+      const cards = railRef.current?.querySelectorAll("[data-step-card]");
+      if (cards?.length) staggerList(Array.from(cards) as HTMLElement[], 80);
+    }
+  }, [steps, mode]);
+
+  useEffect(() => {
+    if (mode === "sql" && svgRef.current) {
+      const paths = svgRef.current.querySelectorAll("path");
+      paths.forEach((p, i) => growLine(p as unknown as HTMLElement, i * 0.03));
+    }
+  }, [mode]);
 
   if (mode === "rag" || mode === "report") {
     const flowSteps = mode === "rag"
       ? ["抽取关键词", "召回文档", "组装上下文", "生成答案"]
       : REPORT_STEPS;
     return (
-      <section className="mt-4 rounded-lg border border-gray-200 bg-white/40 px-3 py-4 shadow-subtle">
+      <section ref={railRef} className="mt-4 rounded-lg border border-gray-200 bg-white/40 px-3 py-4 shadow-subtle">
         <div className="mb-3 flex items-center justify-between gap-3 px-1">
           <div className="text-sm font-semibold text-gray-900">执行流程</div>
           <div className="text-xs text-gray-400">{mode === "rag" ? "RAG Agent" : "Report Agent"}</div>

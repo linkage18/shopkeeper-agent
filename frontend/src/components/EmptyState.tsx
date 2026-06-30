@@ -2,6 +2,7 @@
  * 首页空状态组件
  * 展示产品入口信息和可点击的示例问数问题
  */
+import React from "react";
 import { LineChart, Search, ShoppingBag, Sparkles } from "lucide-react";
 import { cn } from "../lib/format";
 
@@ -13,10 +14,10 @@ type EmptyStateProps = {
 const highlights = [
   { label: "混合检索", icon: Search },
   { label: "SQL 闭环", icon: LineChart },
-  { label: "电商数仓", icon: ShoppingBag },
+  { label: "音乐数仓", icon: ShoppingBag },
 ];
 
-export function EmptyState({ examples, onUseExample }: EmptyStateProps) {
+export const EmptyState = React.memo(function EmptyState({ examples, onUseExample }: EmptyStateProps) {
   return (
     <div className="mx-auto flex flex-col justify-center px-4 py-12">
       <div className="mb-10 max-w-3xl">
@@ -59,4 +60,4 @@ export function EmptyState({ examples, onUseExample }: EmptyStateProps) {
       </div>
     </div>
   );
-}
+});

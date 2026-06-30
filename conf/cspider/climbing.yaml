@@ -1,0 +1,81 @@
+tables:
+  - name: "mountain"
+    role: dim
+    description: "mountain"
+    columns:
+      - name: "Mountain_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "mountain id"
+        alias: ["mountain_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Prominence"
+        role: dimension
+        type: FLOAT
+        description: "prominence"
+        alias: ["prominence"]
+        sync: false
+      - name: "Range"
+        role: dimension
+        type: VARCHAR(255)
+        description: "range"
+        alias: ["range"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "climber"
+    role: dim
+    description: "climber"
+    columns:
+      - name: "Climber_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "climber id"
+        alias: ["climber_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "Points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+      - name: "Mountain_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "mountain id"
+        alias: ["mountain_id"]
+        sync: false

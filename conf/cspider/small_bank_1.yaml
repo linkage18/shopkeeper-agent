@@ -1,0 +1,49 @@
+tables:
+  - name: "ACCOUNTS"
+    role: dim
+    description: "accounts"
+    columns:
+      - name: "custid"
+        role: primary_key
+        type: FLOAT
+        description: "custid"
+        alias: ["custid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "SAVINGS"
+    role: dim
+    description: "savings"
+    columns:
+      - name: "custid"
+        role: primary_key
+        type: FLOAT
+        description: "custid"
+        alias: ["custid"]
+        sync: false
+      - name: "balance"
+        role: dimension
+        type: FLOAT
+        description: "balance"
+        alias: ["balance"]
+        sync: false
+  - name: "CHECKING"
+    role: dim
+    description: "checking"
+    columns:
+      - name: "custid"
+        role: primary_key
+        type: FLOAT
+        description: "custid"
+        alias: ["custid"]
+        sync: false
+      - name: "balance"
+        role: dimension
+        type: FLOAT
+        description: "balance"
+        alias: ["balance"]
+        sync: false

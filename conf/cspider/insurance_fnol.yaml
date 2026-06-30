@@ -1,0 +1,168 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Customer_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+  - name: "Services"
+    role: dim
+    description: "services"
+    columns:
+      - name: "Service_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "Service_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service name"
+        alias: ["service_name"]
+        sync: true
+  - name: "Available_Policies"
+    role: dim
+    description: "available policies"
+    columns:
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "policy_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "policy type code"
+        alias: ["policy_type_code"]
+        sync: true
+      - name: "Customer_Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+  - name: "Customers_Policies"
+    role: dim
+    description: "customers policies"
+    columns:
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Date_Opened"
+        role: dimension
+        type: DATETIME
+        description: "date opened"
+        alias: ["date_opened"]
+        sync: false
+      - name: "Date_Closed"
+        role: dimension
+        type: DATETIME
+        description: "date closed"
+        alias: ["date_closed"]
+        sync: false
+  - name: "First_Notification_of_Loss"
+    role: dim
+    description: "first notification of loss"
+    columns:
+      - name: "FNOL_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "fnol id"
+        alias: ["fnol_id"]
+        sync: false
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Service_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+  - name: "Claims"
+    role: dim
+    description: "claims"
+    columns:
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "FNOL_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "fnol id"
+        alias: ["fnol_id"]
+        sync: false
+      - name: "Effective_Date"
+        role: dimension
+        type: DATETIME
+        description: "effective date"
+        alias: ["effective_date"]
+        sync: false
+  - name: "Settlements"
+    role: dim
+    description: "settlements"
+    columns:
+      - name: "Settlement_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "settlement id"
+        alias: ["settlement_id"]
+        sync: false
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "Effective_Date"
+        role: dimension
+        type: DATETIME
+        description: "effective date"
+        alias: ["effective_date"]
+        sync: false
+      - name: "Settlement_Amount"
+        role: measure
+        type: FLOAT
+        description: "settlement amount"
+        alias: ["settlement_amount"]
+        sync: false
+
+metrics:
+  - name: "settlements_settlement_amount"
+    description: settlement amount from settlements
+    relevant_columns:
+      - Settlements.Settlement_Amount
+    alias: [settlement_amount]

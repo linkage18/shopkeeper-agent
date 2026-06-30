@@ -1,0 +1,80 @@
+tables:
+  - name: "Movie"
+    role: dim
+    description: "movie"
+    columns:
+      - name: "mID"
+        role: primary_key
+        type: FLOAT
+        description: "mid"
+        alias: ["mid"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "director"
+        role: dimension
+        type: VARCHAR(255)
+        description: "director"
+        alias: ["director"]
+        sync: false
+  - name: "Reviewer"
+    role: dim
+    description: "reviewer"
+    columns:
+      - name: "rID"
+        role: primary_key
+        type: FLOAT
+        description: "rid"
+        alias: ["rid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Rating"
+    role: dim
+    description: "rating"
+    columns:
+      - name: "rID"
+        role: primary_key
+        type: FLOAT
+        description: "rid"
+        alias: ["rid"]
+        sync: false
+      - name: "mID"
+        role: primary_key
+        type: FLOAT
+        description: "mid"
+        alias: ["mid"]
+        sync: false
+      - name: "stars"
+        role: dimension
+        type: FLOAT
+        description: "stars"
+        alias: ["stars"]
+        sync: false
+      - name: "ratingDate"
+        role: dimension
+        type: DATETIME
+        description: "ratingdate"
+        alias: ["ratingdate"]
+        sync: false
+
+metrics:
+  - name: "movie_year"
+    description: year from movie
+    relevant_columns:
+      - Movie.year
+    alias: [year]

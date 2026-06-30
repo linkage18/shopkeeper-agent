@@ -1,0 +1,198 @@
+tables:
+  - name: "venue"
+    role: dim
+    description: "venue"
+    columns:
+      - name: "venueId"
+        role: dimension
+        type: FLOAT
+        description: "venueid"
+        alias: ["venueid"]
+        sync: false
+      - name: "venueName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "venuename"
+        alias: ["venuename"]
+        sync: true
+  - name: "author"
+    role: dim
+    description: "author"
+    columns:
+      - name: "authorId"
+        role: dimension
+        type: FLOAT
+        description: "authorid"
+        alias: ["authorid"]
+        sync: false
+      - name: "authorName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "authorname"
+        alias: ["authorname"]
+        sync: true
+  - name: "dataset"
+    role: dim
+    description: "dataset"
+    columns:
+      - name: "datasetId"
+        role: dimension
+        type: FLOAT
+        description: "datasetid"
+        alias: ["datasetid"]
+        sync: false
+      - name: "datasetName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "datasetname"
+        alias: ["datasetname"]
+        sync: true
+  - name: "journal"
+    role: dim
+    description: "journal"
+    columns:
+      - name: "journalId"
+        role: dimension
+        type: FLOAT
+        description: "journalid"
+        alias: ["journalid"]
+        sync: false
+      - name: "journalName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "journalname"
+        alias: ["journalname"]
+        sync: true
+  - name: "keyphrase"
+    role: dim
+    description: "keyphrase"
+    columns:
+      - name: "keyphraseId"
+        role: dimension
+        type: FLOAT
+        description: "keyphraseid"
+        alias: ["keyphraseid"]
+        sync: false
+      - name: "keyphraseName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "keyphrasename"
+        alias: ["keyphrasename"]
+        sync: true
+  - name: "paper"
+    role: dim
+    description: "paper"
+    columns:
+      - name: "paperId"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "venueId"
+        role: dimension
+        type: FLOAT
+        description: "venueid"
+        alias: ["venueid"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "numCiting"
+        role: dimension
+        type: FLOAT
+        description: "numciting"
+        alias: ["numciting"]
+        sync: false
+      - name: "numCitedBy"
+        role: dimension
+        type: FLOAT
+        description: "numcitedby"
+        alias: ["numcitedby"]
+        sync: false
+      - name: "journalId"
+        role: dimension
+        type: FLOAT
+        description: "journalid"
+        alias: ["journalid"]
+        sync: false
+  - name: "cite"
+    role: dim
+    description: "cite"
+    columns:
+      - name: "citingPaperId"
+        role: dimension
+        type: FLOAT
+        description: "citingpaperid"
+        alias: ["citingpaperid"]
+        sync: false
+      - name: "citedPaperId"
+        role: dimension
+        type: FLOAT
+        description: "citedpaperid"
+        alias: ["citedpaperid"]
+        sync: false
+  - name: "paperDataset"
+    role: dim
+    description: "paperdataset"
+    columns:
+      - name: "paperId"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "datasetId"
+        role: dimension
+        type: FLOAT
+        description: "datasetid"
+        alias: ["datasetid"]
+        sync: false
+  - name: "paperKeyphrase"
+    role: dim
+    description: "paperkeyphrase"
+    columns:
+      - name: "paperId"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "keyphraseId"
+        role: dimension
+        type: FLOAT
+        description: "keyphraseid"
+        alias: ["keyphraseid"]
+        sync: false
+  - name: "writes"
+    role: dim
+    description: "writes"
+    columns:
+      - name: "paperId"
+        role: dimension
+        type: FLOAT
+        description: "paperid"
+        alias: ["paperid"]
+        sync: false
+      - name: "authorId"
+        role: dimension
+        type: FLOAT
+        description: "authorid"
+        alias: ["authorid"]
+        sync: false
+
+metrics:
+  - name: "paper_year"
+    description: year from paper
+    relevant_columns:
+      - paper.year
+    alias: [year]

@@ -1,0 +1,103 @@
+tables:
+  - name: "Student"
+    role: dim
+    description: "student"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "LName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "Fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Major"
+        role: dimension
+        type: FLOAT
+        description: "major"
+        alias: ["major"]
+        sync: false
+      - name: "Advisor"
+        role: dimension
+        type: FLOAT
+        description: "advisor"
+        alias: ["advisor"]
+        sync: false
+      - name: "city_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city code"
+        alias: ["city_code"]
+        sync: true
+  - name: "Club"
+    role: dim
+    description: "club"
+    columns:
+      - name: "ClubID"
+        role: primary_key
+        type: FLOAT
+        description: "clubid"
+        alias: ["clubid"]
+        sync: false
+      - name: "ClubName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "clubname"
+        alias: ["clubname"]
+        sync: true
+      - name: "ClubDesc"
+        role: dimension
+        type: VARCHAR(255)
+        description: "clubdesc"
+        alias: ["clubdesc"]
+        sync: false
+      - name: "ClubLocation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "clublocation"
+        alias: ["clublocation"]
+        sync: false
+  - name: "Member_of_club"
+    role: dim
+    description: "member of club"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "ClubID"
+        role: primary_key
+        type: FLOAT
+        description: "clubid"
+        alias: ["clubid"]
+        sync: false
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false

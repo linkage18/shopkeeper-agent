@@ -27,22 +27,18 @@ import { cn, summarizeResult } from "./lib/format";
 import type { AgentEvent, ChatMessage, SessionListItem, StepState } from "./types/agent";
 
 const SQL_EXAMPLES = [
-  "统计 2025 年第一季度各大区的 GMV，并按 GMV 从高到低排序",
-  "统计 2025 年 3 月各商品品类的销量和销售额",
-  "查询华东地区 2025 年第一季度销售额最高的前 5 个商品",
-  "按会员等级统计 2025 年第一季度的订单数和销售额",
+  "列出所有专辑（按字母排序）",
+  "Rock 风格有哪些曲目？",
+  "哪个员工负责的客户最多？",
 ];
 
 const CHART_EXAMPLES = [
-  "按品牌统计销售额（会自动生成柱状图）",
-  "统计各品类月销售额趋势（会自动生成折线图）",
-  "统计各地区销售占比（会自动生成饼图）",
-  "对比各品类销量和销售额（会自动生成多系列图）",
+  "按音乐类型统计曲目数量",
+  "按国家统计客户分布",
 ];
 
 const REPORT_EXAMPLES = [
-  "总结Q1各品牌销售情况并出报告",
-  "分析各品类销量对比并生成报告",
+  "分析各音乐类型曲目分布并生成报告",
 ];
 
 const RAG_EXAMPLES = [
@@ -56,6 +52,144 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "Vite /api proxy";
 
 function makeId() {
   return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+// ═══ 报告生成管线 ═══
+async function executeReportPipeline(
+  query: string,
+  controller: AbortController,
+  handleEvent: (updater: (m: ChatMessage) => ChatMessage) => void,
+) {
+  const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+  const resp = await fetch(`${API_BASE}/api/report/generate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ query }),
+    signal: controller.signal,
+  });
+  if (!resp.ok || !resp.body) throw new Error(`HTTP ${resp.status}`);
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+  let buf = "";
+  let lastReportMd = "";
+  let lastChartData: any = null;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const chunks = buf.split("\n\n");
+    buf = chunks.pop() ?? "";
+    for (const chunk of chunks) {
+      const pd = chunk.replace(/^data:\s?/, "").trim();
+      if (!pd) continue;
+      try {
+        const ev = JSON.parse(pd);
+        handleEvent((m) => {
+          if (ev.type === "progress") {
+            return { ...m, steps: upsertStep(m.steps || [], { type: "progress", step: ev.step, status: ev.status }) };
+          }
+          if (ev.type === "result") {
+            const result = (m.result || {}) as any;
+            if (ev.report_md) {
+              lastReportMd = ev.report_md;
+              return { ...m, status: "done" as const, content: ev.report_md, result: { ...result, report_md: ev.report_md } };
+            }
+            if (ev.chart_data) {
+              return { ...m, result: { ...result, chart_data: ev.chart_data } };
+            }
+          }
+          if (ev.type === "chart") {
+            lastChartData = ev.chart_data;
+            const result = (m.result || {}) as any;
+            const existingCharts = result.charts || [];
+            return { ...m, result: { ...result, charts: [...existingCharts, ev.chart_data] } };
+          }
+          if (ev.type === "ask_user") {
+            const hints = (ev.suggestions || []).join("\n• ");
+            return {
+              ...m, status: "done" as const,
+              content: `⚠️ ${ev.message}\n\n可能的原因：\n• ${hints}\n${ev.detail ? `\n错误详情：${ev.detail}` : ""}\n\n💡 请修改问题后重新提交`,
+              result: { ...(m.result || {}), ask_user: ev },
+            };
+          }
+          if (ev.type === "error") {
+            return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
+          }
+          return m;
+        });
+      } catch { /* skip */ }
+    }
+  }
+  handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
+  if (lastReportMd) {
+    try {
+      const summary = lastReportMd.split("\n")[0]?.replace(/^#\s*/, "") || query.slice(0, 40);
+      await apiPost("/api/session/save", {
+        query, answer: lastReportMd.slice(0, 1000),
+        summary: `报告: ${summary}`, type: "report",
+        chart_data: lastChartData,
+      });
+    } catch { /* 保存失败不影响主流程 */ }
+  }
+}
+
+// ═══ NL2SQL 管线 ═══
+async function executeSqlPipeline(
+  query: string,
+  controller: AbortController,
+  handleEvent: (updater: (m: ChatMessage) => ChatMessage) => void,
+) {
+  let sqlResult: any = null;
+  await streamQuery(query, {
+    signal: controller.signal,
+    onEvent: (event: AgentEvent) => {
+      handleEvent((m) => {
+        if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
+        if (event.type === "result") {
+          sqlResult = event.data;
+          return { ...m, status: "done" as const, content: summarizeResult(event.data), result: event.data };
+        }
+        return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
+      });
+    },
+  });
+  if (sqlResult) {
+    try {
+      await apiPost("/api/session/save", {
+        query,
+        answer: summarizeResult(sqlResult),
+        summary: `${query.slice(0, 40)}`,
+        type: "sql",
+        chart_data: sqlResult.chart_data || null,
+        data: (sqlResult.rows || []).slice(0, 50),
+        row_count: sqlResult.row_count || 0,
+      });
+    } catch { /* 保存失败不影响主流程 */ }
+  }
+}
+
+// ═══ RAG 管线 ═══
+async function executeRagPipeline(
+  query: string,
+  currentSessionId: string,
+  controller: AbortController,
+  handleEvent: (updater: (m: ChatMessage) => ChatMessage) => void,
+  setCurrentSessionId: (id: string) => void,
+  refreshSessions: () => void,
+) {
+  const sid = currentSessionId === "new" ? crypto.randomUUID?.() ?? `${Date.now()}` : currentSessionId;
+  if (currentSessionId === "new") setCurrentSessionId(sid);
+  await streamRagQuery(query, sid, {
+    signal: controller.signal,
+    onEvent: (event: any) => {
+      handleEvent((m) => {
+        if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
+        if (event.type === "result") return { ...m, status: "done" as const, content: event.answer || "（无回答）", sources: event.sources || [] };
+        return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
+      });
+    },
+  });
+  refreshSessions();
 }
 
 function upsertStep(steps: StepState[] = [], event: Extract<AgentEvent, { type: "progress" }>) {
@@ -83,10 +217,10 @@ export default function App() {
   const canSubmit = draft.trim().length > 0 && !isStreaming;
   const filteredSessions = useMemo(() => {
     if (activeTab === "sql") return sessions.filter((s) => {
-      const t = (s as any).type;
+      const t = s.type;
       return t === "sql" || t === "report";
     });
-    if (activeTab === "rag") return sessions.filter((s) => (s as any).type === "rag");
+    if (activeTab === "rag") return sessions.filter((s) => s.type === "rag");
     return sessions;
   }, [sessions, activeTab]);
 
@@ -112,6 +246,7 @@ export default function App() {
   }, []);
 
   const handleLogout = () => {
+    if (!window.confirm("确认退出登录？")) return;
     removeToken();
     removeUser();
     setMessages([]);
@@ -198,6 +333,7 @@ export default function App() {
   }, [isStreaming]);
 
   const handleDeleteSession = useCallback(async (id: string) => {
+    if (!window.confirm("确认删除该会话？此操作不可撤销。")) return;
     try {
       await deleteSession(id);
       if (currentSessionId === id) handleNewSession();
@@ -208,18 +344,16 @@ export default function App() {
   const startQuery = async (rawQuery = draft) => {
     const query = rawQuery.trim();
     if (!query) return;
-    // 正在流式处理时，加入队列等当前完成后再自动执行
     if (isStreaming) {
       pendingQueryRef.current = query;
       return;
     }
     pendingQueryRef.current = "";
 
-    // ── 意图路由：分类意图决定走哪个管线（LLM 上下文感知） ──
+    // ── 意图路由 ──
     let pipeline = activeTab as string;
     let reportIntent = false;
     if (activeTab !== "analysis") {
-      // 传最近 20 轮对话给 LLM 做上下文感知意图分类
       const recentMessages = messages.slice(-40);
       const historyText = recentMessages
         .map((m) => `${m.role === "user" ? "用户" : "助手"}: ${m.content.slice(0, 100)}`)
@@ -234,9 +368,7 @@ export default function App() {
       } catch { /* 忽略 */ }
     }
 
-    // 消息 tab 字段用于 StepRail 显示正确流程图
     const msgTab = reportIntent ? "report" : (pipeline as "sql" | "rag");
-
     const userMessage: ChatMessage = { id: makeId(), role: "user", content: query, createdAt: Date.now(), tab: msgTab };
     const assistantId = makeId();
     const assistantMessage: ChatMessage = { id: assistantId, role: "assistant", content: "正在连接...", createdAt: Date.now(), status: "streaming", steps: [], tab: msgTab };
@@ -252,116 +384,11 @@ export default function App() {
 
     try {
       if (reportIntent) {
-        // ═══ 报告生成管线 ═══
-        const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
-        const resp = await fetch(`${API_BASE}/api/report/generate`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", ...authHeaders() },
-          body: JSON.stringify({ query }),
-          signal: controller.signal,
-        });
-        if (!resp.ok || !resp.body) throw new Error(`HTTP ${resp.status}`);
-        const reader = resp.body!.getReader();
-        const decoder = new TextDecoder("utf-8");
-        let buf = "";
-        let lastReportMd = "";
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-          const chunks = buf.split("\n\n");
-          buf = chunks.pop() ?? "";
-          for (const chunk of chunks) {
-            const pd = chunk.replace(/^data:\s?/, "").trim();
-            if (!pd) continue;
-            try {
-              const ev = JSON.parse(pd);
-              handleEvent((m) => {
-                if (ev.type === "progress") {
-                  return { ...m, steps: upsertStep(m.steps || [], { type: "progress", step: ev.step, status: ev.status }) };
-                }
-                if (ev.type === "result") {
-                  const result = m.result as any || {};
-                  if (ev.report_md) {
-                    lastReportMd = ev.report_md;
-                    return { ...m, status: "done" as const, content: ev.report_md, result: { ...result, report_md: ev.report_md } };
-                  }
-                  if (ev.chart_data) {
-                    return { ...m, result: { ...result, chart_data: ev.chart_data } };
-                  }
-                }
-                if (ev.type === "ask_user") {
-                  const hints = (ev.suggestions || []).join("\n• ");
-                  return {
-                    ...m, status: "done" as const,
-                    content: `⚠️ ${ev.message}\n\n可能的原因：\n• ${hints}\n\n${ev.detail ? `\n错误详情：${ev.detail}` : ""}\n\n💡 请修改问题后重新提交，例如指定正确的年份或字段名。`,
-                    result: { ...(m.result || {}), ask_user: ev },
-                  };
-                }
-                if (ev.type === "error") {
-                  return { ...m, status: "error" as const, content: ev.message || "报告生成失败" };
-                }
-                return m;
-              });
-            } catch { /* skip */ }
-          }
-        }
-        handleEvent((m) => m.status !== "done" ? { ...m, status: "done" as const } : m);
-        // 保存报告到会话历史
-        if (lastReportMd) {
-          try {
-            const summary = lastReportMd.split("\n")[0]?.replace(/^#\s*/, "") || query.slice(0, 40);
-            await apiPost("/api/session/save", {
-              query, answer: lastReportMd.slice(0, 1000),
-              summary: `报告: ${summary}`, type: "report",
-            });
-          } catch (e) { console.warn("保存报告会话失败:", e); }
-        }
+        await executeReportPipeline(query, controller, handleEvent);
       } else if (pipeline === "sql") {
-        // ═══ NL2SQL 管线 ═══
-        let sqlResult: any = null;
-        await streamQuery(query, {
-          signal: controller.signal,
-          onEvent: (event: AgentEvent) => {
-            handleEvent((m) => {
-              if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
-              if (event.type === "result") {
-                sqlResult = event.data;
-                return { ...m, status: "done" as const, content: summarizeResult(event.data), result: event.data };
-              }
-              return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
-            });
-          },
-        });
-        // 保存完整数据 + 图表到会话文件
-        if (sqlResult) {
-          try {
-            await apiPost("/api/session/save", {
-              query,
-              answer: summarizeResult(sqlResult),
-              summary: `${query.slice(0, 40)}`,
-              type: "sql",
-              chart_data: sqlResult.chart_data || null,
-              data: (sqlResult.rows || []).slice(0, 50),
-              row_count: sqlResult.row_count || 0,
-            });
-          } catch (e) { console.warn("保存 SQL 会话失败:", e); }
-        }
+        await executeSqlPipeline(query, controller, handleEvent);
       } else {
-        // ═══ RAG 管线 ═══
-        const sid = currentSessionId === "new" ? crypto.randomUUID?.() ?? `${Date.now()}` : currentSessionId;
-        if (currentSessionId === "new") setCurrentSessionId(sid);
-        await streamRagQuery(query, sid, {
-          signal: controller.signal,
-          onEvent: (event: any) => {
-            handleEvent((m) => {
-              if (event.type === "progress") return { ...m, steps: upsertStep(m.steps, event) };
-              if (event.type === "result") return { ...m, status: "done" as const, content: event.answer || "（无回答）", sources: event.sources || [] };
-              return { ...m, status: "error" as const, content: "这次查询没有成功。", error: event.message };
-            });
-          },
-        });
-        refreshSessions();
+        await executeRagPipeline(query, currentSessionId, controller, handleEvent, setCurrentSessionId, refreshSessions);
       }
     } catch (error) {
       const isAbort = error instanceof DOMException && error.name === "AbortError";
@@ -371,9 +398,7 @@ export default function App() {
     } finally {
       setActiveController(null);
       refreshTokenUsage();
-      // 每次查询完成后刷新会话列表（无论 SQL/RAG）
       refreshSessions();
-      // 如果有待处理查询，自动执行
       const next = pendingQueryRef.current;
       pendingQueryRef.current = "";
       if (next) {
@@ -384,7 +409,12 @@ export default function App() {
   };
 
   const stopQuery = () => activeController?.abort();
-  const clearConversation = () => { if (!isStreaming) { setMessages([]); setDraft(""); } };
+  const clearConversation = () => {
+    if (isStreaming) return;
+    if (messages.length > 0 && !window.confirm("确认清空当前对话？")) return;
+    setMessages([]);
+    setDraft("");
+  };
 
   return (
     <>

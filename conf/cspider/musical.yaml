@@ -1,0 +1,94 @@
+tables:
+  - name: "musical"
+    role: dim
+    description: "musical"
+    columns:
+      - name: "Musical_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "musical id"
+        alias: ["musical_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Award"
+        role: dimension
+        type: VARCHAR(255)
+        description: "award"
+        alias: ["award"]
+        sync: false
+      - name: "Category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "category"
+        alias: ["category"]
+        sync: true
+      - name: "Nominee"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nominee"
+        alias: ["nominee"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+  - name: "actor"
+    role: dim
+    description: "actor"
+    columns:
+      - name: "Actor_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "actor id"
+        alias: ["actor_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Musical_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "musical id"
+        alias: ["musical_id"]
+        sync: false
+      - name: "Character"
+        role: dimension
+        type: VARCHAR(255)
+        description: "character"
+        alias: ["character"]
+        sync: false
+      - name: "Duration"
+        role: dimension
+        type: VARCHAR(255)
+        description: "duration"
+        alias: ["duration"]
+        sync: false
+      - name: "age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+
+metrics:
+  - name: "musical_year"
+    description: year from musical
+    relevant_columns:
+      - musical.Year
+    alias: [year]

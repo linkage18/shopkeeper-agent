@@ -1,0 +1,175 @@
+tables:
+  - name: "product"
+    role: dim
+    description: "product"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product"
+        alias: ["product"]
+        sync: false
+      - name: "dimensions"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dimensions"
+        alias: ["dimensions"]
+        sync: false
+      - name: "dpi"
+        role: dimension
+        type: FLOAT
+        description: "dpi"
+        alias: ["dpi"]
+        sync: false
+      - name: "pages_per_minute_color"
+        role: dimension
+        type: FLOAT
+        description: "pages per minute color"
+        alias: ["pages_per_minute_color"]
+        sync: true
+      - name: "max_page_size"
+        role: dimension
+        type: VARCHAR(255)
+        description: "max page size"
+        alias: ["max_page_size"]
+        sync: false
+      - name: "interface"
+        role: dimension
+        type: VARCHAR(255)
+        description: "interface"
+        alias: ["interface"]
+        sync: false
+  - name: "store"
+    role: dim
+    description: "store"
+    columns:
+      - name: "Store_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "Store_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store name"
+        alias: ["store_name"]
+        sync: true
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Area_size"
+        role: measure
+        type: FLOAT
+        description: "area size"
+        alias: ["area_size"]
+        sync: false
+      - name: "Number_of_product_category"
+        role: measure
+        type: FLOAT
+        description: "number of product category"
+        alias: ["number_of_product_category"]
+        sync: true
+      - name: "Ranking"
+        role: dimension
+        type: FLOAT
+        description: "ranking"
+        alias: ["ranking"]
+        sync: false
+  - name: "district"
+    role: dim
+    description: "district"
+    columns:
+      - name: "District_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "district id"
+        alias: ["district_id"]
+        sync: false
+      - name: "District_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "district name"
+        alias: ["district_name"]
+        sync: true
+      - name: "Headquartered_City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "headquartered city"
+        alias: ["headquartered_city"]
+        sync: true
+      - name: "City_Population"
+        role: measure
+        type: FLOAT
+        description: "city population"
+        alias: ["city_population"]
+        sync: true
+      - name: "City_Area"
+        role: measure
+        type: FLOAT
+        description: "city area"
+        alias: ["city_area"]
+        sync: true
+  - name: "store_product"
+    role: dim
+    description: "store product"
+    columns:
+      - name: "Store_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "Product_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+  - name: "store_district"
+    role: dim
+    description: "store district"
+    columns:
+      - name: "Store_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "District_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "district id"
+        alias: ["district_id"]
+        sync: false
+
+metrics:
+  - name: "store_area_size"
+    description: area size from store
+    relevant_columns:
+      - store.Area_size
+    alias: [area_size]
+  - name: "store_number_of_product_category"
+    description: number of product category from store
+    relevant_columns:
+      - store.Number_of_product_category
+    alias: [number_of_product_category]
+  - name: "district_city_population"
+    description: city population from district
+    relevant_columns:
+      - district.City_Population
+    alias: [city_population]
+  - name: "district_city_area"
+    description: city area from district
+    relevant_columns:
+      - district.City_Area
+    alias: [city_area]

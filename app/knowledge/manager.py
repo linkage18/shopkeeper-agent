@@ -1,8 +1,8 @@
 import os
-import re
 from pathlib import Path
 from typing import List
 
+from app.core.md_parser import parse_knowledge_md
 from app.knowledge.models import KnowledgeEntry
 
 SHARED_DIR = Path("data/knowledge/shared")
@@ -12,27 +12,17 @@ PRIVATE_DIR = Path("data/knowledge/private")
 def _parse_md(file_path: Path) -> KnowledgeEntry | None:
     try:
         text = file_path.read_text(encoding="utf-8")
-        title = file_path.stem
-        def_match = re.search(r"## 定义\n(.+?)(?:\n##|\Z)", text, re.DOTALL)
-        definition = def_match.group(1).strip() if def_match else ""
-        tables_match = re.search(r"## 涉及表\n(.+?)(?:\n##|\Z)", text, re.DOTALL)
-        tables = []
-        if tables_match:
-            for line in tables_match.group(1).strip().split("\n"):
-                line = line.strip().strip("- ").strip()
-                if line:
-                    tables.append(line)
-        sql_match = re.search(r"```sql\n(.+?)\n```", text, re.DOTALL)
-        example_sql = sql_match.group(1).strip() if sql_match else ""
-        tags_match = re.search(r"## 标签\n\[(.+?)\]", text)
-        tags = [t.strip() for t in tags_match.group(1).split(",")] if tags_match else []
-        status_match = re.search(r"审核状态：(.+)", text)
-        status = status_match.group(1).strip() if status_match else "approved"
+        parsed = parse_knowledge_md(text, file_path.stem)
+        if parsed is None:
+            return None
         return KnowledgeEntry(
-            title=title, definition=definition, tables=tables,
-            example_sql=example_sql, tags=tags, status=status,
+            title=parsed["title"], definition=parsed["definition"],
+            tables=parsed["tables"], example_sql=parsed["example_sql"],
+            tags=parsed["tags"], status=parsed["status"],
         )
-    except Exception:
+    except Exception as e:
+        from app.core.log import logger
+        logger.warning(f"Failed to parse knowledge md {file_path.name}: {e}")
         return None
 
 

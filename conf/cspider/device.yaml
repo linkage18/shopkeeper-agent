@@ -1,0 +1,109 @@
+tables:
+  - name: "device"
+    role: dim
+    description: "device"
+    columns:
+      - name: "Device_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "device id"
+        alias: ["device_id"]
+        sync: false
+      - name: "Device"
+        role: dimension
+        type: VARCHAR(255)
+        description: "device"
+        alias: ["device"]
+        sync: false
+      - name: "Carrier"
+        role: dimension
+        type: VARCHAR(255)
+        description: "carrier"
+        alias: ["carrier"]
+        sync: false
+      - name: "Package_Version"
+        role: dimension
+        type: VARCHAR(255)
+        description: "package version"
+        alias: ["package_version"]
+        sync: false
+      - name: "Applications"
+        role: dimension
+        type: VARCHAR(255)
+        description: "applications"
+        alias: ["applications"]
+        sync: false
+      - name: "Software_Platform"
+        role: dimension
+        type: VARCHAR(255)
+        description: "software platform"
+        alias: ["software_platform"]
+        sync: false
+  - name: "shop"
+    role: dim
+    description: "shop"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Shop_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shop name"
+        alias: ["shop_name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Open_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "open date"
+        alias: ["open_date"]
+        sync: false
+      - name: "Open_Year"
+        role: measure
+        type: FLOAT
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+  - name: "stock"
+    role: dim
+    description: "stock"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Device_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "device id"
+        alias: ["device_id"]
+        sync: false
+      - name: "Quantity"
+        role: measure
+        type: FLOAT
+        description: "quantity"
+        alias: ["quantity"]
+        sync: false
+
+metrics:
+  - name: "shop_open_year"
+    description: open year from shop
+    relevant_columns:
+      - shop.Open_Year
+    alias: [open_year]
+  - name: "stock_quantity"
+    description: quantity from stock
+    relevant_columns:
+      - stock.Quantity
+    alias: [quantity]

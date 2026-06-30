@@ -66,5 +66,7 @@ async def get_persistent_context(session: AsyncSession) -> str:
             return ""
         parts = [f"【{row['name']}】\n{row['content']}" for row in rows]
         return "\n\n".join(parts)
-    except Exception:
+    except Exception as e:
+        from app.core.log import logger
+        logger.warning(f"Persistent memory load failed: {e}")
         return ""

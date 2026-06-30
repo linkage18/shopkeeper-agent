@@ -1,0 +1,94 @@
+tables:
+  - name: "perpetrator"
+    role: dim
+    description: "perpetrator"
+    columns:
+      - name: "Perpetrator_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "perpetrator id"
+        alias: ["perpetrator_id"]
+        sync: false
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Killed"
+        role: dimension
+        type: FLOAT
+        description: "killed"
+        alias: ["killed"]
+        sync: false
+      - name: "Injured"
+        role: dimension
+        type: FLOAT
+        description: "injured"
+        alias: ["injured"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "Home Town"
+        role: dimension
+        type: VARCHAR(255)
+        description: "home town"
+        alias: ["home town"]
+        sync: false
+
+metrics:
+  - name: "perpetrator_year"
+    description: year from perpetrator
+    relevant_columns:
+      - perpetrator.Year
+    alias: [year]

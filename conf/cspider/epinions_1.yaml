@@ -1,0 +1,89 @@
+tables:
+  - name: "item"
+    role: fact
+    description: "item"
+    columns:
+      - name: "i_id"
+        role: primary_key
+        type: FLOAT
+        description: "i id"
+        alias: ["i_id"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+  - name: "review"
+    role: dim
+    description: "review"
+    columns:
+      - name: "a_id"
+        role: primary_key
+        type: FLOAT
+        description: "a id"
+        alias: ["a_id"]
+        sync: false
+      - name: "u_id"
+        role: primary_key
+        type: FLOAT
+        description: "u id"
+        alias: ["u_id"]
+        sync: false
+      - name: "i_id"
+        role: primary_key
+        type: FLOAT
+        description: "i id"
+        alias: ["i_id"]
+        sync: false
+      - name: "rating"
+        role: dimension
+        type: FLOAT
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+  - name: "useracct"
+    role: dim
+    description: "useracct"
+    columns:
+      - name: "u_id"
+        role: primary_key
+        type: FLOAT
+        description: "u id"
+        alias: ["u_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "trust"
+    role: dim
+    description: "trust"
+    columns:
+      - name: "source_u_id"
+        role: foreign_key
+        type: FLOAT
+        description: "source u id"
+        alias: ["source_u_id"]
+        sync: false
+      - name: "target_u_id"
+        role: foreign_key
+        type: FLOAT
+        description: "target u id"
+        alias: ["target_u_id"]
+        sync: false
+      - name: "trust"
+        role: dimension
+        type: FLOAT
+        description: "trust"
+        alias: ["trust"]
+        sync: false

@@ -6,7 +6,7 @@
 再把内容转换成这里定义的 dataclass 对象，后续服务层就可以按统一结构完成元数据同步
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 
@@ -19,9 +19,10 @@ class ColumnConfig:
 
     name: str
     role: str
-    description: str
-    alias: list[str]
     sync: bool
+    description: str = ""
+    alias: list[str] = field(default_factory=list)
+    type: str = "VARCHAR"
 
 
 @dataclass
@@ -33,8 +34,8 @@ class TableConfig:
 
     name: str
     role: str
-    description: str
     columns: list[ColumnConfig]
+    description: str = ""
 
 
 @dataclass
@@ -47,7 +48,7 @@ class MetricConfig:
     name: str
     description: str
     relevant_columns: list[str]
-    alias: list[str]
+    alias: list[str] = field(default_factory=list)
 
 
 @dataclass

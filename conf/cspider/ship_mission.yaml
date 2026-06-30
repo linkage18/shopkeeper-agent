@@ -1,0 +1,88 @@
+tables:
+  - name: "mission"
+    role: dim
+    description: "mission"
+    columns:
+      - name: "Mission_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "mission id"
+        alias: ["mission_id"]
+        sync: false
+      - name: "Ship_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "ship id"
+        alias: ["ship_id"]
+        sync: false
+      - name: "Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Launched_Year"
+        role: measure
+        type: FLOAT
+        description: "launched year"
+        alias: ["launched_year"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Speed_knots"
+        role: dimension
+        type: FLOAT
+        description: "speed knots"
+        alias: ["speed_knots"]
+        sync: false
+      - name: "Fate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fate"
+        alias: ["fate"]
+        sync: false
+  - name: "ship"
+    role: dim
+    description: "ship"
+    columns:
+      - name: "Ship_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "ship id"
+        alias: ["ship_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Tonnage"
+        role: dimension
+        type: FLOAT
+        description: "tonnage"
+        alias: ["tonnage"]
+        sync: false
+
+metrics:
+  - name: "mission_launched_year"
+    description: launched year from mission
+    relevant_columns:
+      - mission.Launched_Year
+    alias: [launched_year]

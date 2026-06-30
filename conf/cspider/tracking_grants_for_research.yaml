@@ -1,0 +1,308 @@
+tables:
+  - name: "Document_Types"
+    role: dim
+    description: "document types"
+    columns:
+      - name: "document_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "document_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document description"
+        alias: ["document_description"]
+        sync: false
+  - name: "Documents"
+    role: dim
+    description: "documents"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "document_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "grant_id"
+        role: foreign_key
+        type: FLOAT
+        description: "grant id"
+        alias: ["grant_id"]
+        sync: false
+      - name: "sent_date"
+        role: dimension
+        type: DATETIME
+        description: "sent date"
+        alias: ["sent_date"]
+        sync: false
+      - name: "response_received_date"
+        role: dimension
+        type: DATETIME
+        description: "response received date"
+        alias: ["response_received_date"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Grants"
+    role: dim
+    description: "grants"
+    columns:
+      - name: "grant_id"
+        role: foreign_key
+        type: FLOAT
+        description: "grant id"
+        alias: ["grant_id"]
+        sync: false
+      - name: "organisation_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organisation id"
+        alias: ["organisation_id"]
+        sync: false
+      - name: "grant_amount"
+        role: measure
+        type: FLOAT
+        description: "grant amount"
+        alias: ["grant_amount"]
+        sync: false
+      - name: "grant_start_date"
+        role: dimension
+        type: DATETIME
+        description: "grant start date"
+        alias: ["grant_start_date"]
+        sync: false
+      - name: "grant_end_date"
+        role: dimension
+        type: DATETIME
+        description: "grant end date"
+        alias: ["grant_end_date"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Organisation_Types"
+    role: dim
+    description: "organisation types"
+    columns:
+      - name: "organisation_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organisation type"
+        alias: ["organisation_type"]
+        sync: true
+      - name: "organisation_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organisation type description"
+        alias: ["organisation_type_description"]
+        sync: true
+  - name: "Organisations"
+    role: dim
+    description: "organisations"
+    columns:
+      - name: "organisation_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organisation id"
+        alias: ["organisation_id"]
+        sync: false
+      - name: "organisation_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organisation type"
+        alias: ["organisation_type"]
+        sync: true
+      - name: "organisation_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organisation details"
+        alias: ["organisation_details"]
+        sync: false
+  - name: "Project_Outcomes"
+    role: dim
+    description: "project outcomes"
+    columns:
+      - name: "project_id"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "outcome_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "outcome code"
+        alias: ["outcome_code"]
+        sync: true
+      - name: "outcome_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "outcome details"
+        alias: ["outcome_details"]
+        sync: false
+  - name: "Project_Staff"
+    role: dim
+    description: "project staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "project_id"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "date_from"
+        role: dimension
+        type: DATETIME
+        description: "date from"
+        alias: ["date_from"]
+        sync: false
+      - name: "date_to"
+        role: dimension
+        type: DATETIME
+        description: "date to"
+        alias: ["date_to"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Projects"
+    role: dim
+    description: "projects"
+    columns:
+      - name: "project_id"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "organisation_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organisation id"
+        alias: ["organisation_id"]
+        sync: false
+      - name: "project_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "project details"
+        alias: ["project_details"]
+        sync: false
+  - name: "Research_Outcomes"
+    role: dim
+    description: "research outcomes"
+    columns:
+      - name: "outcome_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "outcome code"
+        alias: ["outcome_code"]
+        sync: true
+      - name: "outcome_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "outcome description"
+        alias: ["outcome_description"]
+        sync: false
+  - name: "Research_Staff"
+    role: dim
+    description: "research staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "employer_organisation_id"
+        role: foreign_key
+        type: FLOAT
+        description: "employer organisation id"
+        alias: ["employer_organisation_id"]
+        sync: false
+      - name: "staff_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff details"
+        alias: ["staff_details"]
+        sync: false
+  - name: "Staff_Roles"
+    role: dim
+    description: "staff roles"
+    columns:
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "role_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role description"
+        alias: ["role_description"]
+        sync: false
+  - name: "Tasks"
+    role: dim
+    description: "tasks"
+    columns:
+      - name: "task_id"
+        role: foreign_key
+        type: FLOAT
+        description: "task id"
+        alias: ["task_id"]
+        sync: false
+      - name: "project_id"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "task_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "task details"
+        alias: ["task_details"]
+        sync: false
+      - name: "eg Agree Objectives"
+        role: dimension
+        type: VARCHAR(255)
+        description: "eg agree objectives"
+        alias: ["eg agree objectives"]
+        sync: false
+
+metrics:
+  - name: "grants_grant_amount"
+    description: grant amount from grants
+    relevant_columns:
+      - Grants.grant_amount
+    alias: [grant_amount]

@@ -1,0 +1,140 @@
+tables:
+  - name: "stadium"
+    role: dim
+    description: "stadium"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Home_Games"
+        role: dimension
+        type: FLOAT
+        description: "home games"
+        alias: ["home_games"]
+        sync: false
+      - name: "Average_Attendance"
+        role: dimension
+        type: FLOAT
+        description: "average attendance"
+        alias: ["average_attendance"]
+        sync: false
+      - name: "Total_Attendance"
+        role: measure
+        type: FLOAT
+        description: "total attendance"
+        alias: ["total_attendance"]
+        sync: false
+      - name: "Capacity_Percentage"
+        role: dimension
+        type: FLOAT
+        description: "capacity percentage"
+        alias: ["capacity_percentage"]
+        sync: true
+  - name: "game"
+    role: dim
+    description: "game"
+    columns:
+      - name: "stadium_id"
+        role: foreign_key
+        type: FLOAT
+        description: "stadium id"
+        alias: ["stadium_id"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Season"
+        role: dimension
+        type: FLOAT
+        description: "season"
+        alias: ["season"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Home_team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "home team"
+        alias: ["home_team"]
+        sync: false
+      - name: "Away_team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "away team"
+        alias: ["away_team"]
+        sync: false
+      - name: "Score"
+        role: dimension
+        type: VARCHAR(255)
+        description: "score"
+        alias: ["score"]
+        sync: false
+      - name: "Competition"
+        role: dimension
+        type: VARCHAR(255)
+        description: "competition"
+        alias: ["competition"]
+        sync: false
+  - name: "injury_accident"
+    role: dim
+    description: "injury accident"
+    columns:
+      - name: "game_id"
+        role: foreign_key
+        type: FLOAT
+        description: "game id"
+        alias: ["game_id"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Player"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player"
+        alias: ["player"]
+        sync: false
+      - name: "Injury"
+        role: dimension
+        type: VARCHAR(255)
+        description: "injury"
+        alias: ["injury"]
+        sync: false
+      - name: "Number_of_matches"
+        role: dimension
+        type: VARCHAR(255)
+        description: "number of matches"
+        alias: ["number_of_matches"]
+        sync: false
+      - name: "Source"
+        role: dimension
+        type: VARCHAR(255)
+        description: "source"
+        alias: ["source"]
+        sync: false
+
+metrics:
+  - name: "stadium_total_attendance"
+    description: total attendance from stadium
+    relevant_columns:
+      - stadium.Total_Attendance
+    alias: [total_attendance]

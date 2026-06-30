@@ -1,0 +1,2344 @@
+tables:
+  - name: "all_star"
+    role: dim
+    description: "all star"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "game_num"
+        role: dimension
+        type: FLOAT
+        description: "game num"
+        alias: ["game_num"]
+        sync: false
+      - name: "game_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "game id"
+        alias: ["game_id"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "gp"
+        role: dimension
+        type: FLOAT
+        description: "gp"
+        alias: ["gp"]
+        sync: false
+      - name: "starting_pos"
+        role: dimension
+        type: FLOAT
+        description: "starting pos"
+        alias: ["starting_pos"]
+        sync: false
+  - name: "appearances"
+    role: dim
+    description: "appearances"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "g_all"
+        role: dimension
+        type: FLOAT
+        description: "g all"
+        alias: ["g_all"]
+        sync: false
+      - name: "gs"
+        role: dimension
+        type: FLOAT
+        description: "gs"
+        alias: ["gs"]
+        sync: false
+      - name: "g_batting"
+        role: dimension
+        type: FLOAT
+        description: "g batting"
+        alias: ["g_batting"]
+        sync: false
+      - name: "g_defense"
+        role: dimension
+        type: FLOAT
+        description: "g defense"
+        alias: ["g_defense"]
+        sync: false
+      - name: "g_p"
+        role: dimension
+        type: FLOAT
+        description: "g p"
+        alias: ["g_p"]
+        sync: false
+      - name: "g_c"
+        role: dimension
+        type: FLOAT
+        description: "g c"
+        alias: ["g_c"]
+        sync: false
+      - name: "g_1b"
+        role: dimension
+        type: FLOAT
+        description: "g 1b"
+        alias: ["g_1b"]
+        sync: false
+      - name: "g_2b"
+        role: dimension
+        type: FLOAT
+        description: "g 2b"
+        alias: ["g_2b"]
+        sync: false
+      - name: "g_3b"
+        role: dimension
+        type: FLOAT
+        description: "g 3b"
+        alias: ["g_3b"]
+        sync: false
+      - name: "g_ss"
+        role: dimension
+        type: FLOAT
+        description: "g ss"
+        alias: ["g_ss"]
+        sync: false
+      - name: "g_lf"
+        role: dimension
+        type: FLOAT
+        description: "g lf"
+        alias: ["g_lf"]
+        sync: false
+      - name: "g_cf"
+        role: dimension
+        type: FLOAT
+        description: "g cf"
+        alias: ["g_cf"]
+        sync: false
+      - name: "g_rf"
+        role: dimension
+        type: FLOAT
+        description: "g rf"
+        alias: ["g_rf"]
+        sync: false
+      - name: "g_of"
+        role: dimension
+        type: FLOAT
+        description: "g of"
+        alias: ["g_of"]
+        sync: false
+      - name: "g_dh"
+        role: dimension
+        type: FLOAT
+        description: "g dh"
+        alias: ["g_dh"]
+        sync: false
+      - name: "g_ph"
+        role: dimension
+        type: FLOAT
+        description: "g ph"
+        alias: ["g_ph"]
+        sync: false
+      - name: "g_pr"
+        role: dimension
+        type: FLOAT
+        description: "g pr"
+        alias: ["g_pr"]
+        sync: false
+  - name: "manager_award"
+    role: dim
+    description: "manager award"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "award_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "award id"
+        alias: ["award_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "tie"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tie"
+        alias: ["tie"]
+        sync: false
+      - name: "notes"
+        role: dimension
+        type: FLOAT
+        description: "notes"
+        alias: ["notes"]
+        sync: false
+  - name: "player_award"
+    role: dim
+    description: "player award"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "award_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "award id"
+        alias: ["award_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "tie"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tie"
+        alias: ["tie"]
+        sync: false
+      - name: "notes"
+        role: dimension
+        type: VARCHAR(255)
+        description: "notes"
+        alias: ["notes"]
+        sync: false
+  - name: "manager_award_vote"
+    role: dim
+    description: "manager award vote"
+    columns:
+      - name: "award_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "award id"
+        alias: ["award_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "points_won"
+        role: dimension
+        type: FLOAT
+        description: "points won"
+        alias: ["points_won"]
+        sync: false
+      - name: "points_max"
+        role: dimension
+        type: FLOAT
+        description: "points max"
+        alias: ["points_max"]
+        sync: false
+      - name: "votes_first"
+        role: dimension
+        type: FLOAT
+        description: "votes first"
+        alias: ["votes_first"]
+        sync: false
+  - name: "player_award_vote"
+    role: dim
+    description: "player award vote"
+    columns:
+      - name: "award_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "award id"
+        alias: ["award_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "points_won"
+        role: dimension
+        type: FLOAT
+        description: "points won"
+        alias: ["points_won"]
+        sync: false
+      - name: "points_max"
+        role: dimension
+        type: FLOAT
+        description: "points max"
+        alias: ["points_max"]
+        sync: false
+      - name: "votes_first"
+        role: dimension
+        type: FLOAT
+        description: "votes first"
+        alias: ["votes_first"]
+        sync: false
+  - name: "batting"
+    role: dim
+    description: "batting"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "stint"
+        role: dimension
+        type: FLOAT
+        description: "stint"
+        alias: ["stint"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "ab"
+        role: dimension
+        type: FLOAT
+        description: "ab"
+        alias: ["ab"]
+        sync: false
+      - name: "r"
+        role: dimension
+        type: FLOAT
+        description: "r"
+        alias: ["r"]
+        sync: false
+      - name: "h"
+        role: dimension
+        type: FLOAT
+        description: "h"
+        alias: ["h"]
+        sync: false
+      - name: "double"
+        role: dimension
+        type: FLOAT
+        description: "double"
+        alias: ["double"]
+        sync: false
+      - name: "triple"
+        role: dimension
+        type: FLOAT
+        description: "triple"
+        alias: ["triple"]
+        sync: false
+      - name: "hr"
+        role: dimension
+        type: FLOAT
+        description: "hr"
+        alias: ["hr"]
+        sync: false
+      - name: "rbi"
+        role: dimension
+        type: FLOAT
+        description: "rbi"
+        alias: ["rbi"]
+        sync: false
+      - name: "sb"
+        role: dimension
+        type: FLOAT
+        description: "sb"
+        alias: ["sb"]
+        sync: false
+      - name: "cs"
+        role: dimension
+        type: FLOAT
+        description: "cs"
+        alias: ["cs"]
+        sync: false
+      - name: "bb"
+        role: dimension
+        type: FLOAT
+        description: "bb"
+        alias: ["bb"]
+        sync: false
+      - name: "so"
+        role: dimension
+        type: FLOAT
+        description: "so"
+        alias: ["so"]
+        sync: false
+      - name: "ibb"
+        role: dimension
+        type: FLOAT
+        description: "ibb"
+        alias: ["ibb"]
+        sync: false
+      - name: "hbp"
+        role: dimension
+        type: FLOAT
+        description: "hbp"
+        alias: ["hbp"]
+        sync: false
+      - name: "sh"
+        role: dimension
+        type: FLOAT
+        description: "sh"
+        alias: ["sh"]
+        sync: false
+      - name: "sf"
+        role: dimension
+        type: FLOAT
+        description: "sf"
+        alias: ["sf"]
+        sync: false
+      - name: "g_idp"
+        role: dimension
+        type: FLOAT
+        description: "g idp"
+        alias: ["g_idp"]
+        sync: false
+  - name: "batting_postseason"
+    role: dim
+    description: "batting postseason"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: VARCHAR(255)
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "ab"
+        role: dimension
+        type: FLOAT
+        description: "ab"
+        alias: ["ab"]
+        sync: false
+      - name: "r"
+        role: dimension
+        type: FLOAT
+        description: "r"
+        alias: ["r"]
+        sync: false
+      - name: "h"
+        role: dimension
+        type: FLOAT
+        description: "h"
+        alias: ["h"]
+        sync: false
+      - name: "double"
+        role: dimension
+        type: FLOAT
+        description: "double"
+        alias: ["double"]
+        sync: false
+      - name: "triple"
+        role: dimension
+        type: FLOAT
+        description: "triple"
+        alias: ["triple"]
+        sync: false
+      - name: "hr"
+        role: dimension
+        type: FLOAT
+        description: "hr"
+        alias: ["hr"]
+        sync: false
+      - name: "rbi"
+        role: dimension
+        type: FLOAT
+        description: "rbi"
+        alias: ["rbi"]
+        sync: false
+      - name: "sb"
+        role: dimension
+        type: FLOAT
+        description: "sb"
+        alias: ["sb"]
+        sync: false
+      - name: "cs"
+        role: dimension
+        type: FLOAT
+        description: "cs"
+        alias: ["cs"]
+        sync: false
+      - name: "bb"
+        role: dimension
+        type: FLOAT
+        description: "bb"
+        alias: ["bb"]
+        sync: false
+      - name: "so"
+        role: dimension
+        type: FLOAT
+        description: "so"
+        alias: ["so"]
+        sync: false
+      - name: "ibb"
+        role: dimension
+        type: FLOAT
+        description: "ibb"
+        alias: ["ibb"]
+        sync: false
+      - name: "hbp"
+        role: dimension
+        type: FLOAT
+        description: "hbp"
+        alias: ["hbp"]
+        sync: false
+      - name: "sh"
+        role: dimension
+        type: FLOAT
+        description: "sh"
+        alias: ["sh"]
+        sync: false
+      - name: "sf"
+        role: dimension
+        type: FLOAT
+        description: "sf"
+        alias: ["sf"]
+        sync: false
+      - name: "g_idp"
+        role: dimension
+        type: FLOAT
+        description: "g idp"
+        alias: ["g_idp"]
+        sync: false
+  - name: "player_college"
+    role: dim
+    description: "player college"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "college_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "college id"
+        alias: ["college_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "fielding"
+    role: dim
+    description: "fielding"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "stint"
+        role: dimension
+        type: FLOAT
+        description: "stint"
+        alias: ["stint"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "pos"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pos"
+        alias: ["pos"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "gs"
+        role: dimension
+        type: FLOAT
+        description: "gs"
+        alias: ["gs"]
+        sync: false
+      - name: "inn_outs"
+        role: dimension
+        type: FLOAT
+        description: "inn outs"
+        alias: ["inn_outs"]
+        sync: false
+      - name: "po"
+        role: dimension
+        type: FLOAT
+        description: "po"
+        alias: ["po"]
+        sync: false
+      - name: "a"
+        role: dimension
+        type: FLOAT
+        description: "a"
+        alias: ["a"]
+        sync: false
+      - name: "e"
+        role: dimension
+        type: FLOAT
+        description: "e"
+        alias: ["e"]
+        sync: false
+      - name: "dp"
+        role: dimension
+        type: FLOAT
+        description: "dp"
+        alias: ["dp"]
+        sync: false
+      - name: "pb"
+        role: dimension
+        type: FLOAT
+        description: "pb"
+        alias: ["pb"]
+        sync: false
+      - name: "wp"
+        role: dimension
+        type: FLOAT
+        description: "wp"
+        alias: ["wp"]
+        sync: false
+      - name: "sb"
+        role: dimension
+        type: FLOAT
+        description: "sb"
+        alias: ["sb"]
+        sync: false
+      - name: "cs"
+        role: dimension
+        type: FLOAT
+        description: "cs"
+        alias: ["cs"]
+        sync: false
+      - name: "zr"
+        role: dimension
+        type: FLOAT
+        description: "zr"
+        alias: ["zr"]
+        sync: false
+  - name: "fielding_outfield"
+    role: dim
+    description: "fielding outfield"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "stint"
+        role: dimension
+        type: FLOAT
+        description: "stint"
+        alias: ["stint"]
+        sync: false
+      - name: "glf"
+        role: dimension
+        type: FLOAT
+        description: "glf"
+        alias: ["glf"]
+        sync: false
+      - name: "gcf"
+        role: dimension
+        type: FLOAT
+        description: "gcf"
+        alias: ["gcf"]
+        sync: false
+      - name: "grf"
+        role: dimension
+        type: FLOAT
+        description: "grf"
+        alias: ["grf"]
+        sync: false
+  - name: "fielding_postseason"
+    role: dim
+    description: "fielding postseason"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: VARCHAR(255)
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "pos"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pos"
+        alias: ["pos"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "gs"
+        role: dimension
+        type: FLOAT
+        description: "gs"
+        alias: ["gs"]
+        sync: false
+      - name: "inn_outs"
+        role: dimension
+        type: FLOAT
+        description: "inn outs"
+        alias: ["inn_outs"]
+        sync: false
+      - name: "po"
+        role: dimension
+        type: FLOAT
+        description: "po"
+        alias: ["po"]
+        sync: false
+      - name: "a"
+        role: dimension
+        type: FLOAT
+        description: "a"
+        alias: ["a"]
+        sync: false
+      - name: "e"
+        role: dimension
+        type: FLOAT
+        description: "e"
+        alias: ["e"]
+        sync: false
+      - name: "dp"
+        role: dimension
+        type: FLOAT
+        description: "dp"
+        alias: ["dp"]
+        sync: false
+      - name: "tp"
+        role: dimension
+        type: FLOAT
+        description: "tp"
+        alias: ["tp"]
+        sync: false
+      - name: "pb"
+        role: dimension
+        type: FLOAT
+        description: "pb"
+        alias: ["pb"]
+        sync: false
+      - name: "sb"
+        role: dimension
+        type: FLOAT
+        description: "sb"
+        alias: ["sb"]
+        sync: false
+      - name: "cs"
+        role: dimension
+        type: FLOAT
+        description: "cs"
+        alias: ["cs"]
+        sync: false
+  - name: "hall_of_fame"
+    role: dim
+    description: "hall of fame"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "yearid"
+        role: primary_key
+        type: FLOAT
+        description: "yearid"
+        alias: ["yearid"]
+        sync: false
+      - name: "votedby"
+        role: dimension
+        type: VARCHAR(255)
+        description: "votedby"
+        alias: ["votedby"]
+        sync: false
+      - name: "ballots"
+        role: dimension
+        type: FLOAT
+        description: "ballots"
+        alias: ["ballots"]
+        sync: false
+      - name: "needed"
+        role: dimension
+        type: FLOAT
+        description: "needed"
+        alias: ["needed"]
+        sync: false
+      - name: "votes"
+        role: dimension
+        type: FLOAT
+        description: "votes"
+        alias: ["votes"]
+        sync: false
+      - name: "inducted"
+        role: dimension
+        type: VARCHAR(255)
+        description: "inducted"
+        alias: ["inducted"]
+        sync: false
+      - name: "category"
+        role: dimension
+        type: VARCHAR(255)
+        description: "category"
+        alias: ["category"]
+        sync: true
+      - name: "needed_note"
+        role: dimension
+        type: VARCHAR(255)
+        description: "needed note"
+        alias: ["needed_note"]
+        sync: false
+  - name: "home_game"
+    role: dim
+    description: "home game"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "park_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "park id"
+        alias: ["park_id"]
+        sync: false
+      - name: "span_first"
+        role: dimension
+        type: VARCHAR(255)
+        description: "span first"
+        alias: ["span_first"]
+        sync: false
+      - name: "span_last"
+        role: dimension
+        type: VARCHAR(255)
+        description: "span last"
+        alias: ["span_last"]
+        sync: false
+      - name: "games"
+        role: dimension
+        type: FLOAT
+        description: "games"
+        alias: ["games"]
+        sync: false
+      - name: "openings"
+        role: dimension
+        type: FLOAT
+        description: "openings"
+        alias: ["openings"]
+        sync: false
+      - name: "attendance"
+        role: dimension
+        type: FLOAT
+        description: "attendance"
+        alias: ["attendance"]
+        sync: false
+  - name: "manager"
+    role: dim
+    description: "manager"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "inseason"
+        role: dimension
+        type: FLOAT
+        description: "inseason"
+        alias: ["inseason"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "plyr_mgr"
+        role: dimension
+        type: VARCHAR(255)
+        description: "plyr mgr"
+        alias: ["plyr_mgr"]
+        sync: false
+  - name: "manager_half"
+    role: dim
+    description: "manager half"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "inseason"
+        role: dimension
+        type: FLOAT
+        description: "inseason"
+        alias: ["inseason"]
+        sync: false
+      - name: "half"
+        role: dimension
+        type: FLOAT
+        description: "half"
+        alias: ["half"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+  - name: "player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "birth_year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+      - name: "birth_month"
+        role: dimension
+        type: FLOAT
+        description: "birth month"
+        alias: ["birth_month"]
+        sync: false
+      - name: "birth_day"
+        role: dimension
+        type: FLOAT
+        description: "birth day"
+        alias: ["birth_day"]
+        sync: false
+      - name: "birth_country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth country"
+        alias: ["birth_country"]
+        sync: true
+      - name: "birth_state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth state"
+        alias: ["birth_state"]
+        sync: true
+      - name: "birth_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth city"
+        alias: ["birth_city"]
+        sync: true
+      - name: "death_year"
+        role: measure
+        type: FLOAT
+        description: "death year"
+        alias: ["death_year"]
+        sync: false
+      - name: "death_month"
+        role: dimension
+        type: FLOAT
+        description: "death month"
+        alias: ["death_month"]
+        sync: false
+      - name: "death_day"
+        role: dimension
+        type: FLOAT
+        description: "death day"
+        alias: ["death_day"]
+        sync: false
+      - name: "death_country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "death country"
+        alias: ["death_country"]
+        sync: true
+      - name: "death_state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "death state"
+        alias: ["death_state"]
+        sync: true
+      - name: "death_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "death city"
+        alias: ["death_city"]
+        sync: true
+      - name: "name_first"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name first"
+        alias: ["name_first"]
+        sync: true
+      - name: "name_last"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name last"
+        alias: ["name_last"]
+        sync: true
+      - name: "name_given"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name given"
+        alias: ["name_given"]
+        sync: true
+      - name: "weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "bats"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bats"
+        alias: ["bats"]
+        sync: false
+      - name: "throws"
+        role: dimension
+        type: VARCHAR(255)
+        description: "throws"
+        alias: ["throws"]
+        sync: false
+      - name: "debut"
+        role: dimension
+        type: VARCHAR(255)
+        description: "debut"
+        alias: ["debut"]
+        sync: false
+      - name: "final_game"
+        role: dimension
+        type: VARCHAR(255)
+        description: "final game"
+        alias: ["final_game"]
+        sync: false
+      - name: "retro_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "retro id"
+        alias: ["retro_id"]
+        sync: false
+      - name: "bbref_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "bbref id"
+        alias: ["bbref_id"]
+        sync: false
+  - name: "park"
+    role: dim
+    description: "park"
+    columns:
+      - name: "park_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "park id"
+        alias: ["park_id"]
+        sync: false
+      - name: "park_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "park name"
+        alias: ["park_name"]
+        sync: true
+      - name: "park_alias"
+        role: dimension
+        type: VARCHAR(255)
+        description: "park alias"
+        alias: ["park_alias"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "pitching"
+    role: dim
+    description: "pitching"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "stint"
+        role: dimension
+        type: FLOAT
+        description: "stint"
+        alias: ["stint"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "gs"
+        role: dimension
+        type: FLOAT
+        description: "gs"
+        alias: ["gs"]
+        sync: false
+      - name: "cg"
+        role: dimension
+        type: FLOAT
+        description: "cg"
+        alias: ["cg"]
+        sync: false
+      - name: "sho"
+        role: dimension
+        type: FLOAT
+        description: "sho"
+        alias: ["sho"]
+        sync: false
+      - name: "sv"
+        role: dimension
+        type: FLOAT
+        description: "sv"
+        alias: ["sv"]
+        sync: false
+      - name: "ipouts"
+        role: dimension
+        type: FLOAT
+        description: "ipouts"
+        alias: ["ipouts"]
+        sync: false
+      - name: "h"
+        role: dimension
+        type: FLOAT
+        description: "h"
+        alias: ["h"]
+        sync: false
+      - name: "er"
+        role: dimension
+        type: FLOAT
+        description: "er"
+        alias: ["er"]
+        sync: false
+      - name: "hr"
+        role: dimension
+        type: FLOAT
+        description: "hr"
+        alias: ["hr"]
+        sync: false
+      - name: "bb"
+        role: dimension
+        type: FLOAT
+        description: "bb"
+        alias: ["bb"]
+        sync: false
+      - name: "so"
+        role: dimension
+        type: FLOAT
+        description: "so"
+        alias: ["so"]
+        sync: false
+      - name: "baopp"
+        role: dimension
+        type: FLOAT
+        description: "baopp"
+        alias: ["baopp"]
+        sync: false
+      - name: "era"
+        role: dimension
+        type: FLOAT
+        description: "era"
+        alias: ["era"]
+        sync: false
+      - name: "ibb"
+        role: dimension
+        type: FLOAT
+        description: "ibb"
+        alias: ["ibb"]
+        sync: false
+      - name: "wp"
+        role: dimension
+        type: FLOAT
+        description: "wp"
+        alias: ["wp"]
+        sync: false
+      - name: "hbp"
+        role: dimension
+        type: FLOAT
+        description: "hbp"
+        alias: ["hbp"]
+        sync: false
+      - name: "bk"
+        role: dimension
+        type: FLOAT
+        description: "bk"
+        alias: ["bk"]
+        sync: false
+      - name: "bfp"
+        role: dimension
+        type: FLOAT
+        description: "bfp"
+        alias: ["bfp"]
+        sync: false
+      - name: "gf"
+        role: dimension
+        type: FLOAT
+        description: "gf"
+        alias: ["gf"]
+        sync: false
+      - name: "r"
+        role: dimension
+        type: FLOAT
+        description: "r"
+        alias: ["r"]
+        sync: false
+      - name: "sh"
+        role: dimension
+        type: FLOAT
+        description: "sh"
+        alias: ["sh"]
+        sync: false
+      - name: "sf"
+        role: dimension
+        type: FLOAT
+        description: "sf"
+        alias: ["sf"]
+        sync: false
+      - name: "g_idp"
+        role: dimension
+        type: FLOAT
+        description: "g idp"
+        alias: ["g_idp"]
+        sync: false
+  - name: "pitching_postseason"
+    role: dim
+    description: "pitching postseason"
+    columns:
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: VARCHAR(255)
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "gs"
+        role: dimension
+        type: FLOAT
+        description: "gs"
+        alias: ["gs"]
+        sync: false
+      - name: "cg"
+        role: dimension
+        type: FLOAT
+        description: "cg"
+        alias: ["cg"]
+        sync: false
+      - name: "sho"
+        role: dimension
+        type: FLOAT
+        description: "sho"
+        alias: ["sho"]
+        sync: false
+      - name: "sv"
+        role: dimension
+        type: FLOAT
+        description: "sv"
+        alias: ["sv"]
+        sync: false
+      - name: "ipouts"
+        role: dimension
+        type: FLOAT
+        description: "ipouts"
+        alias: ["ipouts"]
+        sync: false
+      - name: "h"
+        role: dimension
+        type: FLOAT
+        description: "h"
+        alias: ["h"]
+        sync: false
+      - name: "er"
+        role: dimension
+        type: FLOAT
+        description: "er"
+        alias: ["er"]
+        sync: false
+      - name: "hr"
+        role: dimension
+        type: FLOAT
+        description: "hr"
+        alias: ["hr"]
+        sync: false
+      - name: "bb"
+        role: dimension
+        type: FLOAT
+        description: "bb"
+        alias: ["bb"]
+        sync: false
+      - name: "so"
+        role: dimension
+        type: FLOAT
+        description: "so"
+        alias: ["so"]
+        sync: false
+      - name: "baopp"
+        role: dimension
+        type: VARCHAR(255)
+        description: "baopp"
+        alias: ["baopp"]
+        sync: false
+      - name: "era"
+        role: dimension
+        type: FLOAT
+        description: "era"
+        alias: ["era"]
+        sync: false
+      - name: "ibb"
+        role: dimension
+        type: FLOAT
+        description: "ibb"
+        alias: ["ibb"]
+        sync: false
+      - name: "wp"
+        role: dimension
+        type: FLOAT
+        description: "wp"
+        alias: ["wp"]
+        sync: false
+      - name: "hbp"
+        role: dimension
+        type: FLOAT
+        description: "hbp"
+        alias: ["hbp"]
+        sync: false
+      - name: "bk"
+        role: dimension
+        type: FLOAT
+        description: "bk"
+        alias: ["bk"]
+        sync: false
+      - name: "bfp"
+        role: dimension
+        type: FLOAT
+        description: "bfp"
+        alias: ["bfp"]
+        sync: false
+      - name: "gf"
+        role: dimension
+        type: FLOAT
+        description: "gf"
+        alias: ["gf"]
+        sync: false
+      - name: "r"
+        role: dimension
+        type: FLOAT
+        description: "r"
+        alias: ["r"]
+        sync: false
+      - name: "sh"
+        role: dimension
+        type: FLOAT
+        description: "sh"
+        alias: ["sh"]
+        sync: false
+      - name: "sf"
+        role: dimension
+        type: FLOAT
+        description: "sf"
+        alias: ["sf"]
+        sync: false
+      - name: "g_idp"
+        role: dimension
+        type: FLOAT
+        description: "g idp"
+        alias: ["g_idp"]
+        sync: false
+  - name: "salary"
+    role: dim
+    description: "salary"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "player_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "salary"
+        role: measure
+        type: FLOAT
+        description: "salary"
+        alias: ["salary"]
+        sync: false
+  - name: "college"
+    role: dim
+    description: "college"
+    columns:
+      - name: "college_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "college id"
+        alias: ["college_id"]
+        sync: false
+      - name: "name_full"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name full"
+        alias: ["name_full"]
+        sync: true
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "postseason"
+    role: dim
+    description: "postseason"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: VARCHAR(255)
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "team_id_winner"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team id winner"
+        alias: ["team_id_winner"]
+        sync: false
+      - name: "league_id_winner"
+        role: dimension
+        type: VARCHAR(255)
+        description: "league id winner"
+        alias: ["league_id_winner"]
+        sync: false
+      - name: "team_id_loser"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team id loser"
+        alias: ["team_id_loser"]
+        sync: false
+      - name: "league_id_loser"
+        role: dimension
+        type: VARCHAR(255)
+        description: "league id loser"
+        alias: ["league_id_loser"]
+        sync: false
+      - name: "wins"
+        role: dimension
+        type: FLOAT
+        description: "wins"
+        alias: ["wins"]
+        sync: false
+      - name: "losses"
+        role: dimension
+        type: FLOAT
+        description: "losses"
+        alias: ["losses"]
+        sync: false
+      - name: "ties"
+        role: dimension
+        type: FLOAT
+        description: "ties"
+        alias: ["ties"]
+        sync: false
+  - name: "team"
+    role: dim
+    description: "team"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "franchise_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "franchise id"
+        alias: ["franchise_id"]
+        sync: false
+      - name: "div_id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "div id"
+        alias: ["div_id"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "ghome"
+        role: dimension
+        type: FLOAT
+        description: "ghome"
+        alias: ["ghome"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+      - name: "div_win"
+        role: dimension
+        type: VARCHAR(255)
+        description: "div win"
+        alias: ["div_win"]
+        sync: false
+      - name: "wc_win"
+        role: dimension
+        type: VARCHAR(255)
+        description: "wc win"
+        alias: ["wc_win"]
+        sync: false
+      - name: "lg_win"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lg win"
+        alias: ["lg_win"]
+        sync: false
+      - name: "ws_win"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ws win"
+        alias: ["ws_win"]
+        sync: false
+      - name: "r"
+        role: dimension
+        type: FLOAT
+        description: "r"
+        alias: ["r"]
+        sync: false
+      - name: "ab"
+        role: dimension
+        type: FLOAT
+        description: "ab"
+        alias: ["ab"]
+        sync: false
+      - name: "h"
+        role: dimension
+        type: FLOAT
+        description: "h"
+        alias: ["h"]
+        sync: false
+      - name: "double"
+        role: dimension
+        type: FLOAT
+        description: "double"
+        alias: ["double"]
+        sync: false
+      - name: "triple"
+        role: dimension
+        type: FLOAT
+        description: "triple"
+        alias: ["triple"]
+        sync: false
+      - name: "hr"
+        role: dimension
+        type: FLOAT
+        description: "hr"
+        alias: ["hr"]
+        sync: false
+      - name: "bb"
+        role: dimension
+        type: FLOAT
+        description: "bb"
+        alias: ["bb"]
+        sync: false
+      - name: "so"
+        role: dimension
+        type: FLOAT
+        description: "so"
+        alias: ["so"]
+        sync: false
+      - name: "sb"
+        role: dimension
+        type: FLOAT
+        description: "sb"
+        alias: ["sb"]
+        sync: false
+      - name: "cs"
+        role: dimension
+        type: FLOAT
+        description: "cs"
+        alias: ["cs"]
+        sync: false
+      - name: "hbp"
+        role: dimension
+        type: FLOAT
+        description: "hbp"
+        alias: ["hbp"]
+        sync: false
+      - name: "sf"
+        role: dimension
+        type: FLOAT
+        description: "sf"
+        alias: ["sf"]
+        sync: false
+      - name: "ra"
+        role: dimension
+        type: FLOAT
+        description: "ra"
+        alias: ["ra"]
+        sync: false
+      - name: "er"
+        role: dimension
+        type: FLOAT
+        description: "er"
+        alias: ["er"]
+        sync: false
+      - name: "era"
+        role: dimension
+        type: FLOAT
+        description: "era"
+        alias: ["era"]
+        sync: false
+      - name: "cg"
+        role: dimension
+        type: FLOAT
+        description: "cg"
+        alias: ["cg"]
+        sync: false
+      - name: "sho"
+        role: dimension
+        type: FLOAT
+        description: "sho"
+        alias: ["sho"]
+        sync: false
+      - name: "sv"
+        role: dimension
+        type: FLOAT
+        description: "sv"
+        alias: ["sv"]
+        sync: false
+      - name: "ipouts"
+        role: dimension
+        type: FLOAT
+        description: "ipouts"
+        alias: ["ipouts"]
+        sync: false
+      - name: "ha"
+        role: dimension
+        type: FLOAT
+        description: "ha"
+        alias: ["ha"]
+        sync: false
+      - name: "hra"
+        role: dimension
+        type: FLOAT
+        description: "hra"
+        alias: ["hra"]
+        sync: false
+      - name: "bba"
+        role: dimension
+        type: FLOAT
+        description: "bba"
+        alias: ["bba"]
+        sync: false
+      - name: "soa"
+        role: dimension
+        type: FLOAT
+        description: "soa"
+        alias: ["soa"]
+        sync: false
+      - name: "e"
+        role: dimension
+        type: FLOAT
+        description: "e"
+        alias: ["e"]
+        sync: false
+      - name: "dp"
+        role: dimension
+        type: FLOAT
+        description: "dp"
+        alias: ["dp"]
+        sync: false
+      - name: "fp"
+        role: dimension
+        type: FLOAT
+        description: "fp"
+        alias: ["fp"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "park"
+        role: dimension
+        type: VARCHAR(255)
+        description: "park"
+        alias: ["park"]
+        sync: false
+      - name: "attendance"
+        role: dimension
+        type: FLOAT
+        description: "attendance"
+        alias: ["attendance"]
+        sync: false
+      - name: "bpf"
+        role: dimension
+        type: FLOAT
+        description: "bpf"
+        alias: ["bpf"]
+        sync: false
+      - name: "ppf"
+        role: dimension
+        type: FLOAT
+        description: "ppf"
+        alias: ["ppf"]
+        sync: false
+      - name: "team_id_br"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team id br"
+        alias: ["team_id_br"]
+        sync: false
+      - name: "team_id_lahman45"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team id lahman45"
+        alias: ["team_id_lahman45"]
+        sync: false
+      - name: "team_id_retro"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team id retro"
+        alias: ["team_id_retro"]
+        sync: false
+  - name: "team_franchise"
+    role: dim
+    description: "team franchise"
+    columns:
+      - name: "franchise_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "franchise id"
+        alias: ["franchise_id"]
+        sync: false
+      - name: "franchise_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "franchise name"
+        alias: ["franchise_name"]
+        sync: true
+      - name: "active"
+        role: dimension
+        type: VARCHAR(255)
+        description: "active"
+        alias: ["active"]
+        sync: false
+      - name: "na_assoc"
+        role: dimension
+        type: VARCHAR(255)
+        description: "na assoc"
+        alias: ["na_assoc"]
+        sync: false
+  - name: "team_half"
+    role: dim
+    description: "team half"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "league_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "league id"
+        alias: ["league_id"]
+        sync: false
+      - name: "team_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "half"
+        role: dimension
+        type: FLOAT
+        description: "half"
+        alias: ["half"]
+        sync: false
+      - name: "div_id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "div id"
+        alias: ["div_id"]
+        sync: false
+      - name: "div_win"
+        role: dimension
+        type: VARCHAR(255)
+        description: "div win"
+        alias: ["div_win"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "g"
+        role: dimension
+        type: FLOAT
+        description: "g"
+        alias: ["g"]
+        sync: false
+      - name: "w"
+        role: dimension
+        type: FLOAT
+        description: "w"
+        alias: ["w"]
+        sync: false
+      - name: "l"
+        role: dimension
+        type: FLOAT
+        description: "l"
+        alias: ["l"]
+        sync: false
+
+metrics:
+  - name: "all_star_year"
+    description: year from all_star
+    relevant_columns:
+      - all_star.year
+    alias: [year]
+  - name: "appearances_year"
+    description: year from appearances
+    relevant_columns:
+      - appearances.year
+    alias: [year]
+  - name: "manager_award_year"
+    description: year from manager_award
+    relevant_columns:
+      - manager_award.year
+    alias: [year]
+  - name: "player_award_year"
+    description: year from player_award
+    relevant_columns:
+      - player_award.year
+    alias: [year]
+  - name: "manager_award_vote_year"
+    description: year from manager_award_vote
+    relevant_columns:
+      - manager_award_vote.year
+    alias: [year]
+  - name: "player_award_vote_year"
+    description: year from player_award_vote
+    relevant_columns:
+      - player_award_vote.year
+    alias: [year]
+  - name: "batting_year"
+    description: year from batting
+    relevant_columns:
+      - batting.year
+    alias: [year]
+  - name: "batting_postseason_year"
+    description: year from batting_postseason
+    relevant_columns:
+      - batting_postseason.year
+    alias: [year]
+  - name: "player_college_year"
+    description: year from player_college
+    relevant_columns:
+      - player_college.year
+    alias: [year]
+  - name: "fielding_year"
+    description: year from fielding
+    relevant_columns:
+      - fielding.year
+    alias: [year]
+  - name: "fielding_outfield_year"
+    description: year from fielding_outfield
+    relevant_columns:
+      - fielding_outfield.year
+    alias: [year]
+  - name: "fielding_postseason_year"
+    description: year from fielding_postseason
+    relevant_columns:
+      - fielding_postseason.year
+    alias: [year]
+  - name: "hall_of_fame_yearid"
+    description: yearid from hall_of_fame
+    relevant_columns:
+      - hall_of_fame.yearid
+    alias: [yearid]
+  - name: "home_game_year"
+    description: year from home_game
+    relevant_columns:
+      - home_game.year
+    alias: [year]
+  - name: "manager_year"
+    description: year from manager
+    relevant_columns:
+      - manager.year
+    alias: [year]
+  - name: "manager_half_year"
+    description: year from manager_half
+    relevant_columns:
+      - manager_half.year
+    alias: [year]
+  - name: "player_birth_year"
+    description: birth year from player
+    relevant_columns:
+      - player.birth_year
+    alias: [birth_year]
+  - name: "player_death_year"
+    description: death year from player
+    relevant_columns:
+      - player.death_year
+    alias: [death_year]
+  - name: "pitching_year"
+    description: year from pitching
+    relevant_columns:
+      - pitching.year
+    alias: [year]
+  - name: "pitching_postseason_year"
+    description: year from pitching_postseason
+    relevant_columns:
+      - pitching_postseason.year
+    alias: [year]
+  - name: "salary_year"
+    description: year from salary
+    relevant_columns:
+      - salary.year
+    alias: [year]
+  - name: "salary_salary"
+    description: salary from salary
+    relevant_columns:
+      - salary.salary
+    alias: [salary]
+  - name: "postseason_year"
+    description: year from postseason
+    relevant_columns:
+      - postseason.year
+    alias: [year]
+  - name: "team_year"
+    description: year from team
+    relevant_columns:
+      - team.year
+    alias: [year]
+  - name: "team_half_year"
+    description: year from team_half
+    relevant_columns:
+      - team_half.year
+    alias: [year]

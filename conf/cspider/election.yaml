@@ -1,0 +1,139 @@
+tables:
+  - name: "county"
+    role: dim
+    description: "county"
+    columns:
+      - name: "County_Id"
+        role: foreign_key
+        type: FLOAT
+        description: "county id"
+        alias: ["county_id"]
+        sync: false
+      - name: "County_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "county name"
+        alias: ["county_name"]
+        sync: true
+      - name: "Population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "Zip_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip code"
+        alias: ["zip_code"]
+        sync: true
+  - name: "party"
+    role: dim
+    description: "party"
+    columns:
+      - name: "Party_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Party"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party"
+        alias: ["party"]
+        sync: false
+      - name: "Governor"
+        role: dimension
+        type: VARCHAR(255)
+        description: "governor"
+        alias: ["governor"]
+        sync: false
+      - name: "Lieutenant_Governor"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lieutenant governor"
+        alias: ["lieutenant_governor"]
+        sync: false
+      - name: "Comptroller"
+        role: dimension
+        type: VARCHAR(255)
+        description: "comptroller"
+        alias: ["comptroller"]
+        sync: false
+      - name: "Attorney_General"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attorney general"
+        alias: ["attorney_general"]
+        sync: false
+      - name: "US_Senate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "us senate"
+        alias: ["us_senate"]
+        sync: false
+  - name: "election"
+    role: dim
+    description: "election"
+    columns:
+      - name: "Election_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "election id"
+        alias: ["election_id"]
+        sync: false
+      - name: "Counties_Represented"
+        role: dimension
+        type: VARCHAR(255)
+        description: "counties represented"
+        alias: ["counties_represented"]
+        sync: false
+      - name: "District"
+        role: dimension
+        type: FLOAT
+        description: "district"
+        alias: ["district"]
+        sync: false
+      - name: "Delegate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "delegate"
+        alias: ["delegate"]
+        sync: false
+      - name: "Party"
+        role: dimension
+        type: FLOAT
+        description: "party"
+        alias: ["party"]
+        sync: false
+      - name: "First_Elected"
+        role: dimension
+        type: FLOAT
+        description: "first elected"
+        alias: ["first_elected"]
+        sync: false
+      - name: "Committee"
+        role: dimension
+        type: VARCHAR(255)
+        description: "committee"
+        alias: ["committee"]
+        sync: false
+
+metrics:
+  - name: "county_population"
+    description: population from county
+    relevant_columns:
+      - county.Population
+    alias: [population]
+  - name: "party_year"
+    description: year from party
+    relevant_columns:
+      - party.Year
+    alias: [year]

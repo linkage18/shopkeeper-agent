@@ -1,0 +1,102 @@
+tables:
+  - name: "manufacturer"
+    role: dim
+    description: "manufacturer"
+    columns:
+      - name: "Manufacturer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manufacturer id"
+        alias: ["manufacturer_id"]
+        sync: false
+      - name: "Open_Year"
+        role: measure
+        type: FLOAT
+        description: "open year"
+        alias: ["open_year"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Num_of_Factories"
+        role: dimension
+        type: FLOAT
+        description: "num of factories"
+        alias: ["num_of_factories"]
+        sync: false
+      - name: "Num_of_Shops"
+        role: dimension
+        type: FLOAT
+        description: "num of shops"
+        alias: ["num_of_shops"]
+        sync: false
+  - name: "furniture"
+    role: dim
+    description: "furniture"
+    columns:
+      - name: "Furniture_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "furniture id"
+        alias: ["furniture_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Num_of_Component"
+        role: dimension
+        type: FLOAT
+        description: "num of component"
+        alias: ["num_of_component"]
+        sync: false
+      - name: "Market_Rate"
+        role: measure
+        type: FLOAT
+        description: "market rate"
+        alias: ["market_rate"]
+        sync: false
+  - name: "furniture_manufacte"
+    role: dim
+    description: "furniture manufacte"
+    columns:
+      - name: "Manufacturer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manufacturer id"
+        alias: ["manufacturer_id"]
+        sync: false
+      - name: "Furniture_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "furniture id"
+        alias: ["furniture_id"]
+        sync: false
+      - name: "Price_in_Dollar"
+        role: measure
+        type: FLOAT
+        description: "price in dollar"
+        alias: ["price_in_dollar"]
+        sync: false
+
+metrics:
+  - name: "manufacturer_open_year"
+    description: open year from manufacturer
+    relevant_columns:
+      - manufacturer.Open_Year
+    alias: [open_year]
+  - name: "furniture_market_rate"
+    description: market rate from furniture
+    relevant_columns:
+      - furniture.Market_Rate
+    alias: [market_rate]
+  - name: "furniture_manufacte_price_in_dollar"
+    description: price in dollar from furniture_manufacte
+    relevant_columns:
+      - furniture_manufacte.Price_in_Dollar
+    alias: [price_in_dollar]

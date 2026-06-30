@@ -1,0 +1,129 @@
+tables:
+  - name: "basketball_match"
+    role: dim
+    description: "basketball match"
+    columns:
+      - name: "Team_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "team id"
+        alias: ["team_id"]
+        sync: false
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "Team_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team name"
+        alias: ["team_name"]
+        sync: true
+      - name: "ACC_Regular_Season"
+        role: dimension
+        type: VARCHAR(255)
+        description: "acc regular season"
+        alias: ["acc_regular_season"]
+        sync: false
+      - name: "ACC_Percent"
+        role: dimension
+        type: VARCHAR(255)
+        description: "acc percent"
+        alias: ["acc_percent"]
+        sync: false
+      - name: "ACC_Home"
+        role: dimension
+        type: VARCHAR(255)
+        description: "acc home"
+        alias: ["acc_home"]
+        sync: false
+      - name: "ACC_Road"
+        role: dimension
+        type: VARCHAR(255)
+        description: "acc road"
+        alias: ["acc_road"]
+        sync: false
+      - name: "All_Games"
+        role: dimension
+        type: VARCHAR(255)
+        description: "all games"
+        alias: ["all_games"]
+        sync: false
+      - name: "All_Games_Percent"
+        role: dimension
+        type: FLOAT
+        description: "all games percent"
+        alias: ["all_games_percent"]
+        sync: false
+      - name: "All_Home"
+        role: dimension
+        type: VARCHAR(255)
+        description: "all home"
+        alias: ["all_home"]
+        sync: false
+      - name: "All_Road"
+        role: dimension
+        type: VARCHAR(255)
+        description: "all road"
+        alias: ["all_road"]
+        sync: false
+      - name: "All_Neutral"
+        role: dimension
+        type: VARCHAR(255)
+        description: "all neutral"
+        alias: ["all_neutral"]
+        sync: false
+  - name: "university"
+    role: dim
+    description: "university"
+    columns:
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "School"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school"
+        alias: ["school"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Founded"
+        role: dimension
+        type: FLOAT
+        description: "founded"
+        alias: ["founded"]
+        sync: false
+      - name: "Affiliation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "affiliation"
+        alias: ["affiliation"]
+        sync: false
+      - name: "Enrollment"
+        role: dimension
+        type: FLOAT
+        description: "enrollment"
+        alias: ["enrollment"]
+        sync: false
+      - name: "Nickname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nickname"
+        alias: ["nickname"]
+        sync: true
+      - name: "Primary_conference"
+        role: dimension
+        type: VARCHAR(255)
+        description: "primary conference"
+        alias: ["primary_conference"]
+        sync: false

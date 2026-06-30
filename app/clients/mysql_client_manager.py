@@ -39,7 +39,7 @@ class MySQLClientManager:
 
     def init(self):
         """初始化 Engine 和 Session 工厂"""
-        # 创建异步 Engine，相当于先把“数据库连接能力”准备好
+        # 创建异步 Engine，相当于先把"数据库连接能力"准备好
         self.engine = create_async_engine(
             self._get_url(), pool_size=10, pool_pre_ping=True
         )
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         async with dw_mysql_client_manager.session_factory() as session:
             sql = "select * from fact_order limit 10"
             result = await session.execute(text(sql))
-            # mappings().fetchall() 会把结果转成“按列名访问”的行对象列表
+            # mappings().fetchall() 会把结果转成"按列名访问"的行对象列表
             rows = result.mappings().fetchall()
             print(type(rows))
             print(type(rows[0]))

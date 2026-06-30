@@ -1,0 +1,223 @@
+tables:
+  - name: "Apartment_Buildings"
+    role: dim
+    description: "apartment buildings"
+    columns:
+      - name: "building_id"
+        role: foreign_key
+        type: FLOAT
+        description: "building id"
+        alias: ["building_id"]
+        sync: false
+      - name: "building_short_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building short name"
+        alias: ["building_short_name"]
+        sync: true
+      - name: "building_full_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building full name"
+        alias: ["building_full_name"]
+        sync: true
+      - name: "building_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building description"
+        alias: ["building_description"]
+        sync: false
+      - name: "building_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building address"
+        alias: ["building_address"]
+        sync: false
+      - name: "building_manager"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building manager"
+        alias: ["building_manager"]
+        sync: false
+      - name: "building_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building phone"
+        alias: ["building_phone"]
+        sync: false
+  - name: "Apartments"
+    role: dim
+    description: "apartments"
+    columns:
+      - name: "apt_id"
+        role: primary_key
+        type: FLOAT
+        description: "apt id"
+        alias: ["apt_id"]
+        sync: false
+      - name: "building_id"
+        role: foreign_key
+        type: FLOAT
+        description: "building id"
+        alias: ["building_id"]
+        sync: false
+      - name: "apt_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "apt type code"
+        alias: ["apt_type_code"]
+        sync: true
+      - name: "apt_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "apt number"
+        alias: ["apt_number"]
+        sync: false
+      - name: "bathroom_count"
+        role: measure
+        type: FLOAT
+        description: "bathroom count"
+        alias: ["bathroom_count"]
+        sync: false
+      - name: "bedroom_count"
+        role: measure
+        type: FLOAT
+        description: "bedroom count"
+        alias: ["bedroom_count"]
+        sync: false
+      - name: "room_count"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room count"
+        alias: ["room_count"]
+        sync: false
+  - name: "Apartment_Facilities"
+    role: dim
+    description: "apartment facilities"
+    columns:
+      - name: "apt_id"
+        role: primary_key
+        type: FLOAT
+        description: "apt id"
+        alias: ["apt_id"]
+        sync: false
+      - name: "facility_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "facility code"
+        alias: ["facility_code"]
+        sync: true
+  - name: "Guests"
+    role: dim
+    description: "guests"
+    columns:
+      - name: "guest_id"
+        role: foreign_key
+        type: FLOAT
+        description: "guest id"
+        alias: ["guest_id"]
+        sync: false
+      - name: "gender_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender code"
+        alias: ["gender_code"]
+        sync: true
+      - name: "guest_first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "guest first name"
+        alias: ["guest_first_name"]
+        sync: true
+      - name: "guest_last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "guest last name"
+        alias: ["guest_last_name"]
+        sync: true
+      - name: "date_of_birth"
+        role: dimension
+        type: DATETIME
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+  - name: "Apartment_Bookings"
+    role: dim
+    description: "apartment bookings"
+    columns:
+      - name: "apt_booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "apt booking id"
+        alias: ["apt_booking_id"]
+        sync: false
+      - name: "apt_id"
+        role: primary_key
+        type: FLOAT
+        description: "apt id"
+        alias: ["apt_id"]
+        sync: false
+      - name: "guest_id"
+        role: foreign_key
+        type: FLOAT
+        description: "guest id"
+        alias: ["guest_id"]
+        sync: false
+      - name: "booking_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "booking status code"
+        alias: ["booking_status_code"]
+        sync: true
+      - name: "booking_start_date"
+        role: dimension
+        type: DATETIME
+        description: "booking start date"
+        alias: ["booking_start_date"]
+        sync: false
+      - name: "booking_end_date"
+        role: dimension
+        type: DATETIME
+        description: "booking end date"
+        alias: ["booking_end_date"]
+        sync: false
+  - name: "View_Unit_Status"
+    role: dim
+    description: "view unit status"
+    columns:
+      - name: "apt_id"
+        role: primary_key
+        type: FLOAT
+        description: "apt id"
+        alias: ["apt_id"]
+        sync: false
+      - name: "apt_booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "apt booking id"
+        alias: ["apt_booking_id"]
+        sync: false
+      - name: "status_date"
+        role: dimension
+        type: DATETIME
+        description: "status date"
+        alias: ["status_date"]
+        sync: true
+      - name: "available_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "available yn"
+        alias: ["available_yn"]
+        sync: false
+
+metrics:
+  - name: "apartments_bathroom_count"
+    description: bathroom count from apartments
+    relevant_columns:
+      - Apartments.bathroom_count
+    alias: [bathroom_count]
+  - name: "apartments_bedroom_count"
+    description: bedroom count from apartments
+    relevant_columns:
+      - Apartments.bedroom_count
+    alias: [bedroom_count]

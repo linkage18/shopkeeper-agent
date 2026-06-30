@@ -1,0 +1,97 @@
+tables:
+  - name: "medicine"
+    role: dim
+    description: "medicine"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Trade_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "trade name"
+        alias: ["trade_name"]
+        sync: true
+      - name: "FDA_approved"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fda approved"
+        alias: ["fda_approved"]
+        sync: false
+  - name: "enzyme"
+    role: dim
+    description: "enzyme"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Product"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product"
+        alias: ["product"]
+        sync: false
+      - name: "Chromosome"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chromosome"
+        alias: ["chromosome"]
+        sync: false
+      - name: "OMIM"
+        role: dimension
+        type: FLOAT
+        description: "omim"
+        alias: ["omim"]
+        sync: false
+      - name: "Porphyria"
+        role: dimension
+        type: VARCHAR(255)
+        description: "porphyria"
+        alias: ["porphyria"]
+        sync: false
+  - name: "medicine_enzyme_interaction"
+    role: dim
+    description: "medicine enzyme interaction"
+    columns:
+      - name: "enzyme_id"
+        role: foreign_key
+        type: FLOAT
+        description: "enzyme id"
+        alias: ["enzyme_id"]
+        sync: false
+      - name: "medicine_id"
+        role: foreign_key
+        type: FLOAT
+        description: "medicine id"
+        alias: ["medicine_id"]
+        sync: false
+      - name: "interaction_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "interaction type"
+        alias: ["interaction_type"]
+        sync: true

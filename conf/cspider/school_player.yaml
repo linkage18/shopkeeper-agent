@@ -1,0 +1,180 @@
+tables:
+  - name: "school"
+    role: dim
+    description: "school"
+    columns:
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "School"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school"
+        alias: ["school"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Enrollment"
+        role: dimension
+        type: FLOAT
+        description: "enrollment"
+        alias: ["enrollment"]
+        sync: false
+      - name: "Founded"
+        role: dimension
+        type: FLOAT
+        description: "founded"
+        alias: ["founded"]
+        sync: false
+      - name: "Denomination"
+        role: dimension
+        type: VARCHAR(255)
+        description: "denomination"
+        alias: ["denomination"]
+        sync: false
+      - name: "Boys_or_Girls"
+        role: dimension
+        type: VARCHAR(255)
+        description: "boys or girls"
+        alias: ["boys_or_girls"]
+        sync: false
+      - name: "Day_or_Boarding"
+        role: dimension
+        type: VARCHAR(255)
+        description: "day or boarding"
+        alias: ["day_or_boarding"]
+        sync: false
+      - name: "Year_Entered_Competition"
+        role: measure
+        type: FLOAT
+        description: "year entered competition"
+        alias: ["year_entered_competition"]
+        sync: false
+      - name: "School_Colors"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school colors"
+        alias: ["school_colors"]
+        sync: true
+  - name: "school_details"
+    role: dim
+    description: "school details"
+    columns:
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "Nickname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nickname"
+        alias: ["nickname"]
+        sync: true
+      - name: "Colors"
+        role: dimension
+        type: VARCHAR(255)
+        description: "colors"
+        alias: ["colors"]
+        sync: true
+      - name: "League"
+        role: dimension
+        type: VARCHAR(255)
+        description: "league"
+        alias: ["league"]
+        sync: false
+      - name: "Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class"
+        alias: ["class"]
+        sync: false
+      - name: "Division"
+        role: dimension
+        type: VARCHAR(255)
+        description: "division"
+        alias: ["division"]
+        sync: false
+  - name: "school_performance"
+    role: dim
+    description: "school performance"
+    columns:
+      - name: "School_Id"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "School_Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school year"
+        alias: ["school_year"]
+        sync: false
+      - name: "Class_A"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class a"
+        alias: ["class_a"]
+        sync: false
+      - name: "Class_AA"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class aa"
+        alias: ["class_aa"]
+        sync: false
+  - name: "player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "Player"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player"
+        alias: ["player"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "School_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+
+metrics:
+  - name: "school_year_entered_competition"
+    description: year entered competition from school
+    relevant_columns:
+      - school.Year_Entered_Competition
+    alias: [year_entered_competition]

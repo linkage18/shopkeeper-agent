@@ -1,0 +1,126 @@
+tables:
+  - name: "Ref_Template_Types"
+    role: dim
+    description: "ref template types"
+    columns:
+      - name: "Template_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "template type code"
+        alias: ["template_type_code"]
+        sync: true
+      - name: "Template_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "template type description"
+        alias: ["template_type_description"]
+        sync: true
+  - name: "Templates"
+    role: dim
+    description: "templates"
+    columns:
+      - name: "Template_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "template id"
+        alias: ["template_id"]
+        sync: false
+      - name: "Version_Number"
+        role: measure
+        type: FLOAT
+        description: "version number"
+        alias: ["version_number"]
+        sync: false
+      - name: "Template_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "template type code"
+        alias: ["template_type_code"]
+        sync: true
+      - name: "Date_Effective_From"
+        role: dimension
+        type: DATETIME
+        description: "date effective from"
+        alias: ["date_effective_from"]
+        sync: false
+      - name: "Date_Effective_To"
+        role: dimension
+        type: DATETIME
+        description: "date effective to"
+        alias: ["date_effective_to"]
+        sync: false
+      - name: "Template_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "template details"
+        alias: ["template_details"]
+        sync: false
+  - name: "Documents"
+    role: dim
+    description: "documents"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Template_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "template id"
+        alias: ["template_id"]
+        sync: false
+      - name: "Document_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document name"
+        alias: ["document_name"]
+        sync: true
+      - name: "Document_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document description"
+        alias: ["document_description"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Paragraphs"
+    role: dim
+    description: "paragraphs"
+    columns:
+      - name: "Paragraph_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "paragraph id"
+        alias: ["paragraph_id"]
+        sync: false
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Paragraph_Text"
+        role: dimension
+        type: VARCHAR(255)
+        description: "paragraph text"
+        alias: ["paragraph_text"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+
+metrics:
+  - name: "templates_version_number"
+    description: version number from templates
+    relevant_columns:
+      - Templates.Version_Number
+    alias: [version_number]

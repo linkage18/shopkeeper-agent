@@ -1,0 +1,76 @@
+tables:
+  - name: "race"
+    role: dim
+    description: "race"
+    columns:
+      - name: "Race_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "race id"
+        alias: ["race_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class"
+        alias: ["class"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Track_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "track id"
+        alias: ["track_id"]
+        sync: false
+  - name: "track"
+    role: dim
+    description: "track"
+    columns:
+      - name: "Track_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "track id"
+        alias: ["track_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Seating"
+        role: dimension
+        type: FLOAT
+        description: "seating"
+        alias: ["seating"]
+        sync: false
+      - name: "Year_Opened"
+        role: measure
+        type: FLOAT
+        description: "year opened"
+        alias: ["year_opened"]
+        sync: false
+
+metrics:
+  - name: "track_year_opened"
+    description: year opened from track
+    relevant_columns:
+      - track.Year_Opened
+    alias: [year_opened]

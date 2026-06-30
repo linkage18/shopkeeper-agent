@@ -1,4 +1,4 @@
-"""
+﻿"""
 SQL 生成节点
 
 负责根据用户问题和前面整理出的表结构 指标 日期 数据库环境生成候选 SQL。
@@ -11,8 +11,10 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
-from app.agent.llm import llm
+from app.agent.llm import get_llm
+from app.agent.nodes.run_sql import _has_chart_keyword
 from app.agent.state import DataAgentState
+from app.conf.app_config import app_config
 from app.core.log import logger
 from app.prompt.prompt_loader import load_prompt
 
@@ -31,18 +33,22 @@ async def generate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
         date_info = state["date_info"]
         db_info = state["db_info"]
         query = state["query"]
+        memory_context = state.get("memory_context", "")
 
         # 检测用户是否要求图表/可视化，在 prompt 中注入提示
-        _chart_words = ["占比", "比例", "份额", "分布", "图", "图表", "可视化", "chart", "pie", "bar", "line", "饼图", "柱状图", "折线图"]
-        is_chart_query = any(w in query.lower() for w in _chart_words)
+        # 从配置读取图表关键词（允许用户自定义）
         chart_hint = (
             "\n【提示】用户希望看到可视化图表。请确保 SQL 返回多行数据（维度 + 数值），"
             "不要只返回一个汇总值。例如：GROUP BY 地区/品类/品牌 等维度。"
-            if is_chart_query else ""
+            if _has_chart_keyword(query) else ""
         )
 
+        # 如果有记忆上下文，注入到 prompt 顶部
+        template = load_prompt("generate_sql")
+        if memory_context.strip():
+            template = f"\n\n【知识参考】\n{memory_context}" + "\n\n" + template
         prompt = PromptTemplate(
-            template=load_prompt("generate_sql") + chart_hint,
+            template=template + chart_hint,
             input_variables=[
                 "table_infos",
                 "metric_infos",
@@ -53,7 +59,7 @@ async def generate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
         )
         # SQL 生成节点只需要纯文本 SQL，不能要求模型输出 JSON 或 Markdown 代码块
         output_parser = StrOutputParser()
-        chain = prompt | llm | output_parser
+        chain = prompt | get_llm() | output_parser
 
         result = await chain.ainvoke(
             {
@@ -69,6 +75,26 @@ async def generate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
                 "query": query,
             }
         )
+
+        # 如果 LLM 返回空 SQL，重试一次
+        if not result or not result.strip():
+            logger.warning("生成SQL为空，重试一次...")
+            writer({"type": "progress", "step": step, "status": "running"})
+            # 在chart_hint前插入：强制要求生成非空SQL
+            force_template = template + "\n注意：必须生成一条完整的 SQL 语句，不得为空！\n" + chart_hint
+            force_prompt = PromptTemplate(
+                template=force_template,
+                input_variables=["table_infos", "metric_infos", "date_info", "db_info", "query"],
+            )
+            chain2 = force_prompt | get_llm() | output_parser
+            result = await chain2.ainvoke({
+                "table_infos": yaml.dump(table_infos, allow_unicode=True, sort_keys=False),
+                "metric_infos": yaml.dump(metric_infos, allow_unicode=True, sort_keys=False),
+                "date_info": yaml.dump(date_info, allow_unicode=True, sort_keys=False),
+                "db_info": yaml.dump(db_info, allow_unicode=True, sort_keys=False),
+                "query": query,
+            })
+
         logger.info(f"生成的SQL：{result}")
         writer({"type": "progress", "step": step, "status": "success"})
         return {"sql": result}
@@ -77,3 +103,5 @@ async def generate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
         logger.error(f"{step} failed: {e}")
         writer({"type": "progress", "step": step, "status": "error"})
         raise
+
+

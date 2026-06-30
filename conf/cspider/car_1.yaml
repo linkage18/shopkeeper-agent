@@ -1,0 +1,180 @@
+tables:
+  - name: "continents"
+    role: dim
+    description: "continents"
+    columns:
+      - name: "ContId"
+        role: primary_key
+        type: FLOAT
+        description: "contid"
+        alias: ["contid"]
+        sync: false
+      - name: "Continent"
+        role: dimension
+        type: VARCHAR(255)
+        description: "continent"
+        alias: ["continent"]
+        sync: false
+  - name: "countries"
+    role: dim
+    description: "countries"
+    columns:
+      - name: "CountryId"
+        role: measure
+        type: FLOAT
+        description: "countryid"
+        alias: ["countryid"]
+        sync: true
+      - name: "CountryName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "countryname"
+        alias: ["countryname"]
+        sync: true
+      - name: "Continent"
+        role: dimension
+        type: FLOAT
+        description: "continent"
+        alias: ["continent"]
+        sync: false
+  - name: "car_makers"
+    role: dim
+    description: "car makers"
+    columns:
+      - name: "Id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Maker"
+        role: dimension
+        type: VARCHAR(255)
+        description: "maker"
+        alias: ["maker"]
+        sync: false
+      - name: "FullName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fullname"
+        alias: ["fullname"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "model_list"
+    role: dim
+    description: "model list"
+    columns:
+      - name: "ModelId"
+        role: dimension
+        type: FLOAT
+        description: "modelid"
+        alias: ["modelid"]
+        sync: false
+      - name: "Maker"
+        role: dimension
+        type: FLOAT
+        description: "maker"
+        alias: ["maker"]
+        sync: false
+      - name: "Model"
+        role: dimension
+        type: VARCHAR(255)
+        description: "model"
+        alias: ["model"]
+        sync: false
+  - name: "car_names"
+    role: dim
+    description: "car names"
+    columns:
+      - name: "MakeId"
+        role: primary_key
+        type: FLOAT
+        description: "makeid"
+        alias: ["makeid"]
+        sync: false
+      - name: "Model"
+        role: dimension
+        type: VARCHAR(255)
+        description: "model"
+        alias: ["model"]
+        sync: false
+      - name: "Make"
+        role: dimension
+        type: VARCHAR(255)
+        description: "make"
+        alias: ["make"]
+        sync: false
+  - name: "cars_data"
+    role: dim
+    description: "cars data"
+    columns:
+      - name: "Id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "MPG"
+        role: dimension
+        type: VARCHAR(255)
+        description: "mpg"
+        alias: ["mpg"]
+        sync: false
+      - name: "Cylinders"
+        role: dimension
+        type: FLOAT
+        description: "cylinders"
+        alias: ["cylinders"]
+        sync: false
+      - name: "Edispl"
+        role: dimension
+        type: FLOAT
+        description: "edispl"
+        alias: ["edispl"]
+        sync: false
+      - name: "Horsepower"
+        role: dimension
+        type: VARCHAR(255)
+        description: "horsepower"
+        alias: ["horsepower"]
+        sync: false
+      - name: "Weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "Accelerate"
+        role: measure
+        type: FLOAT
+        description: "accelerate"
+        alias: ["accelerate"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+
+metrics:
+  - name: "countries_countryid"
+    description: countryid from countries
+    relevant_columns:
+      - countries.CountryId
+    alias: [countryid]
+  - name: "cars_data_accelerate"
+    description: accelerate from cars_data
+    relevant_columns:
+      - cars_data.Accelerate
+    alias: [accelerate]
+  - name: "cars_data_year"
+    description: year from cars_data
+    relevant_columns:
+      - cars_data.Year
+    alias: [year]

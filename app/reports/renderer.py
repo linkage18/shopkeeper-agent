@@ -65,7 +65,7 @@ def _ensure_chinese_font():
                             except Exception:
                                 continue
     except Exception:
-        pass
+        logger.error("Font scan failed", exc_info=True)
     return None
 
 

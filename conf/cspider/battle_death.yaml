@@ -1,0 +1,121 @@
+tables:
+  - name: "battle"
+    role: dim
+    description: "battle"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "bulgarian_commander"
+        role: dimension
+        type: VARCHAR(255)
+        description: "bulgarian commander"
+        alias: ["bulgarian_commander"]
+        sync: false
+      - name: "latin_commander"
+        role: dimension
+        type: VARCHAR(255)
+        description: "latin commander"
+        alias: ["latin_commander"]
+        sync: false
+      - name: "result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+  - name: "ship"
+    role: dim
+    description: "ship"
+    columns:
+      - name: "lost_in_battle"
+        role: dimension
+        type: FLOAT
+        description: "lost in battle"
+        alias: ["lost_in_battle"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "tonnage"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tonnage"
+        alias: ["tonnage"]
+        sync: false
+      - name: "ship_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ship type"
+        alias: ["ship_type"]
+        sync: true
+      - name: "location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "disposition_of_ship"
+        role: dimension
+        type: VARCHAR(255)
+        description: "disposition of ship"
+        alias: ["disposition_of_ship"]
+        sync: false
+  - name: "death"
+    role: dim
+    description: "death"
+    columns:
+      - name: "caused_by_ship_id"
+        role: foreign_key
+        type: FLOAT
+        description: "caused by ship id"
+        alias: ["caused_by_ship_id"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "note"
+        role: dimension
+        type: VARCHAR(255)
+        description: "note"
+        alias: ["note"]
+        sync: false
+      - name: "killed"
+        role: dimension
+        type: FLOAT
+        description: "killed"
+        alias: ["killed"]
+        sync: false
+      - name: "injured"
+        role: dimension
+        type: FLOAT
+        description: "injured"
+        alias: ["injured"]
+        sync: false

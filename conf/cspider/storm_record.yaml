@@ -1,0 +1,97 @@
+tables:
+  - name: "storm"
+    role: dim
+    description: "storm"
+    columns:
+      - name: "Storm_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "storm id"
+        alias: ["storm_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Dates_active"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dates active"
+        alias: ["dates_active"]
+        sync: false
+      - name: "Max_speed"
+        role: dimension
+        type: FLOAT
+        description: "max speed"
+        alias: ["max_speed"]
+        sync: false
+      - name: "Damage_millions_USD"
+        role: dimension
+        type: FLOAT
+        description: "damage millions usd"
+        alias: ["damage_millions_usd"]
+        sync: false
+      - name: "Number_Deaths"
+        role: measure
+        type: FLOAT
+        description: "number deaths"
+        alias: ["number_deaths"]
+        sync: false
+  - name: "region"
+    role: dim
+    description: "region"
+    columns:
+      - name: "Region_id"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+      - name: "Region_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region code"
+        alias: ["region_code"]
+        sync: true
+      - name: "Region_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region name"
+        alias: ["region_name"]
+        sync: true
+  - name: "affected_region"
+    role: dim
+    description: "affected region"
+    columns:
+      - name: "Region_id"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+      - name: "Storm_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "storm id"
+        alias: ["storm_id"]
+        sync: false
+      - name: "Number_city_affected"
+        role: measure
+        type: FLOAT
+        description: "number city affected"
+        alias: ["number_city_affected"]
+        sync: true
+
+metrics:
+  - name: "storm_number_deaths"
+    description: number deaths from storm
+    relevant_columns:
+      - storm.Number_Deaths
+    alias: [number_deaths]
+  - name: "affected_region_number_city_affected"
+    description: number city affected from affected_region
+    relevant_columns:
+      - affected_region.Number_city_affected
+    alias: [number_city_affected]

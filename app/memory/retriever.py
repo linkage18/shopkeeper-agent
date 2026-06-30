@@ -1,4 +1,4 @@
-"""
+﻿"""
 记忆检索器 — 多级级联检索
 每次查询都从各存储层重新读取，不做内存缓存。
 优先级：持久记忆 > 长期记忆(approved) > 短期记忆
@@ -32,7 +32,7 @@ async def retrieve_all(
 
     # 2. 长期记忆（共享 + 私有）
     try:
-        long_ctx = get_long_term_context(query, user_id)
+        long_ctx = await get_long_term_context(query, user_id)
         if long_ctx:
             parts.append(f"[知识定义]\n{long_ctx}")
     except Exception as e:
@@ -41,10 +41,11 @@ async def retrieve_all(
     # 3. 短期记忆（最近对话上下文）
     if session_id:
         try:
-            short_ctx = get_recent_context(session_id, query)
+            short_ctx = await get_recent_context(session_id, query)
             if short_ctx:
                 parts.append(f"[对话历史]\n{short_ctx}")
         except Exception as e:
             logger.warning(f"短期记忆检索失败: {e}")
 
     return "\n\n".join(parts)
+

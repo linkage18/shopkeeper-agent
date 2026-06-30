@@ -1,0 +1,659 @@
+tables:
+  - name: "circuits"
+    role: dim
+    description: "circuits"
+    columns:
+      - name: "circuitId"
+        role: dimension
+        type: FLOAT
+        description: "circuitid"
+        alias: ["circuitid"]
+        sync: false
+      - name: "circuitRef"
+        role: dimension
+        type: VARCHAR(255)
+        description: "circuitref"
+        alias: ["circuitref"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "lat"
+        role: dimension
+        type: FLOAT
+        description: "lat"
+        alias: ["lat"]
+        sync: false
+      - name: "lng"
+        role: dimension
+        type: FLOAT
+        description: "lng"
+        alias: ["lng"]
+        sync: false
+      - name: "alt"
+        role: dimension
+        type: FLOAT
+        description: "alt"
+        alias: ["alt"]
+        sync: false
+      - name: "url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "url"
+        alias: ["url"]
+        sync: false
+  - name: "races"
+    role: dim
+    description: "races"
+    columns:
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "round"
+        role: dimension
+        type: FLOAT
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "circuitId"
+        role: dimension
+        type: FLOAT
+        description: "circuitid"
+        alias: ["circuitid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "url"
+        alias: ["url"]
+        sync: false
+  - name: "drivers"
+    role: dim
+    description: "drivers"
+    columns:
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "driverRef"
+        role: dimension
+        type: VARCHAR(255)
+        description: "driverref"
+        alias: ["driverref"]
+        sync: false
+      - name: "number"
+        role: measure
+        type: FLOAT
+        description: "number"
+        alias: ["number"]
+        sync: false
+      - name: "code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "forename"
+        role: dimension
+        type: VARCHAR(255)
+        description: "forename"
+        alias: ["forename"]
+        sync: true
+      - name: "surname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "surname"
+        alias: ["surname"]
+        sync: true
+      - name: "dob"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dob"
+        alias: ["dob"]
+        sync: false
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "url"
+        alias: ["url"]
+        sync: false
+  - name: "status"
+    role: dim
+    description: "status"
+    columns:
+      - name: "statusId"
+        role: dimension
+        type: FLOAT
+        description: "statusid"
+        alias: ["statusid"]
+        sync: true
+      - name: "status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status"
+        alias: ["status"]
+        sync: true
+  - name: "seasons"
+    role: dim
+    description: "seasons"
+    columns:
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "url"
+        alias: ["url"]
+        sync: false
+  - name: "constructors"
+    role: dim
+    description: "constructors"
+    columns:
+      - name: "constructorId"
+        role: dimension
+        type: FLOAT
+        description: "constructorid"
+        alias: ["constructorid"]
+        sync: false
+      - name: "constructorRef"
+        role: dimension
+        type: VARCHAR(255)
+        description: "constructorref"
+        alias: ["constructorref"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "url"
+        alias: ["url"]
+        sync: false
+  - name: "constructorStandings"
+    role: dim
+    description: "constructorstandings"
+    columns:
+      - name: "constructorStandingsId"
+        role: dimension
+        type: FLOAT
+        description: "constructorstandingsid"
+        alias: ["constructorstandingsid"]
+        sync: false
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "constructorId"
+        role: dimension
+        type: FLOAT
+        description: "constructorid"
+        alias: ["constructorid"]
+        sync: false
+      - name: "points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+      - name: "position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "positionText"
+        role: dimension
+        type: VARCHAR(255)
+        description: "positiontext"
+        alias: ["positiontext"]
+        sync: false
+      - name: "wins"
+        role: dimension
+        type: FLOAT
+        description: "wins"
+        alias: ["wins"]
+        sync: false
+  - name: "results"
+    role: dim
+    description: "results"
+    columns:
+      - name: "resultId"
+        role: dimension
+        type: FLOAT
+        description: "resultid"
+        alias: ["resultid"]
+        sync: false
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "constructorId"
+        role: dimension
+        type: FLOAT
+        description: "constructorid"
+        alias: ["constructorid"]
+        sync: false
+      - name: "number"
+        role: measure
+        type: FLOAT
+        description: "number"
+        alias: ["number"]
+        sync: false
+      - name: "grid"
+        role: primary_key
+        type: FLOAT
+        description: "grid"
+        alias: ["grid"]
+        sync: false
+      - name: "position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "positionText"
+        role: dimension
+        type: VARCHAR(255)
+        description: "positiontext"
+        alias: ["positiontext"]
+        sync: false
+      - name: "positionOrder"
+        role: dimension
+        type: FLOAT
+        description: "positionorder"
+        alias: ["positionorder"]
+        sync: false
+      - name: "points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+      - name: "laps"
+        role: dimension
+        type: FLOAT
+        description: "laps"
+        alias: ["laps"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "milliseconds"
+        role: measure
+        type: FLOAT
+        description: "milliseconds"
+        alias: ["milliseconds"]
+        sync: false
+      - name: "fastestLap"
+        role: dimension
+        type: FLOAT
+        description: "fastestlap"
+        alias: ["fastestlap"]
+        sync: false
+      - name: "rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "fastestLapTime"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fastestlaptime"
+        alias: ["fastestlaptime"]
+        sync: false
+      - name: "fastestLapSpeed"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fastestlapspeed"
+        alias: ["fastestlapspeed"]
+        sync: false
+      - name: "statusId"
+        role: dimension
+        type: FLOAT
+        description: "statusid"
+        alias: ["statusid"]
+        sync: true
+  - name: "driverStandings"
+    role: dim
+    description: "driverstandings"
+    columns:
+      - name: "driverStandingsId"
+        role: dimension
+        type: FLOAT
+        description: "driverstandingsid"
+        alias: ["driverstandingsid"]
+        sync: false
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+      - name: "position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "positionText"
+        role: dimension
+        type: VARCHAR(255)
+        description: "positiontext"
+        alias: ["positiontext"]
+        sync: false
+      - name: "wins"
+        role: dimension
+        type: FLOAT
+        description: "wins"
+        alias: ["wins"]
+        sync: false
+  - name: "constructorResults"
+    role: dim
+    description: "constructorresults"
+    columns:
+      - name: "constructorResultsId"
+        role: dimension
+        type: FLOAT
+        description: "constructorresultsid"
+        alias: ["constructorresultsid"]
+        sync: false
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "constructorId"
+        role: dimension
+        type: FLOAT
+        description: "constructorid"
+        alias: ["constructorid"]
+        sync: false
+      - name: "points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+      - name: "status"
+        role: dimension
+        type: FLOAT
+        description: "status"
+        alias: ["status"]
+        sync: true
+  - name: "qualifying"
+    role: dim
+    description: "qualifying"
+    columns:
+      - name: "qualifyId"
+        role: dimension
+        type: FLOAT
+        description: "qualifyid"
+        alias: ["qualifyid"]
+        sync: false
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "constructorId"
+        role: dimension
+        type: FLOAT
+        description: "constructorid"
+        alias: ["constructorid"]
+        sync: false
+      - name: "number"
+        role: measure
+        type: FLOAT
+        description: "number"
+        alias: ["number"]
+        sync: false
+      - name: "position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "q1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "q1"
+        alias: ["q1"]
+        sync: false
+      - name: "q2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "q2"
+        alias: ["q2"]
+        sync: false
+      - name: "q3"
+        role: dimension
+        type: VARCHAR(255)
+        description: "q3"
+        alias: ["q3"]
+        sync: false
+  - name: "pitStops"
+    role: dim
+    description: "pitstops"
+    columns:
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "stop"
+        role: dimension
+        type: FLOAT
+        description: "stop"
+        alias: ["stop"]
+        sync: false
+      - name: "lap"
+        role: dimension
+        type: FLOAT
+        description: "lap"
+        alias: ["lap"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "duration"
+        role: dimension
+        type: VARCHAR(255)
+        description: "duration"
+        alias: ["duration"]
+        sync: false
+      - name: "milliseconds"
+        role: measure
+        type: FLOAT
+        description: "milliseconds"
+        alias: ["milliseconds"]
+        sync: false
+  - name: "lapTimes"
+    role: dim
+    description: "laptimes"
+    columns:
+      - name: "raceId"
+        role: primary_key
+        type: FLOAT
+        description: "raceid"
+        alias: ["raceid"]
+        sync: false
+      - name: "driverId"
+        role: dimension
+        type: FLOAT
+        description: "driverid"
+        alias: ["driverid"]
+        sync: false
+      - name: "lap"
+        role: dimension
+        type: FLOAT
+        description: "lap"
+        alias: ["lap"]
+        sync: false
+      - name: "position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+      - name: "milliseconds"
+        role: measure
+        type: FLOAT
+        description: "milliseconds"
+        alias: ["milliseconds"]
+        sync: false
+
+metrics:
+  - name: "races_year"
+    description: year from races
+    relevant_columns:
+      - races.year
+    alias: [year]
+  - name: "drivers_number"
+    description: number from drivers
+    relevant_columns:
+      - drivers.number
+    alias: [number]
+  - name: "seasons_year"
+    description: year from seasons
+    relevant_columns:
+      - seasons.year
+    alias: [year]
+  - name: "results_number"
+    description: number from results
+    relevant_columns:
+      - results.number
+    alias: [number]
+  - name: "results_milliseconds"
+    description: milliseconds from results
+    relevant_columns:
+      - results.milliseconds
+    alias: [milliseconds]
+  - name: "qualifying_number"
+    description: number from qualifying
+    relevant_columns:
+      - qualifying.number
+    alias: [number]
+  - name: "pitstops_milliseconds"
+    description: milliseconds from pitstops
+    relevant_columns:
+      - pitStops.milliseconds
+    alias: [milliseconds]
+  - name: "laptimes_milliseconds"
+    description: milliseconds from laptimes
+    relevant_columns:
+      - lapTimes.milliseconds
+    alias: [milliseconds]

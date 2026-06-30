@@ -5,11 +5,13 @@ from typing import Any
 
 from app.clients.qdrant_client_manager import qdrant_client_manager
 from app.clients.embedding_client_manager import embedding_client_manager
+from app.conf.app_config import app_config
+from app.core.log import logger
 
-CACHE_COLLECTION = "query_cache"
+CACHE_COLLECTION = app_config.qdrant.cache_collection
 _cache: dict[str, dict] = {}
 _rate_map: dict[str, list[float]] = {}
-_rate_limit: int = 30
+_rate_limit: int = app_config.auth.rate_limit_per_minute
 _rate_window: float = 60.0
 
 
@@ -29,8 +31,8 @@ async def semantic_cache_search(query: str, threshold: float = 0.95) -> Any | No
         )
         if result.points:
             return result.points[0].payload.get("result")
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Cache search failed: {e}")
     return None
 
 
@@ -44,8 +46,8 @@ async def semantic_cache_save(query: str, result: Any):
             collection_name=CACHE_COLLECTION,
             points=[PointStruct(id=pid, vector=emb, payload={"query": query, "result": result})],
         )
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Cache save failed: {e}")
 
 
 async def ensure_cache_collection():
@@ -57,8 +59,8 @@ async def ensure_cache_collection():
                 collection_name=CACHE_COLLECTION,
                 vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
             )
-    except Exception:
-        pass
+    except Exception as e:
+        logger.warning(f"Cache collection init failed: {e}")
 
 
 def exact_cache_get(query: str) -> Any | None:

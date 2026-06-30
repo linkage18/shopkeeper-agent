@@ -1,0 +1,98 @@
+tables:
+  - name: "department"
+    role: dim
+    description: "department"
+    columns:
+      - name: "Department_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Creation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "creation"
+        alias: ["creation"]
+        sync: false
+      - name: "Ranking"
+        role: dimension
+        type: FLOAT
+        description: "ranking"
+        alias: ["ranking"]
+        sync: false
+      - name: "Budget_in_Billions"
+        role: measure
+        type: FLOAT
+        description: "budget in billions"
+        alias: ["budget_in_billions"]
+        sync: false
+      - name: "Num_Employees"
+        role: dimension
+        type: FLOAT
+        description: "num employees"
+        alias: ["num_employees"]
+        sync: false
+  - name: "head"
+    role: dim
+    description: "head"
+    columns:
+      - name: "head_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "head id"
+        alias: ["head_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "born_state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "born state"
+        alias: ["born_state"]
+        sync: true
+      - name: "age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "management"
+    role: dim
+    description: "management"
+    columns:
+      - name: "department_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "head_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "head id"
+        alias: ["head_id"]
+        sync: false
+      - name: "temporary_acting"
+        role: dimension
+        type: VARCHAR(255)
+        description: "temporary acting"
+        alias: ["temporary_acting"]
+        sync: false
+
+metrics:
+  - name: "department_budget_in_billions"
+    description: budget in billions from department
+    relevant_columns:
+      - department.Budget_in_Billions
+    alias: [budget_in_billions]

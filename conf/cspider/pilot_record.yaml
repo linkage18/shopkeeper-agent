@@ -1,0 +1,139 @@
+tables:
+  - name: "aircraft"
+    role: dim
+    description: "aircraft"
+    columns:
+      - name: "Aircraft_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "aircraft id"
+        alias: ["aircraft_id"]
+        sync: false
+      - name: "Order_Year"
+        role: measure
+        type: FLOAT
+        description: "order year"
+        alias: ["order_year"]
+        sync: false
+      - name: "Manufacturer"
+        role: dimension
+        type: VARCHAR(255)
+        description: "manufacturer"
+        alias: ["manufacturer"]
+        sync: false
+      - name: "Model"
+        role: dimension
+        type: VARCHAR(255)
+        description: "model"
+        alias: ["model"]
+        sync: false
+      - name: "Fleet_Series"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fleet series"
+        alias: ["fleet_series"]
+        sync: false
+      - name: "Powertrain"
+        role: dimension
+        type: VARCHAR(255)
+        description: "powertrain"
+        alias: ["powertrain"]
+        sync: false
+      - name: "Fuel_Propulsion"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fuel propulsion"
+        alias: ["fuel_propulsion"]
+        sync: false
+  - name: "pilot"
+    role: dim
+    description: "pilot"
+    columns:
+      - name: "Pilot_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "pilot id"
+        alias: ["pilot_id"]
+        sync: false
+      - name: "Pilot_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pilot name"
+        alias: ["pilot_name"]
+        sync: true
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "Join_Year"
+        role: measure
+        type: FLOAT
+        description: "join year"
+        alias: ["join_year"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+  - name: "pilot_record"
+    role: fact
+    description: "pilot record"
+    columns:
+      - name: "Record_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "record id"
+        alias: ["record_id"]
+        sync: false
+      - name: "Pilot_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "pilot id"
+        alias: ["pilot_id"]
+        sync: false
+      - name: "Aircraft_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "aircraft id"
+        alias: ["aircraft_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+
+metrics:
+  - name: "aircraft_order_year"
+    description: order year from aircraft
+    relevant_columns:
+      - aircraft.Order_Year
+    alias: [order_year]
+  - name: "pilot_join_year"
+    description: join year from pilot
+    relevant_columns:
+      - pilot.Join_Year
+    alias: [join_year]

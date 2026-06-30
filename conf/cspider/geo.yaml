@@ -1,0 +1,225 @@
+tables:
+  - name: "state"
+    role: dim
+    description: "state"
+    columns:
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+      - name: "population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "area"
+        role: measure
+        type: FLOAT
+        description: "area"
+        alias: ["area"]
+        sync: false
+      - name: "country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "capital"
+        role: dimension
+        type: VARCHAR(255)
+        description: "capital"
+        alias: ["capital"]
+        sync: false
+      - name: "density"
+        role: dimension
+        type: FLOAT
+        description: "density"
+        alias: ["density"]
+        sync: false
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "city_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city name"
+        alias: ["city_name"]
+        sync: true
+      - name: "population"
+        role: measure
+        type: FLOAT
+        description: "population"
+        alias: ["population"]
+        sync: false
+      - name: "country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+  - name: "border_info"
+    role: fact
+    description: "border info"
+    columns:
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+      - name: "border"
+        role: dimension
+        type: VARCHAR(255)
+        description: "border"
+        alias: ["border"]
+        sync: false
+  - name: "highlow"
+    role: dim
+    description: "highlow"
+    columns:
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+      - name: "highest_elevation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "highest elevation"
+        alias: ["highest_elevation"]
+        sync: false
+      - name: "lowest_point"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lowest point"
+        alias: ["lowest_point"]
+        sync: false
+      - name: "highest_point"
+        role: dimension
+        type: VARCHAR(255)
+        description: "highest point"
+        alias: ["highest_point"]
+        sync: false
+      - name: "lowest_elevation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lowest elevation"
+        alias: ["lowest_elevation"]
+        sync: false
+  - name: "lake"
+    role: dim
+    description: "lake"
+    columns:
+      - name: "lake_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lake name"
+        alias: ["lake_name"]
+        sync: true
+      - name: "area"
+        role: measure
+        type: FLOAT
+        description: "area"
+        alias: ["area"]
+        sync: false
+      - name: "country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+  - name: "mountain"
+    role: dim
+    description: "mountain"
+    columns:
+      - name: "mountain_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "mountain name"
+        alias: ["mountain_name"]
+        sync: true
+      - name: "mountain_altitude"
+        role: dimension
+        type: FLOAT
+        description: "mountain altitude"
+        alias: ["mountain_altitude"]
+        sync: false
+      - name: "country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "state_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state name"
+        alias: ["state_name"]
+        sync: true
+  - name: "river"
+    role: dim
+    description: "river"
+    columns:
+      - name: "river_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "river name"
+        alias: ["river_name"]
+        sync: true
+      - name: "length"
+        role: dimension
+        type: FLOAT
+        description: "length"
+        alias: ["length"]
+        sync: false
+      - name: "country_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "traverse"
+        role: dimension
+        type: VARCHAR(255)
+        description: "traverse"
+        alias: ["traverse"]
+        sync: false
+
+metrics:
+  - name: "state_population"
+    description: population from state
+    relevant_columns:
+      - state.population
+    alias: [population]
+  - name: "state_area"
+    description: area from state
+    relevant_columns:
+      - state.area
+    alias: [area]
+  - name: "city_population"
+    description: population from city
+    relevant_columns:
+      - city.population
+    alias: [population]
+  - name: "lake_area"
+    description: area from lake
+    relevant_columns:
+      - lake.area
+    alias: [area]

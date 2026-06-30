@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.auth.middleware import require_user
-from app.report_agent.token_counter import token_counter
+from app.core.token_counter import token_counter
 
 token_router = APIRouter(prefix="/api/token", tags=["token"])
 

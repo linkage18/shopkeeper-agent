@@ -1,0 +1,415 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer first name"
+        alias: ["customer_first_name"]
+        sync: true
+      - name: "customer_middle_initial"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer middle initial"
+        alias: ["customer_middle_initial"]
+        sync: false
+      - name: "customer_last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer last name"
+        alias: ["customer_last_name"]
+        sync: true
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "email_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email address"
+        alias: ["email_address"]
+        sync: false
+      - name: "login_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "login name"
+        alias: ["login_name"]
+        sync: true
+      - name: "login_password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "login password"
+        alias: ["login_password"]
+        sync: false
+      - name: "phone_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+      - name: "town_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "town city"
+        alias: ["town_city"]
+        sync: true
+      - name: "state_county_province"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state county province"
+        alias: ["state_county_province"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "Orders"
+    role: fact
+    description: "orders"
+    columns:
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "date_order_placed"
+        role: dimension
+        type: DATETIME
+        description: "date order placed"
+        alias: ["date_order_placed"]
+        sync: false
+      - name: "order_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order details"
+        alias: ["order_details"]
+        sync: false
+  - name: "Invoices"
+    role: fact
+    description: "invoices"
+    columns:
+      - name: "invoice_number"
+        role: measure
+        type: FLOAT
+        description: "invoice number"
+        alias: ["invoice_number"]
+        sync: false
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "invoice_date"
+        role: dimension
+        type: DATETIME
+        description: "invoice date"
+        alias: ["invoice_date"]
+        sync: false
+  - name: "Accounts"
+    role: dim
+    description: "accounts"
+    columns:
+      - name: "account_id"
+        role: foreign_key
+        type: FLOAT
+        description: "account id"
+        alias: ["account_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "date_account_opened"
+        role: dimension
+        type: DATETIME
+        description: "date account opened"
+        alias: ["date_account_opened"]
+        sync: false
+      - name: "account_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "account name"
+        alias: ["account_name"]
+        sync: true
+      - name: "other_account_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other account details"
+        alias: ["other_account_details"]
+        sync: false
+  - name: "Product_Categories"
+    role: dim
+    description: "product categories"
+    columns:
+      - name: "production_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "production type code"
+        alias: ["production_type_code"]
+        sync: true
+      - name: "product_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product type description"
+        alias: ["product_type_description"]
+        sync: true
+      - name: "vat_rating"
+        role: dimension
+        type: FLOAT
+        description: "vat rating"
+        alias: ["vat_rating"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "parent_product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "parent product id"
+        alias: ["parent_product_id"]
+        sync: false
+      - name: "production_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "production type code"
+        alias: ["production_type_code"]
+        sync: true
+      - name: "unit_price"
+        role: measure
+        type: FLOAT
+        description: "unit price"
+        alias: ["unit_price"]
+        sync: false
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_color"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product color"
+        alias: ["product_color"]
+        sync: true
+      - name: "product_size"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product size"
+        alias: ["product_size"]
+        sync: false
+  - name: "Financial_Transactions"
+    role: fact
+    description: "financial transactions"
+    columns:
+      - name: "transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transaction id"
+        alias: ["transaction_id"]
+        sync: false
+      - name: "account_id"
+        role: foreign_key
+        type: FLOAT
+        description: "account id"
+        alias: ["account_id"]
+        sync: false
+      - name: "invoice_number"
+        role: measure
+        type: FLOAT
+        description: "invoice number"
+        alias: ["invoice_number"]
+        sync: false
+      - name: "transaction_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction type"
+        alias: ["transaction_type"]
+        sync: true
+      - name: "transaction_date"
+        role: dimension
+        type: DATETIME
+        description: "transaction date"
+        alias: ["transaction_date"]
+        sync: false
+      - name: "transaction_amount"
+        role: measure
+        type: FLOAT
+        description: "transaction amount"
+        alias: ["transaction_amount"]
+        sync: false
+      - name: "transaction_comment"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction comment"
+        alias: ["transaction_comment"]
+        sync: false
+      - name: "other_transaction_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other transaction details"
+        alias: ["other_transaction_details"]
+        sync: false
+  - name: "Order_Items"
+    role: fact
+    description: "order items"
+    columns:
+      - name: "order_item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_quantity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product quantity"
+        alias: ["product_quantity"]
+        sync: false
+      - name: "other_order_item_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other order item details"
+        alias: ["other_order_item_details"]
+        sync: false
+  - name: "Invoice_Line_Items"
+    role: fact
+    description: "invoice line items"
+    columns:
+      - name: "order_item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "invoice_number"
+        role: measure
+        type: FLOAT
+        description: "invoice number"
+        alias: ["invoice_number"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product title"
+        alias: ["product_title"]
+        sync: false
+      - name: "product_quantity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product quantity"
+        alias: ["product_quantity"]
+        sync: false
+      - name: "product_price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+      - name: "derived_product_cost"
+        role: measure
+        type: FLOAT
+        description: "derived product cost"
+        alias: ["derived_product_cost"]
+        sync: false
+      - name: "derived_vat_payable"
+        role: dimension
+        type: FLOAT
+        description: "derived vat payable"
+        alias: ["derived_vat_payable"]
+        sync: false
+      - name: "derived_total_cost"
+        role: measure
+        type: FLOAT
+        description: "derived total cost"
+        alias: ["derived_total_cost"]
+        sync: false
+
+metrics:
+  - name: "invoices_invoice_number"
+    description: invoice number from invoices
+    relevant_columns:
+      - Invoices.invoice_number
+    alias: [invoice_number]
+  - name: "products_unit_price"
+    description: unit price from products
+    relevant_columns:
+      - Products.unit_price
+    alias: [unit_price]
+  - name: "financial_transactions_invoice_number"
+    description: invoice number from financial_transactions
+    relevant_columns:
+      - Financial_Transactions.invoice_number
+    alias: [invoice_number]
+  - name: "financial_transactions_transaction_amount"
+    description: transaction amount from financial_transactions
+    relevant_columns:
+      - Financial_Transactions.transaction_amount
+    alias: [transaction_amount]
+  - name: "invoice_line_items_invoice_number"
+    description: invoice number from invoice_line_items
+    relevant_columns:
+      - Invoice_Line_Items.invoice_number
+    alias: [invoice_number]
+  - name: "invoice_line_items_product_price"
+    description: product price from invoice_line_items
+    relevant_columns:
+      - Invoice_Line_Items.product_price
+    alias: [product_price]
+  - name: "invoice_line_items_derived_product_cost"
+    description: derived product cost from invoice_line_items
+    relevant_columns:
+      - Invoice_Line_Items.derived_product_cost
+    alias: [derived_product_cost]
+  - name: "invoice_line_items_derived_total_cost"
+    description: derived total cost from invoice_line_items
+    relevant_columns:
+      - Invoice_Line_Items.derived_total_cost
+    alias: [derived_total_cost]

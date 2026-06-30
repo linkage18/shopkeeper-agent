@@ -1,0 +1,341 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "line_1_number_building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "line 1 number building"
+        alias: ["line_1_number_building"]
+        sync: false
+      - name: "town_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "town city"
+        alias: ["town_city"]
+        sync: true
+      - name: "zip_postcode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "zip postcode"
+        alias: ["zip_postcode"]
+        sync: true
+      - name: "state_province_county"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province county"
+        alias: ["state_province_county"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "Services"
+    role: dim
+    description: "services"
+    columns:
+      - name: "service_id"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "service_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "service_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service name"
+        alias: ["service_name"]
+        sync: true
+      - name: "service_descriptio"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service descriptio"
+        alias: ["service_descriptio"]
+        sync: false
+  - name: "Forms"
+    role: dim
+    description: "forms"
+    columns:
+      - name: "form_id"
+        role: foreign_key
+        type: FLOAT
+        description: "form id"
+        alias: ["form_id"]
+        sync: false
+      - name: "form_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "form type code"
+        alias: ["form_type_code"]
+        sync: true
+      - name: "service_id"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "form_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "form number"
+        alias: ["form_number"]
+        sync: false
+      - name: "form_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "form name"
+        alias: ["form_name"]
+        sync: true
+      - name: "form_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "form description"
+        alias: ["form_description"]
+        sync: false
+  - name: "Individuals"
+    role: dim
+    description: "individuals"
+    columns:
+      - name: "individual_id"
+        role: foreign_key
+        type: FLOAT
+        description: "individual id"
+        alias: ["individual_id"]
+        sync: false
+      - name: "individual_first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "individual first name"
+        alias: ["individual_first_name"]
+        sync: true
+      - name: "individual_middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "individual middle name"
+        alias: ["individual_middle_name"]
+        sync: true
+      - name: "inidividual_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "inidividual phone"
+        alias: ["inidividual_phone"]
+        sync: false
+      - name: "individual_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "individual email"
+        alias: ["individual_email"]
+        sync: false
+      - name: "individual_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "individual address"
+        alias: ["individual_address"]
+        sync: false
+      - name: "individual_last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "individual last name"
+        alias: ["individual_last_name"]
+        sync: true
+  - name: "Organizations"
+    role: dim
+    description: "organizations"
+    columns:
+      - name: "organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organization id"
+        alias: ["organization_id"]
+        sync: false
+      - name: "date_formed"
+        role: dimension
+        type: DATETIME
+        description: "date formed"
+        alias: ["date_formed"]
+        sync: false
+      - name: "organization_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organization name"
+        alias: ["organization_name"]
+        sync: true
+      - name: "uk_vat_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "uk vat number"
+        alias: ["uk_vat_number"]
+        sync: false
+  - name: "Parties"
+    role: dim
+    description: "parties"
+    columns:
+      - name: "party_id"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "payment_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "party_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party phone"
+        alias: ["party_phone"]
+        sync: false
+      - name: "party_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "party email"
+        alias: ["party_email"]
+        sync: false
+  - name: "Organization_Contact_Individuals"
+    role: dim
+    description: "organization contact individuals"
+    columns:
+      - name: "individual_id"
+        role: foreign_key
+        type: FLOAT
+        description: "individual id"
+        alias: ["individual_id"]
+        sync: false
+      - name: "organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organization id"
+        alias: ["organization_id"]
+        sync: false
+      - name: "date_contact_from"
+        role: dimension
+        type: DATETIME
+        description: "date contact from"
+        alias: ["date_contact_from"]
+        sync: false
+      - name: "date_contact_to"
+        role: dimension
+        type: DATETIME
+        description: "date contact to"
+        alias: ["date_contact_to"]
+        sync: false
+  - name: "Party_Addresses"
+    role: dim
+    description: "party addresses"
+    columns:
+      - name: "party_id"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "date_address_from"
+        role: dimension
+        type: DATETIME
+        description: "date address from"
+        alias: ["date_address_from"]
+        sync: false
+      - name: "address_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address type code"
+        alias: ["address_type_code"]
+        sync: true
+      - name: "date_address_to"
+        role: dimension
+        type: DATETIME
+        description: "date address to"
+        alias: ["date_address_to"]
+        sync: false
+  - name: "Party_Forms"
+    role: dim
+    description: "party forms"
+    columns:
+      - name: "party_id"
+        role: foreign_key
+        type: FLOAT
+        description: "party id"
+        alias: ["party_id"]
+        sync: false
+      - name: "form_id"
+        role: foreign_key
+        type: FLOAT
+        description: "form id"
+        alias: ["form_id"]
+        sync: false
+      - name: "date_completion_started"
+        role: dimension
+        type: DATETIME
+        description: "date completion started"
+        alias: ["date_completion_started"]
+        sync: false
+      - name: "form_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "form status code"
+        alias: ["form_status_code"]
+        sync: true
+      - name: "date_fully_completed"
+        role: dimension
+        type: DATETIME
+        description: "date fully completed"
+        alias: ["date_fully_completed"]
+        sync: false
+  - name: "Party_Services"
+    role: dim
+    description: "party services"
+    columns:
+      - name: "booking_id"
+        role: foreign_key
+        type: FLOAT
+        description: "booking id"
+        alias: ["booking_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "service_id"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "service_datetime"
+        role: dimension
+        type: DATETIME
+        description: "service datetime"
+        alias: ["service_datetime"]
+        sync: false
+      - name: "booking_made_date"
+        role: dimension
+        type: DATETIME
+        description: "booking made date"
+        alias: ["booking_made_date"]
+        sync: false

@@ -1,0 +1,76 @@
+tables:
+  - name: "singer"
+    role: dim
+    description: "singer"
+    columns:
+      - name: "Singer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "singer id"
+        alias: ["singer_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Birth_Year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+      - name: "Net_Worth_Millions"
+        role: dimension
+        type: FLOAT
+        description: "net worth millions"
+        alias: ["net_worth_millions"]
+        sync: false
+      - name: "Citizenship"
+        role: dimension
+        type: VARCHAR(255)
+        description: "citizenship"
+        alias: ["citizenship"]
+        sync: false
+  - name: "song"
+    role: dim
+    description: "song"
+    columns:
+      - name: "Song_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "song id"
+        alias: ["song_id"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Singer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "singer id"
+        alias: ["singer_id"]
+        sync: false
+      - name: "Sales"
+        role: dimension
+        type: FLOAT
+        description: "sales"
+        alias: ["sales"]
+        sync: false
+      - name: "Highest_Position"
+        role: dimension
+        type: FLOAT
+        description: "highest position"
+        alias: ["highest_position"]
+        sync: false
+
+metrics:
+  - name: "singer_birth_year"
+    description: birth year from singer
+    relevant_columns:
+      - singer.Birth_Year
+    alias: [birth_year]

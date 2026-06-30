@@ -1,0 +1,119 @@
+tables:
+  - name: "program"
+    role: dim
+    description: "program"
+    columns:
+      - name: "Program_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "program id"
+        alias: ["program_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Origin"
+        role: dimension
+        type: VARCHAR(255)
+        description: "origin"
+        alias: ["origin"]
+        sync: false
+      - name: "Launch"
+        role: dimension
+        type: FLOAT
+        description: "launch"
+        alias: ["launch"]
+        sync: false
+      - name: "Owner"
+        role: dimension
+        type: VARCHAR(255)
+        description: "owner"
+        alias: ["owner"]
+        sync: false
+  - name: "channel"
+    role: dim
+    description: "channel"
+    columns:
+      - name: "Channel_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "channel id"
+        alias: ["channel_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Owner"
+        role: dimension
+        type: VARCHAR(255)
+        description: "owner"
+        alias: ["owner"]
+        sync: false
+      - name: "Share_in_percent"
+        role: dimension
+        type: FLOAT
+        description: "share in percent"
+        alias: ["share_in_percent"]
+        sync: false
+      - name: "Rating_in_percent"
+        role: dimension
+        type: FLOAT
+        description: "rating in percent"
+        alias: ["rating_in_percent"]
+        sync: false
+  - name: "broadcast"
+    role: dim
+    description: "broadcast"
+    columns:
+      - name: "Channel_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "channel id"
+        alias: ["channel_id"]
+        sync: false
+      - name: "Program_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "program id"
+        alias: ["program_id"]
+        sync: false
+      - name: "Time_of_day"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time of day"
+        alias: ["time_of_day"]
+        sync: false
+  - name: "broadcast_share"
+    role: dim
+    description: "broadcast share"
+    columns:
+      - name: "Channel_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "channel id"
+        alias: ["channel_id"]
+        sync: false
+      - name: "Program_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "program id"
+        alias: ["program_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Share_in_percent"
+        role: dimension
+        type: FLOAT
+        description: "share in percent"
+        alias: ["share_in_percent"]
+        sync: false

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from app.auth.middleware import require_user
 from app.clients.mysql_client_manager import dw_mysql_client_manager
-from app.reports.executor import list_templates, load_template, render_sql
+from app.reports.executor import list_templates, load_template, render_sql, ParamValidationError
 from app.reports.renderer import generate_chart, build_report
 from app.reports.miner import extract_knowledge_from_report
 from app.core.log import logger
@@ -51,7 +51,10 @@ async def analyze(
         raise HTTPException(status_code=404, detail="模板不存在")
 
     # 1. 渲染 SQL
-    sqls = render_sql(tmpl, req.params)
+    try:
+        sqls = render_sql(tmpl, req.params)
+    except ParamValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
     # 2. 逐条执行
     results: dict[str, list[dict]] = {}

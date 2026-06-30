@@ -5,7 +5,8 @@
  * [N] 引用标记可点击，滚动定位到对应来源卡片并高亮展开
  */
 import { Bot, Copy, UserRound } from "lucide-react";
-import { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { InteractiveChart } from "./InteractiveChart";
 import { ResultTable } from "./ResultTable";
 import { SourceList } from "./SourceCard";
@@ -30,13 +31,30 @@ function renderContent(text: string, onCite: (i: number) => void) {
   });
 }
 
-export function MessageBubble({ message }: { message: ChatMessage }) {
+export const MessageBubble = React.memo(function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   const [activeSource, setActiveSource] = useState<number | null>(null);
+  const [chartIndex, setChartIndex] = useState(0);
   const result = message.result as any;
   const tableData = result && typeof result === "object" && Array.isArray(result.rows) && result.rows.length > 0
     ? result.rows
     : (Array.isArray(message.result) ? message.result : null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const chartWrapRef = useRef<HTMLDivElement>(null);
+
+  // Entrance animation for new messages
+  useEffect(() => {
+    if (bubbleRef.current) {
+      gsap.from(bubbleRef.current, { opacity: 0, y: 24, duration: 0.5, ease: "power2.out" });
+    }
+  }, []);
+
+  // Animate chart container on chart switch
+  useEffect(() => {
+    if (chartWrapRef.current) {
+      gsap.from(chartWrapRef.current, { opacity: 0, scale: 0.97, duration: 0.35, ease: "power1.out" });
+    }
+  }, [chartIndex]);
 
   const scrollToSource = useCallback((i: number) => {
     setActiveSource(i);
@@ -50,7 +68,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   };
 
   return (
-    <article className={cn("group flex gap-3", isUser && "justify-end")}>
+    <article ref={bubbleRef} className={cn("group flex gap-3", isUser && "justify-end")}>
       {!isUser && (
         <div className="mt-1 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-lacquer text-white">
           <Bot className="h-4 w-4" aria-hidden="true" />
@@ -86,9 +104,30 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
           )}
 
           {!isUser && <StepRail steps={message.steps} mode={message.tab === "rag" ? "rag" : message.tab === "report" ? "report" : "sql"} />}
-          {!isUser && result?.chart_data && (
-            <div className="mt-3 rounded-lg border border-porcelain-200 bg-white p-2">
-              <InteractiveChart chartData={result.chart_data} />
+          {!isUser && (result?.charts?.length > 0 || result?.chart_data) && (
+            <div ref={chartWrapRef} className="mt-3 rounded-lg border border-porcelain-200 bg-white">
+              {/* 多图表切换按钮 */}
+              {result.charts?.length > 1 && (
+                <div className="flex flex-wrap gap-1 border-b border-porcelain-100 px-2 py-1.5">
+                  {result.charts.map((c: any, i: number) => (
+                    <button
+                      key={c.chart_id || i}
+                      onClick={() => setChartIndex(i)}
+                      className={cn(
+                        "rounded px-2 py-1 text-xs font-medium transition",
+                        i === chartIndex
+                          ? "bg-kinpaku text-white"
+                          : "bg-porcelain-100 text-porcelain-600 hover:bg-porcelain-200",
+                      )}
+                    >
+                      {c.chart_name || c.title || `图表 ${i + 1}`}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="p-2">
+                <InteractiveChart chartData={result.charts ? result.charts[chartIndex] : result.chart_data} />
+              </div>
             </div>
           )}
           {!isUser && tableData && <ResultTable data={tableData} />}
@@ -109,4 +148,4 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
       )}
     </article>
   );
-}
+});

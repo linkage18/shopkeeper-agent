@@ -1,13 +1,7 @@
+﻿"""
+鐢靛晢闂暟 Agent 鍥剧紪鎺?
+浣跨敤 LangGraph 鎶婇棶鏁版櫤鑳戒綋鐨勫悇涓妭鐐逛覆鎴愪竴鏉″彲瑙傛祴鐨勬墽琛岄摼璺?褰撳墠閾捐矾宸茬粡钀藉湴鍏抽敭璇嶆娊鍙栧拰澶氳矾鍙洖锛屽瓧娈靛拰鎸囨爣璧?Qdrant 鍚戦噺妫€绱紝瀛楁鍙栧€艰蛋 ES 鍏ㄦ枃妫€绱?鏁翠綋娴佺▼鍏堟娊鍙栫敤鎴烽棶棰樺叧閿瘝锛屽啀骞惰鍙洖瀛楁 瀛楁鍙栧€煎拰鎸囨爣淇℃伅锛?闅忓悗鍚堝苟鍙洖缁撴灉 杩囨护鍊欓€夎〃鍜屾寚鏍?琛ュ厖棰濆涓婁笅鏂囷紝鏈€鍚庣敓鎴?鏍￠獙 淇骞舵墽琛?SQL
 """
-电商问数 Agent 图编排
-
-使用 LangGraph 把问数智能体的各个节点串成一条可观测的执行链路
-当前链路已经落地关键词抽取和多路召回，字段和指标走 Qdrant 向量检索，字段取值走 ES 全文检索
-整体流程先抽取用户问题关键词，再并行召回字段 字段取值和指标信息，
-随后合并召回结果 过滤候选表和指标 补充额外上下文，最后生成 校验 修正并执行 SQL
-"""
-
-import asyncio
 
 from langgraph.constants import END, START
 from langgraph.graph import StateGraph
@@ -26,23 +20,11 @@ from app.agent.nodes.recall_value import recall_value
 from app.agent.nodes.run_sql import run_sql
 from app.agent.nodes.validate_sql import validate_sql
 from app.agent.state import DataAgentState
-from app.clients.embedding_client_manager import embedding_client_manager
-from app.clients.es_client_manager import es_client_manager
-from app.clients.mysql_client_manager import (
-    dw_mysql_client_manager,
-    meta_mysql_client_manager,
-)
-from app.clients.qdrant_client_manager import qdrant_client_manager
-from app.repositories.es.value_es_repository import ValueESRepository
-from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
-from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
-from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
-from app.repositories.qdrant.metric_qdrant_repository import MetricQdrantRepository
 
-# StateGraph 声明整张图使用的状态结构和运行时上下文结构
+# StateGraph 澹版槑鏁村紶鍥句娇鐢ㄧ殑鐘舵€佺粨鏋勫拰杩愯鏃朵笂涓嬫枃缁撴瀯
 graph_builder = StateGraph(state_schema=DataAgentState, context_schema=DataAgentContext)
 
-# 注册节点：每个节点负责问数链路中的一个清晰步骤
+# register nodes
 graph_builder.add_node("extract_keywords", extract_keywords)
 graph_builder.add_node("recall_column", recall_column)
 graph_builder.add_node("recall_value", recall_value)
@@ -56,40 +38,39 @@ graph_builder.add_node("validate_sql", validate_sql)
 graph_builder.add_node("correct_sql", correct_sql)
 graph_builder.add_node("run_sql", run_sql)
 
-# 从用户问题开始，先抽取关键词作为后续检索的基础
+# 浠庣敤鎴烽棶棰樺紑濮嬶紝鍏堟娊鍙栧叧閿瘝浣滀负鍚庣画妫€绱㈢殑鍩虹
 graph_builder.add_edge(START, "extract_keywords")
 
-# 关键词抽取后并行进入三类召回，分别面向字段 字段值和业务指标
+# 鍏抽敭璇嶆娊鍙栧悗骞惰杩涘叆涓夌被鍙洖锛屽垎鍒潰鍚戝瓧娈?瀛楁鍊煎拰涓氬姟鎸囨爣
 graph_builder.add_edge("extract_keywords", "recall_column")
 graph_builder.add_edge("extract_keywords", "recall_value")
 graph_builder.add_edge("extract_keywords", "recall_metric")
 
-# 三路召回都完成后，再进入统一的信息合并节点
-graph_builder.add_edge("recall_column", "merge_retrieved_info")
+# 涓夎矾鍙洖閮藉畬鎴愬悗锛屽啀杩涘叆缁熶竴鐨勪俊鎭悎骞惰妭鐐?graph_builder.add_edge("recall_column", "merge_retrieved_info")
 graph_builder.add_edge("recall_value", "merge_retrieved_info")
 graph_builder.add_edge("recall_metric", "merge_retrieved_info")
 
-# 合并后的候选信息继续拆成表过滤和指标过滤两条线
+# 鍚堝苟鍚庣殑鍊欓€変俊鎭户缁媶鎴愯〃杩囨护鍜屾寚鏍囪繃婊や袱鏉＄嚎
 graph_builder.add_edge("merge_retrieved_info", "filter_table")
 graph_builder.add_edge("merge_retrieved_info", "filter_metric")
 
-# 表和指标都过滤完成后，统一补充生成 SQL 所需的上下文
+# 琛ㄥ拰鎸囨爣閮借繃婊ゅ畬鎴愬悗锛岀粺涓€琛ュ厖鐢熸垚 SQL 鎵€闇€鐨勪笂涓嬫枃
 graph_builder.add_edge("filter_table", "add_extra_context")
 graph_builder.add_edge("filter_metric", "add_extra_context")
 graph_builder.add_edge("add_extra_context", "generate_sql")
 graph_builder.add_edge("generate_sql", "validate_sql")
 
-# SQL 校验通过就直接执行，校验失败则进入修正节点（最多 2 次重试）
-# 修正完成后回到 validate_sql 重新校验
+# SQL 鏍￠獙閫氳繃灏辩洿鎺ユ墽琛岋紝鏍￠獙澶辫触鍒欒繘鍏ヤ慨姝ｈ妭鐐癸紙鏈€澶?2 娆￠噸璇曪級
+# 淇瀹屾垚鍚庡洖鍒?validate_sql 閲嶆柊鏍￠獙
 def _validate_route(state: DataAgentState) -> str:
-    """条件边：校验结果 + 重试次数决定流程走向"""
+    """鏉′欢杈癸細鏍￠獙缁撴灉 + 閲嶈瘯娆℃暟鍐冲畾娴佺▼璧板悜"""
     if state["error"] is None:
         return "run_sql"
     retry = state.get("retry_count", 0)
     if retry < 2:
         return "correct_sql"
-    # 重试用尽，记录最终错误并进入 run_sql（携带友好提示）
-    state["fatal_error"] = f"SQL 校验失败（已重试 {retry} 次），错误: {state['error']}"
+    # 閲嶈瘯鐢ㄥ敖锛岃褰曟渶缁堥敊璇苟杩涘叆 run_sql锛堟惡甯﹀弸濂芥彁绀猴級
+    state["fatal_error"] = f"SQL 鏍￠獙澶辫触锛堝凡閲嶈瘯 {retry} 娆★級锛岄敊璇? {state['error']}"
     return "run_sql"
 
 graph_builder.add_conditional_edges(
@@ -100,61 +81,20 @@ graph_builder.add_conditional_edges(
 graph_builder.add_edge("correct_sql", "validate_sql")
 graph_builder.add_edge("run_sql", END)
 
-# 编译后的 graph 是对外使用的 Agent 执行入口
-graph = graph_builder.compile()
+# 缂栬瘧鍚庣殑 graph 鏄澶栦娇鐢ㄧ殑 Agent 鎵ц鍏ュ彛
+# 改为懒加载 + 可注入，测试时可通过 override_graph() 替换
+_graph_instance = None
+
+def get_graph():
+    global _graph_instance
+    if _graph_instance is None:
+        _graph_instance = graph_builder.compile()
+    return _graph_instance
+
+def override_graph(mock_graph):
+    global _graph_instance
+    _graph_instance = mock_graph
 
 # print(graph.get_graph().draw_mermaid())
 
-if __name__ == "__main__":
 
-    async def test():
-        """本地调试关键词抽取和字段 指标 取值三路召回链路"""
-
-        # 多路召回和上下文补全会访问 Qdrant、Embedding、ES、Meta MySQL 和 DW MySQL
-        qdrant_client_manager.init()
-        embedding_client_manager.init()
-        es_client_manager.init()
-        meta_mysql_client_manager.init()
-        dw_mysql_client_manager.init()
-
-        # Meta MySQL 用来补齐元数据，DW MySQL 用来读取数据库方言和版本
-        async with (
-            meta_mysql_client_manager.session_factory() as meta_session,
-            dw_mysql_client_manager.session_factory() as dw_session,
-        ):
-            meta_mysql_repository = MetaMySQLRepository(meta_session)
-            dw_mysql_repository = DWMySQLRepository(dw_session)
-
-            # 字段和指标分别使用不同 Qdrant collection，取值检索使用 ES index
-            column_qdrant_repository = ColumnQdrantRepository(
-                qdrant_client_manager.client
-            )
-            metric_qdrant_repository = MetricQdrantRepository(
-                qdrant_client_manager.client
-            )
-            value_es_repository = ValueESRepository(es_client_manager.client)
-
-            # 当前只需要传入原始问题，后续节点会逐步写回召回、过滤和额外上下文结果
-            state = DataAgentState(query="统计华北地区的销售总额")
-            context = DataAgentContext(
-                column_qdrant_repository=column_qdrant_repository,
-                embedding_client=embedding_client_manager.client,
-                metric_qdrant_repository=metric_qdrant_repository,
-                value_es_repository=value_es_repository,
-                meta_mysql_repository=meta_mysql_repository,
-                dw_mysql_repository=dw_mysql_repository,
-            )
-
-            # stream_mode="custom" 会接收各节点通过 runtime.stream_writer 写出的进度信息
-            async for chunk in graph.astream(
-                input=state, context=context, stream_mode="custom"
-            ):
-                print(chunk)
-
-        # 关闭显式创建的异步客户端，避免本地调试时连接资源悬挂
-        await qdrant_client_manager.close()
-        await es_client_manager.close()
-        await meta_mysql_client_manager.close()
-        await dw_mysql_client_manager.close()
-
-    asyncio.run(test())

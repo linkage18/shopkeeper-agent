@@ -1,0 +1,300 @@
+tables:
+  - name: "station"
+    role: dim
+    description: "station"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "lat"
+        role: dimension
+        type: FLOAT
+        description: "lat"
+        alias: ["lat"]
+        sync: false
+      - name: "long"
+        role: dimension
+        type: FLOAT
+        description: "long"
+        alias: ["long"]
+        sync: false
+      - name: "dock_count"
+        role: measure
+        type: FLOAT
+        description: "dock count"
+        alias: ["dock_count"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "installation_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "installation date"
+        alias: ["installation_date"]
+        sync: false
+  - name: "status"
+    role: dim
+    description: "status"
+    columns:
+      - name: "station_id"
+        role: foreign_key
+        type: FLOAT
+        description: "station id"
+        alias: ["station_id"]
+        sync: false
+      - name: "bikes_available"
+        role: dimension
+        type: FLOAT
+        description: "bikes available"
+        alias: ["bikes_available"]
+        sync: false
+      - name: "docks_available"
+        role: dimension
+        type: FLOAT
+        description: "docks available"
+        alias: ["docks_available"]
+        sync: false
+      - name: "time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+  - name: "trip"
+    role: dim
+    description: "trip"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "duration"
+        role: dimension
+        type: FLOAT
+        description: "duration"
+        alias: ["duration"]
+        sync: false
+      - name: "start_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "start date"
+        alias: ["start_date"]
+        sync: false
+      - name: "start_station_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "start station name"
+        alias: ["start_station_name"]
+        sync: true
+      - name: "start_station_id"
+        role: foreign_key
+        type: FLOAT
+        description: "start station id"
+        alias: ["start_station_id"]
+        sync: false
+      - name: "end_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "end date"
+        alias: ["end_date"]
+        sync: false
+      - name: "end_station_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "end station name"
+        alias: ["end_station_name"]
+        sync: true
+      - name: "end_station_id"
+        role: foreign_key
+        type: FLOAT
+        description: "end station id"
+        alias: ["end_station_id"]
+        sync: false
+      - name: "bike_id"
+        role: foreign_key
+        type: FLOAT
+        description: "bike id"
+        alias: ["bike_id"]
+        sync: false
+      - name: "subscription_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "subscription type"
+        alias: ["subscription_type"]
+        sync: true
+      - name: "zip_code"
+        role: dimension
+        type: FLOAT
+        description: "zip code"
+        alias: ["zip_code"]
+        sync: true
+  - name: "weather"
+    role: dim
+    description: "weather"
+    columns:
+      - name: "date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "max_temperature_f"
+        role: dimension
+        type: FLOAT
+        description: "max temperature f"
+        alias: ["max_temperature_f"]
+        sync: false
+      - name: "mean_temperature_f"
+        role: dimension
+        type: FLOAT
+        description: "mean temperature f"
+        alias: ["mean_temperature_f"]
+        sync: false
+      - name: "min_temperature_f"
+        role: dimension
+        type: FLOAT
+        description: "min temperature f"
+        alias: ["min_temperature_f"]
+        sync: false
+      - name: "max_dew_point_f"
+        role: dimension
+        type: FLOAT
+        description: "max dew point f"
+        alias: ["max_dew_point_f"]
+        sync: false
+      - name: "mean_dew_point_f"
+        role: dimension
+        type: FLOAT
+        description: "mean dew point f"
+        alias: ["mean_dew_point_f"]
+        sync: false
+      - name: "min_dew_point_f"
+        role: dimension
+        type: FLOAT
+        description: "min dew point f"
+        alias: ["min_dew_point_f"]
+        sync: false
+      - name: "max_humidity"
+        role: dimension
+        type: FLOAT
+        description: "max humidity"
+        alias: ["max_humidity"]
+        sync: false
+      - name: "mean_humidity"
+        role: dimension
+        type: FLOAT
+        description: "mean humidity"
+        alias: ["mean_humidity"]
+        sync: false
+      - name: "min_humidity"
+        role: dimension
+        type: FLOAT
+        description: "min humidity"
+        alias: ["min_humidity"]
+        sync: false
+      - name: "max_sea_level_pressure_inches"
+        role: dimension
+        type: FLOAT
+        description: "max sea level pressure inches"
+        alias: ["max_sea_level_pressure_inches"]
+        sync: false
+      - name: "mean_sea_level_pressure_inches"
+        role: dimension
+        type: FLOAT
+        description: "mean sea level pressure inches"
+        alias: ["mean_sea_level_pressure_inches"]
+        sync: false
+      - name: "min_sea_level_pressure_inches"
+        role: dimension
+        type: FLOAT
+        description: "min sea level pressure inches"
+        alias: ["min_sea_level_pressure_inches"]
+        sync: false
+      - name: "max_visibility_miles"
+        role: dimension
+        type: FLOAT
+        description: "max visibility miles"
+        alias: ["max_visibility_miles"]
+        sync: false
+      - name: "mean_visibility_miles"
+        role: dimension
+        type: FLOAT
+        description: "mean visibility miles"
+        alias: ["mean_visibility_miles"]
+        sync: false
+      - name: "min_visibility_miles"
+        role: dimension
+        type: FLOAT
+        description: "min visibility miles"
+        alias: ["min_visibility_miles"]
+        sync: false
+      - name: "max_wind_Speed_mph"
+        role: dimension
+        type: FLOAT
+        description: "max wind speed mph"
+        alias: ["max_wind_speed_mph"]
+        sync: false
+      - name: "mean_wind_speed_mph"
+        role: dimension
+        type: FLOAT
+        description: "mean wind speed mph"
+        alias: ["mean_wind_speed_mph"]
+        sync: false
+      - name: "max_gust_speed_mph"
+        role: dimension
+        type: FLOAT
+        description: "max gust speed mph"
+        alias: ["max_gust_speed_mph"]
+        sync: false
+      - name: "precipitation_inches"
+        role: dimension
+        type: FLOAT
+        description: "precipitation inches"
+        alias: ["precipitation_inches"]
+        sync: false
+      - name: "cloud_cover"
+        role: dimension
+        type: FLOAT
+        description: "cloud cover"
+        alias: ["cloud_cover"]
+        sync: false
+      - name: "events"
+        role: dimension
+        type: VARCHAR(255)
+        description: "events"
+        alias: ["events"]
+        sync: false
+      - name: "wind_dir_degrees"
+        role: dimension
+        type: FLOAT
+        description: "wind dir degrees"
+        alias: ["wind_dir_degrees"]
+        sync: false
+      - name: "zip_code"
+        role: dimension
+        type: FLOAT
+        description: "zip code"
+        alias: ["zip_code"]
+        sync: true
+
+metrics:
+  - name: "station_dock_count"
+    description: dock count from station
+    relevant_columns:
+      - station.dock_count
+    alias: [dock_count]

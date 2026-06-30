@@ -1,8 +1,8 @@
-"""
+﻿"""
 问数查询服务
 
 负责把 API 层传入的自然语言问题转换成一次 LangGraph 工作流执行：
-创建初始 State、组装 Runtime Context、消费 graph.astream 的流式输出，
+创建初始 State、组装 Runtime Context、消费 get_graph().astream 的流式输出，
 并统一包装成 SSE 文本返回给路由层。
 """
 
@@ -11,9 +11,10 @@ import json
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 from app.agent.context import DataAgentContext
-from app.agent.graph import graph
+from app.agent.graph import get_graph
 from app.agent.state import DataAgentState
 from app.repositories.es.value_es_repository import ValueESRepository
+import uuid
 from app.repositories.mysql.dw.dw_mysql_repository import DWMySQLRepository
 from app.repositories.mysql.meta.meta_mysql_repository import MetaMySQLRepository
 from app.repositories.qdrant.column_qdrant_repository import ColumnQdrantRepository
@@ -53,21 +54,8 @@ class QueryService:
             return
 
         # 多层级联记忆检索（每次从磁盘/数据库重新读取）
-        memory_ctx = ""
-        try:
-            from app.memory.retriever import retrieve_all
-            memory_ctx = await retrieve_all(
-                query=query,
-                session_id="",
-                user_id=user_id,
-                db_session=self.meta_mysql_repository.session,
-            )
-        except Exception as e:
-            from app.core.log import logger
-            logger.warning(f"记忆检索失败（不影响主流程）: {e}")
         augmented_query = query
-        if memory_ctx:
-            augmented_query = f"[知识参考]\n{memory_ctx}\n\n[用户问题]\n{query}"
+        memory_ctx = ""
 
         # State 只放会被图节点读写和合并的业务数据，外部工具对象不塞进 State
         state = DataAgentState(query=augmented_query)
@@ -83,7 +71,7 @@ class QueryService:
         last_result = None
         try:
             # stream_mode="custom" 对应节点内部 writer(...) 写出的进度消息
-            async for chunk in graph.astream(
+            async for chunk in get_graph().astream(
                 input=state, context=context, stream_mode="custom"
             ):
                 # SSE 要求每条消息以 data: 开头，并以两个换行符结束
@@ -97,16 +85,18 @@ class QueryService:
                 exact_cache_set(query, last_result)
                 try:
                     await semantic_cache_save(query, last_result)
-                except Exception:
-                    pass
+                except Exception as e:
+                    from app.core.log import logger
+                    logger.warning(f"Cache save failed: {e}")
                 # 知识提取：对话中识别业务口径定义
                 try:
                     from app.knowledge.extractor import extract_knowledge
                     sql = last_result.get("sql", "") if isinstance(last_result, dict) else ""
                     data = last_result.get("rows", last_result) if isinstance(last_result, dict) else last_result
                     await extract_knowledge(query, sql, str(data)[:500], user_id)
-                except Exception:
-                    pass
+                except Exception as e:
+                    from app.core.log import logger
+                    logger.warning(f"Knowledge extraction failed: {e}")
         except Exception as e:
             # 流式接口已经开始返回后不能再改 HTTP 状态码，因此把异常也包装成一条 SSE 消息
             err_msg = str(e)
@@ -116,3 +106,6 @@ class QueryService:
                 friendly = "查询过程出现异常，请稍后重试。"
             error = {"type": "error", "message": friendly, "detail": err_msg[:200]}
             yield f"data: {json.dumps(error, ensure_ascii=False, default=str)}\n\n"
+
+
+

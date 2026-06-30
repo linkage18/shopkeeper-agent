@@ -1,0 +1,217 @@
+tables:
+  - name: "Course_Authors_and_Tutors"
+    role: dim
+    description: "course authors and tutors"
+    columns:
+      - name: "author_id"
+        role: foreign_key
+        type: FLOAT
+        description: "author id"
+        alias: ["author_id"]
+        sync: false
+      - name: "author_tutor_ATB"
+        role: dimension
+        type: VARCHAR(255)
+        description: "author tutor atb"
+        alias: ["author_tutor_atb"]
+        sync: false
+      - name: "login_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "login name"
+        alias: ["login_name"]
+        sync: true
+      - name: "password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "password"
+        alias: ["password"]
+        sync: false
+      - name: "personal_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "personal name"
+        alias: ["personal_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "family_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "family name"
+        alias: ["family_name"]
+        sync: true
+      - name: "gender_mf"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender mf"
+        alias: ["gender_mf"]
+        sync: true
+      - name: "address_line_1"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address line 1"
+        alias: ["address_line_1"]
+        sync: false
+  - name: "Students"
+    role: dim
+    description: "students"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "date_of_registration"
+        role: dimension
+        type: DATETIME
+        description: "date of registration"
+        alias: ["date_of_registration"]
+        sync: false
+      - name: "date_of_latest_logon"
+        role: dimension
+        type: DATETIME
+        description: "date of latest logon"
+        alias: ["date_of_latest_logon"]
+        sync: false
+      - name: "login_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "login name"
+        alias: ["login_name"]
+        sync: true
+      - name: "password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "password"
+        alias: ["password"]
+        sync: false
+      - name: "personal_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "personal name"
+        alias: ["personal_name"]
+        sync: true
+      - name: "middle_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "middle name"
+        alias: ["middle_name"]
+        sync: true
+      - name: "family_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "family name"
+        alias: ["family_name"]
+        sync: true
+  - name: "Subjects"
+    role: dim
+    description: "subjects"
+    columns:
+      - name: "subject_id"
+        role: foreign_key
+        type: FLOAT
+        description: "subject id"
+        alias: ["subject_id"]
+        sync: false
+      - name: "subject_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "subject name"
+        alias: ["subject_name"]
+        sync: true
+  - name: "Courses"
+    role: dim
+    description: "courses"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "author_id"
+        role: foreign_key
+        type: FLOAT
+        description: "author id"
+        alias: ["author_id"]
+        sync: false
+      - name: "subject_id"
+        role: foreign_key
+        type: FLOAT
+        description: "subject id"
+        alias: ["subject_id"]
+        sync: false
+      - name: "course_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course name"
+        alias: ["course_name"]
+        sync: true
+      - name: "course_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "course description"
+        alias: ["course_description"]
+        sync: false
+  - name: "Student_Course_Enrolment"
+    role: dim
+    description: "student course enrolment"
+    columns:
+      - name: "registration_id"
+        role: foreign_key
+        type: FLOAT
+        description: "registration id"
+        alias: ["registration_id"]
+        sync: false
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: FLOAT
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "date_of_enrolment"
+        role: dimension
+        type: DATETIME
+        description: "date of enrolment"
+        alias: ["date_of_enrolment"]
+        sync: false
+      - name: "date_of_completion"
+        role: dimension
+        type: DATETIME
+        description: "date of completion"
+        alias: ["date_of_completion"]
+        sync: false
+  - name: "Student_Tests_Taken"
+    role: dim
+    description: "student tests taken"
+    columns:
+      - name: "registration_id"
+        role: foreign_key
+        type: FLOAT
+        description: "registration id"
+        alias: ["registration_id"]
+        sync: false
+      - name: "date_test_taken"
+        role: dimension
+        type: DATETIME
+        description: "date test taken"
+        alias: ["date_test_taken"]
+        sync: false
+      - name: "test_result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "test result"
+        alias: ["test_result"]
+        sync: false

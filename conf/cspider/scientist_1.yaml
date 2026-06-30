@@ -1,0 +1,55 @@
+tables:
+  - name: "Scientists"
+    role: dim
+    description: "scientists"
+    columns:
+      - name: "SSN"
+        role: dimension
+        type: FLOAT
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Projects"
+    role: dim
+    description: "projects"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Hours"
+        role: dimension
+        type: FLOAT
+        description: "hours"
+        alias: ["hours"]
+        sync: false
+  - name: "AssignedTo"
+    role: dim
+    description: "assignedto"
+    columns:
+      - name: "Scientist"
+        role: dimension
+        type: FLOAT
+        description: "scientist"
+        alias: ["scientist"]
+        sync: false
+      - name: "Project"
+        role: dimension
+        type: VARCHAR(255)
+        description: "project"
+        alias: ["project"]
+        sync: false

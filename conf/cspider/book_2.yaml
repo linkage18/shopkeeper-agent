@@ -1,0 +1,70 @@
+tables:
+  - name: "publication"
+    role: dim
+    description: "publication"
+    columns:
+      - name: "Publication_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "publication id"
+        alias: ["publication_id"]
+        sync: false
+      - name: "Book_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "book id"
+        alias: ["book_id"]
+        sync: false
+      - name: "Publisher"
+        role: dimension
+        type: VARCHAR(255)
+        description: "publisher"
+        alias: ["publisher"]
+        sync: false
+      - name: "Publication_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "publication date"
+        alias: ["publication_date"]
+        sync: false
+      - name: "Price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+  - name: "book"
+    role: dim
+    description: "book"
+    columns:
+      - name: "Book_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "book id"
+        alias: ["book_id"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Issues"
+        role: dimension
+        type: FLOAT
+        description: "issues"
+        alias: ["issues"]
+        sync: false
+      - name: "Writer"
+        role: dimension
+        type: VARCHAR(255)
+        description: "writer"
+        alias: ["writer"]
+        sync: false
+
+metrics:
+  - name: "publication_price"
+    description: price from publication
+    relevant_columns:
+      - publication.Price
+    alias: [price]

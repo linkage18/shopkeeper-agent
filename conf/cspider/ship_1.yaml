@@ -1,0 +1,88 @@
+tables:
+  - name: "captain"
+    role: dim
+    description: "captain"
+    columns:
+      - name: "Captain_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "captain id"
+        alias: ["captain_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Ship_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "ship id"
+        alias: ["ship_id"]
+        sync: false
+      - name: "age"
+        role: dimension
+        type: VARCHAR(255)
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class"
+        alias: ["class"]
+        sync: false
+      - name: "Rank"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+  - name: "Ship"
+    role: dim
+    description: "ship"
+    columns:
+      - name: "Ship_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "ship id"
+        alias: ["ship_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Built_Year"
+        role: measure
+        type: FLOAT
+        description: "built year"
+        alias: ["built_year"]
+        sync: false
+      - name: "Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class"
+        alias: ["class"]
+        sync: false
+      - name: "Flag"
+        role: dimension
+        type: VARCHAR(255)
+        description: "flag"
+        alias: ["flag"]
+        sync: false
+
+metrics:
+  - name: "ship_built_year"
+    description: built year from ship
+    relevant_columns:
+      - Ship.Built_Year
+    alias: [built_year]

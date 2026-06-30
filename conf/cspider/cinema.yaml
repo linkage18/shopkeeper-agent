@@ -1,0 +1,132 @@
+tables:
+  - name: "film"
+    role: dim
+    description: "film"
+    columns:
+      - name: "Film_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "Rank_in_series"
+        role: dimension
+        type: FLOAT
+        description: "rank in series"
+        alias: ["rank_in_series"]
+        sync: false
+      - name: "Number_in_season"
+        role: measure
+        type: FLOAT
+        description: "number in season"
+        alias: ["number_in_season"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Directed_by"
+        role: dimension
+        type: VARCHAR(255)
+        description: "directed by"
+        alias: ["directed_by"]
+        sync: false
+      - name: "Original_air_date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "original air date"
+        alias: ["original_air_date"]
+        sync: false
+      - name: "Production_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "production code"
+        alias: ["production_code"]
+        sync: true
+  - name: "cinema"
+    role: dim
+    description: "cinema"
+    columns:
+      - name: "Cinema_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "cinema id"
+        alias: ["cinema_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Openning_year"
+        role: measure
+        type: FLOAT
+        description: "openning year"
+        alias: ["openning_year"]
+        sync: false
+      - name: "Capacity"
+        role: dimension
+        type: FLOAT
+        description: "capacity"
+        alias: ["capacity"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+  - name: "schedule"
+    role: dim
+    description: "schedule"
+    columns:
+      - name: "Cinema_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "cinema id"
+        alias: ["cinema_id"]
+        sync: false
+      - name: "Film_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Show_times_per_day"
+        role: dimension
+        type: FLOAT
+        description: "show times per day"
+        alias: ["show_times_per_day"]
+        sync: false
+      - name: "Price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+
+metrics:
+  - name: "film_number_in_season"
+    description: number in season from film
+    relevant_columns:
+      - film.Number_in_season
+    alias: [number_in_season]
+  - name: "cinema_openning_year"
+    description: openning year from cinema
+    relevant_columns:
+      - cinema.Openning_year
+    alias: [openning_year]
+  - name: "schedule_price"
+    description: price from schedule
+    relevant_columns:
+      - schedule.Price
+    alias: [price]

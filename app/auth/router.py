@@ -1,7 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.auth.jwt import create_token, verify_token
 from app.auth.repository import AuthRepository
@@ -12,13 +12,13 @@ auth_router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 class RegisterReq(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., min_length=2, max_length=32, pattern=r"^[a-zA-Z0-9_一-鿿]+$")
+    password: str = Field(..., min_length=6, max_length=128)
 
 
 class LoginReq(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., min_length=1, max_length=32)
+    password: str = Field(..., min_length=1, max_length=128)
 
 
 async def get_auth_repo():

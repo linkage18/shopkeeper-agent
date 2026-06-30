@@ -18,7 +18,7 @@ from app.entities.column_info import ColumnInfo
 class ColumnQdrantRepository:
     """负责字段向量集合的创建 写入和基础检索"""
 
-    collection_name = "column_info_collection"
+    collection_name = app_config.qdrant.column_collection
 
     def __init__(self, client: AsyncQdrantClient):
         self.client = client
@@ -51,7 +51,7 @@ class ColumnQdrantRepository:
             )
 
     async def search(
-        self, embedding: list[float], score_threshold: float = 0.6, limit: int = 20
+        self, embedding: list[float], score_threshold: float = 0.55, limit: int = 25
     ) -> list[ColumnInfo]:
         """按向量相似度检索字段元数据，并还原为 ColumnInfo 实体"""
         result = await self.client.query_points(

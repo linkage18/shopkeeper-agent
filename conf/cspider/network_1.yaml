@@ -1,0 +1,55 @@
+tables:
+  - name: "Highschooler"
+    role: dim
+    description: "highschooler"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "grade"
+        role: dimension
+        type: FLOAT
+        description: "grade"
+        alias: ["grade"]
+        sync: false
+  - name: "Friend"
+    role: dim
+    description: "friend"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "friend_id"
+        role: foreign_key
+        type: FLOAT
+        description: "friend id"
+        alias: ["friend_id"]
+        sync: false
+  - name: "Likes"
+    role: dim
+    description: "likes"
+    columns:
+      - name: "student_id"
+        role: foreign_key
+        type: FLOAT
+        description: "student id"
+        alias: ["student_id"]
+        sync: false
+      - name: "liked_id"
+        role: foreign_key
+        type: FLOAT
+        description: "liked id"
+        alias: ["liked_id"]
+        sync: false

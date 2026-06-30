@@ -85,7 +85,10 @@ class MetaKnowledgeService:
                     name=column.name,
                     type=column_types[column.name],
                     role=column.role,
-                    examples=column_values,
+                    examples=[
+    v.isoformat() if hasattr(v, 'isoformat') else v
+    for v in column_values
+],
                     description=column.description,
                     alias=column.alias,
                     table_id=table.name,
@@ -136,7 +139,10 @@ class MetaKnowledgeService:
         embedding_texts = [point["embedding_text"] for point in points]
         embedding_batch_size = 20
         for i in range(0, len(embedding_texts), embedding_batch_size):
-            batch_embedding_texts = embedding_texts[i : i + embedding_batch_size]
+            batch_embedding_texts = [
+                t if t and t.strip() else 'empty_placeholder'
+                for t in embedding_texts[i : i + embedding_batch_size]
+            ]
             batch_embeddings = await self.embedding_client.aembed_documents(
                 batch_embedding_texts
             )

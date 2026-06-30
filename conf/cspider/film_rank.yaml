@@ -1,0 +1,115 @@
+tables:
+  - name: "film"
+    role: dim
+    description: "film"
+    columns:
+      - name: "Film_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Studio"
+        role: dimension
+        type: VARCHAR(255)
+        description: "studio"
+        alias: ["studio"]
+        sync: false
+      - name: "Director"
+        role: dimension
+        type: VARCHAR(255)
+        description: "director"
+        alias: ["director"]
+        sync: false
+      - name: "Gross_in_dollar"
+        role: dimension
+        type: FLOAT
+        description: "gross in dollar"
+        alias: ["gross_in_dollar"]
+        sync: false
+  - name: "market"
+    role: dim
+    description: "market"
+    columns:
+      - name: "Market_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "market id"
+        alias: ["market_id"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Number_cities"
+        role: measure
+        type: FLOAT
+        description: "number cities"
+        alias: ["number_cities"]
+        sync: false
+  - name: "film_market_estimation"
+    role: dim
+    description: "film market estimation"
+    columns:
+      - name: "Estimation_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "estimation id"
+        alias: ["estimation_id"]
+        sync: false
+      - name: "Low_Estimate"
+        role: dimension
+        type: FLOAT
+        description: "low estimate"
+        alias: ["low_estimate"]
+        sync: false
+      - name: "High_Estimate"
+        role: dimension
+        type: FLOAT
+        description: "high estimate"
+        alias: ["high_estimate"]
+        sync: false
+      - name: "Film_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Market_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "market id"
+        alias: ["market_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+
+metrics:
+  - name: "market_number_cities"
+    description: number cities from market
+    relevant_columns:
+      - market.Number_cities
+    alias: [number_cities]
+  - name: "film_market_estimation_year"
+    description: year from film_market_estimation
+    relevant_columns:
+      - film_market_estimation.Year
+    alias: [year]

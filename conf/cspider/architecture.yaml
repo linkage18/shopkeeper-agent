@@ -1,0 +1,127 @@
+tables:
+  - name: "architect"
+    role: dim
+    description: "architect"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+  - name: "bridge"
+    role: dim
+    description: "bridge"
+    columns:
+      - name: "architect_id"
+        role: foreign_key
+        type: FLOAT
+        description: "architect id"
+        alias: ["architect_id"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "length_meters"
+        role: dimension
+        type: FLOAT
+        description: "length meters"
+        alias: ["length_meters"]
+        sync: false
+      - name: "length_feet"
+        role: measure
+        type: FLOAT
+        description: "length feet"
+        alias: ["length_feet"]
+        sync: false
+  - name: "mill"
+    role: dim
+    description: "mill"
+    columns:
+      - name: "architect_id"
+        role: foreign_key
+        type: FLOAT
+        description: "architect id"
+        alias: ["architect_id"]
+        sync: false
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "built_year"
+        role: measure
+        type: FLOAT
+        description: "built year"
+        alias: ["built_year"]
+        sync: false
+      - name: "notes"
+        role: dimension
+        type: VARCHAR(255)
+        description: "notes"
+        alias: ["notes"]
+        sync: false
+
+metrics:
+  - name: "bridge_length_feet"
+    description: length feet from bridge
+    relevant_columns:
+      - bridge.length_feet
+    alias: [length_feet]
+  - name: "mill_built_year"
+    description: built year from mill
+    relevant_columns:
+      - mill.built_year
+    alias: [built_year]

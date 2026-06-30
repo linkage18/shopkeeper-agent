@@ -1,0 +1,196 @@
+tables:
+  - name: "pilot"
+    role: dim
+    description: "pilot"
+    columns:
+      - name: "Pilot_Id"
+        role: foreign_key
+        type: FLOAT
+        description: "pilot id"
+        alias: ["pilot_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "aircraft"
+    role: dim
+    description: "aircraft"
+    columns:
+      - name: "Aircraft_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "aircraft id"
+        alias: ["aircraft_id"]
+        sync: false
+      - name: "Aircraft"
+        role: dimension
+        type: VARCHAR(255)
+        description: "aircraft"
+        alias: ["aircraft"]
+        sync: false
+      - name: "Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+      - name: "Max_Gross_Weight"
+        role: dimension
+        type: VARCHAR(255)
+        description: "max gross weight"
+        alias: ["max_gross_weight"]
+        sync: false
+      - name: "Total_disk_area"
+        role: dimension
+        type: VARCHAR(255)
+        description: "total disk area"
+        alias: ["total_disk_area"]
+        sync: false
+      - name: "Max_disk_Loading"
+        role: dimension
+        type: VARCHAR(255)
+        description: "max disk loading"
+        alias: ["max_disk_loading"]
+        sync: false
+  - name: "match"
+    role: dim
+    description: "match"
+    columns:
+      - name: "Round"
+        role: dimension
+        type: FLOAT
+        description: "round"
+        alias: ["round"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Fastest_Qualifying"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fastest qualifying"
+        alias: ["fastest_qualifying"]
+        sync: false
+      - name: "Winning_Pilot"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winning pilot"
+        alias: ["winning_pilot"]
+        sync: false
+      - name: "Winning_Aircraft"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winning aircraft"
+        alias: ["winning_aircraft"]
+        sync: false
+  - name: "airport"
+    role: dim
+    description: "airport"
+    columns:
+      - name: "Airport_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "airport id"
+        alias: ["airport_id"]
+        sync: false
+      - name: "Airport_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "airport name"
+        alias: ["airport_name"]
+        sync: true
+      - name: "Total_Passengers"
+        role: measure
+        type: FLOAT
+        description: "total passengers"
+        alias: ["total_passengers"]
+        sync: false
+      - name: "%_Change_2007"
+        role: dimension
+        type: VARCHAR(255)
+        description: "% change 2007"
+        alias: ["%_change_2007"]
+        sync: false
+      - name: "International_Passengers"
+        role: dimension
+        type: FLOAT
+        description: "international passengers"
+        alias: ["international_passengers"]
+        sync: false
+      - name: "Domestic_Passengers"
+        role: dimension
+        type: FLOAT
+        description: "domestic passengers"
+        alias: ["domestic_passengers"]
+        sync: false
+      - name: "Transit_Passengers"
+        role: dimension
+        type: FLOAT
+        description: "transit passengers"
+        alias: ["transit_passengers"]
+        sync: false
+      - name: "Aircraft_Movements"
+        role: dimension
+        type: FLOAT
+        description: "aircraft movements"
+        alias: ["aircraft_movements"]
+        sync: false
+      - name: "Freight_Metric_Tonnes"
+        role: dimension
+        type: FLOAT
+        description: "freight metric tonnes"
+        alias: ["freight_metric_tonnes"]
+        sync: false
+  - name: "airport_aircraft"
+    role: dim
+    description: "airport aircraft"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Airport_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "airport id"
+        alias: ["airport_id"]
+        sync: false
+      - name: "Aircraft_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "aircraft id"
+        alias: ["aircraft_id"]
+        sync: false
+
+metrics:
+  - name: "airport_total_passengers"
+    description: total passengers from airport
+    relevant_columns:
+      - airport.Total_Passengers
+    alias: [total_passengers]

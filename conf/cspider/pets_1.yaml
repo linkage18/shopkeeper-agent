@@ -1,0 +1,97 @@
+tables:
+  - name: "Student"
+    role: dim
+    description: "student"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "LName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "Fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Major"
+        role: dimension
+        type: FLOAT
+        description: "major"
+        alias: ["major"]
+        sync: false
+      - name: "Advisor"
+        role: dimension
+        type: FLOAT
+        description: "advisor"
+        alias: ["advisor"]
+        sync: false
+      - name: "city_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city code"
+        alias: ["city_code"]
+        sync: true
+  - name: "Has_Pet"
+    role: dim
+    description: "has pet"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "PetID"
+        role: primary_key
+        type: FLOAT
+        description: "petid"
+        alias: ["petid"]
+        sync: false
+  - name: "Pets"
+    role: dim
+    description: "pets"
+    columns:
+      - name: "PetID"
+        role: primary_key
+        type: FLOAT
+        description: "petid"
+        alias: ["petid"]
+        sync: false
+      - name: "PetType"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pettype"
+        alias: ["pettype"]
+        sync: true
+      - name: "pet_age"
+        role: dimension
+        type: FLOAT
+        description: "pet age"
+        alias: ["pet_age"]
+        sync: false
+      - name: "weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false

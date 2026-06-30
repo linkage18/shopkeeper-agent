@@ -1,4 +1,4 @@
-"""
+﻿"""
 RAG Agent 节点定义
 
 每个节点是一个 async function，接收 state + runtime，返回 state 更新。
@@ -7,24 +7,19 @@ RAG Agent 节点定义
 import asyncio
 import time
 
-import jieba.analyse
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
-from app.agent.llm import llm as shared_llm
+from app.agent.llm import get_llm
 from app.conf.app_config import app_config
+from app.core.keywords import extract_keywords as _extract_keywords
 from app.core.log import logger
 from app.prompt.prompt_loader import load_prompt
 from app.rag.context import RagAgentContext
 from app.rag.entities import DocParentChunk, DocSubChunk, SourceRef
 from app.rag.metrics import rag_metrics
 from app.rag.state import RagAgentState
-
-# ---------------------------------------------------------------------------
-# 全局 LLM 实例，复用现有共享 llm
-# ---------------------------------------------------------------------------
-_llm = shared_llm
 
 
 # ===================================================================
@@ -40,9 +35,7 @@ async def extract_keywords(state: RagAgentState, runtime: Runtime[RagAgentContex
 
     try:
         query = state["query"]
-        allow_pos = ("n", "nr", "ns", "nt", "nz", "v", "vn", "a", "an", "eng", "i", "l")
-        keywords = jieba.analyse.extract_tags(query, allowPOS=allow_pos)
-        keywords = list(set(keywords + [query]))
+        keywords = _extract_keywords(query)
 
         writer({"type": "progress", "step": step, "status": "success"})
         rag_metrics.on_node_end(step, "success")
@@ -291,7 +284,7 @@ async def generate_answer(state: RagAgentState, runtime: Runtime[RagAgentContext
             ),
             input_variables=["context", "history", "query"],
         )
-        chain = prompt | _llm | StrOutputParser()
+        chain = prompt | get_llm() | StrOutputParser()
 
         result_text = await chain.ainvoke({
             "context": context,
@@ -325,18 +318,37 @@ async def generate_answer(state: RagAgentState, runtime: Runtime[RagAgentContext
 
         logger.info(f"[RAG] 回答生成完成, {len(sources)}个引用")
 
-        # 后处理 hooks：更新历史、摘要、持久化
         from app.rag.hooks import execute_post_hooks
-        updated_state = await execute_post_hooks(dict(state), result_text, sources)
 
         return {
             "answer": result_text,
             "sources": sources,
-            "conversation_history": updated_state.get("conversation_history", []),
-            "session_summary": updated_state.get("session_summary", ""),
         }
     except Exception as e:
         logger.error(f"[RAG] 回答生成失败: {e}")
         writer({"type": "progress", "step": step, "status": "error"})
         rag_metrics.on_node_end(step, "error")
         raise
+
+async def post_process(state: RagAgentState, runtime: Runtime[RagAgentContext]):
+    """后置处理节点：更新对话历史、生成摘要、持久化
+
+    从 generate_answer 中分离出来，作为独立节点在图中执行。
+    失败不影响已有的回答内容。
+    """
+    from app.rag.hooks import execute_post_hooks
+    from app.core.log import logger
+
+    answer = state.get("answer", "")
+    sources = state.get("sources", [])
+
+    try:
+        updated_state = await execute_post_hooks(dict(state), answer, sources)
+    except Exception as e:
+        logger.warning(f"[RAG] 后置处理失败（不影响已有回答）: {e}")
+        updated_state = dict(state)
+
+    return {
+        "conversation_history": updated_state.get("conversation_history", []),
+        "session_summary": updated_state.get("session_summary", ""),
+    }

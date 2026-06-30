@@ -1,0 +1,161 @@
+tables:
+  - name: "Ref_Document_Types"
+    role: dim
+    description: "ref document types"
+    columns:
+      - name: "Document_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "Document_Type_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type name"
+        alias: ["document_type_name"]
+        sync: true
+      - name: "Document_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type description"
+        alias: ["document_type_description"]
+        sync: true
+  - name: "Ref_Budget_Codes"
+    role: dim
+    description: "ref budget codes"
+    columns:
+      - name: "Budget_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget type code"
+        alias: ["budget_type_code"]
+        sync: true
+      - name: "Budget_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget type description"
+        alias: ["budget_type_description"]
+        sync: true
+  - name: "Projects"
+    role: dim
+    description: "projects"
+    columns:
+      - name: "Project_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "Project_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "project details"
+        alias: ["project_details"]
+        sync: false
+  - name: "Documents"
+    role: dim
+    description: "documents"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Document_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "Project_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "project id"
+        alias: ["project_id"]
+        sync: false
+      - name: "Document_Date"
+        role: dimension
+        type: DATETIME
+        description: "document date"
+        alias: ["document_date"]
+        sync: false
+      - name: "Document_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document name"
+        alias: ["document_name"]
+        sync: true
+      - name: "Document_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document description"
+        alias: ["document_description"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Statements"
+    role: dim
+    description: "statements"
+    columns:
+      - name: "Statement_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "statement id"
+        alias: ["statement_id"]
+        sync: true
+      - name: "Statement_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "statement details"
+        alias: ["statement_details"]
+        sync: true
+  - name: "Documents_with_Expenses"
+    role: dim
+    description: "documents with expenses"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Budget_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget type code"
+        alias: ["budget_type_code"]
+        sync: true
+      - name: "Document_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document details"
+        alias: ["document_details"]
+        sync: false
+  - name: "Accounts"
+    role: dim
+    description: "accounts"
+    columns:
+      - name: "Account_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "account id"
+        alias: ["account_id"]
+        sync: false
+      - name: "Statement_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "statement id"
+        alias: ["statement_id"]
+        sync: true
+      - name: "Account_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "account details"
+        alias: ["account_details"]
+        sync: false

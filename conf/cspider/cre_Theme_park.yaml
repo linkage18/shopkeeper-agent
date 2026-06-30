@@ -1,0 +1,384 @@
+tables:
+  - name: "Ref_Hotel_Star_Ratings"
+    role: dim
+    description: "ref hotel star ratings"
+    columns:
+      - name: "star_rating_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "star rating code"
+        alias: ["star_rating_code"]
+        sync: true
+      - name: "star_rating_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "star rating description"
+        alias: ["star_rating_description"]
+        sync: false
+  - name: "Locations"
+    role: dim
+    description: "locations"
+    columns:
+      - name: "Location_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+      - name: "Location_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location name"
+        alias: ["location_name"]
+        sync: true
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Ref_Attraction_Types"
+    role: dim
+    description: "ref attraction types"
+    columns:
+      - name: "Attraction_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attraction type code"
+        alias: ["attraction_type_code"]
+        sync: true
+      - name: "Attraction_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attraction type description"
+        alias: ["attraction_type_description"]
+        sync: true
+  - name: "Visitors"
+    role: dim
+    description: "visitors"
+    columns:
+      - name: "Tourist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist id"
+        alias: ["tourist_id"]
+        sync: false
+      - name: "Tourist_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "tourist details"
+        alias: ["tourist_details"]
+        sync: false
+  - name: "Features"
+    role: dim
+    description: "features"
+    columns:
+      - name: "Feature_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "feature id"
+        alias: ["feature_id"]
+        sync: false
+      - name: "Feature_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "feature details"
+        alias: ["feature_details"]
+        sync: false
+  - name: "Hotels"
+    role: dim
+    description: "hotels"
+    columns:
+      - name: "hotel_id"
+        role: foreign_key
+        type: FLOAT
+        description: "hotel id"
+        alias: ["hotel_id"]
+        sync: false
+      - name: "star_rating_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "star rating code"
+        alias: ["star_rating_code"]
+        sync: true
+      - name: "pets_allowed_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pets allowed yn"
+        alias: ["pets_allowed_yn"]
+        sync: false
+      - name: "price_range"
+        role: measure
+        type: FLOAT
+        description: "price range"
+        alias: ["price_range"]
+        sync: false
+      - name: "other_hotel_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other hotel details"
+        alias: ["other_hotel_details"]
+        sync: false
+  - name: "Tourist_Attractions"
+    role: dim
+    description: "tourist attractions"
+    columns:
+      - name: "Tourist_Attraction_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist attraction id"
+        alias: ["tourist_attraction_id"]
+        sync: false
+      - name: "Attraction_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attraction type code"
+        alias: ["attraction_type_code"]
+        sync: true
+      - name: "Location_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+      - name: "How_to_Get_There"
+        role: dimension
+        type: VARCHAR(255)
+        description: "how to get there"
+        alias: ["how_to_get_there"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+      - name: "Opening_Hours"
+        role: dimension
+        type: VARCHAR(255)
+        description: "opening hours"
+        alias: ["opening_hours"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Street_Markets"
+    role: dim
+    description: "street markets"
+    columns:
+      - name: "Market_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "market id"
+        alias: ["market_id"]
+        sync: false
+      - name: "Market_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "market details"
+        alias: ["market_details"]
+        sync: false
+  - name: "Shops"
+    role: dim
+    description: "shops"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Shop_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shop details"
+        alias: ["shop_details"]
+        sync: false
+  - name: "Museums"
+    role: dim
+    description: "museums"
+    columns:
+      - name: "Museum_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "museum id"
+        alias: ["museum_id"]
+        sync: false
+      - name: "Museum_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "museum details"
+        alias: ["museum_details"]
+        sync: false
+  - name: "Royal_Family"
+    role: dim
+    description: "royal family"
+    columns:
+      - name: "Royal_Family_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "royal family id"
+        alias: ["royal_family_id"]
+        sync: false
+      - name: "Royal_Family_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "royal family details"
+        alias: ["royal_family_details"]
+        sync: false
+  - name: "Theme_Parks"
+    role: dim
+    description: "theme parks"
+    columns:
+      - name: "Theme_Park_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "theme park id"
+        alias: ["theme_park_id"]
+        sync: false
+      - name: "Theme_Park_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "theme park details"
+        alias: ["theme_park_details"]
+        sync: false
+  - name: "Visits"
+    role: dim
+    description: "visits"
+    columns:
+      - name: "Visit_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "visit id"
+        alias: ["visit_id"]
+        sync: false
+      - name: "Tourist_Attraction_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist attraction id"
+        alias: ["tourist_attraction_id"]
+        sync: false
+      - name: "Tourist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist id"
+        alias: ["tourist_id"]
+        sync: false
+      - name: "Visit_Date"
+        role: dimension
+        type: DATETIME
+        description: "visit date"
+        alias: ["visit_date"]
+        sync: false
+      - name: "Visit_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "visit details"
+        alias: ["visit_details"]
+        sync: false
+  - name: "Photos"
+    role: dim
+    description: "photos"
+    columns:
+      - name: "Photo_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "photo id"
+        alias: ["photo_id"]
+        sync: false
+      - name: "Tourist_Attraction_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist attraction id"
+        alias: ["tourist_attraction_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+      - name: "Filename"
+        role: dimension
+        type: VARCHAR(255)
+        description: "filename"
+        alias: ["filename"]
+        sync: true
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "Staff_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "Tourist_Attraction_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist attraction id"
+        alias: ["tourist_attraction_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Tourist_Attraction_Features"
+    role: dim
+    description: "tourist attraction features"
+    columns:
+      - name: "Tourist_Attraction_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "tourist attraction id"
+        alias: ["tourist_attraction_id"]
+        sync: false
+      - name: "Feature_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "feature id"
+        alias: ["feature_id"]
+        sync: false
+
+metrics:
+  - name: "hotels_price_range"
+    description: price range from hotels
+    relevant_columns:
+      - Hotels.price_range
+    alias: [price_range]

@@ -1,0 +1,143 @@
+tables:
+  - name: "repair"
+    role: dim
+    description: "repair"
+    columns:
+      - name: "repair_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "repair id"
+        alias: ["repair_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Launch_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "launch date"
+        alias: ["launch_date"]
+        sync: false
+      - name: "Notes"
+        role: dimension
+        type: VARCHAR(255)
+        description: "notes"
+        alias: ["notes"]
+        sync: false
+  - name: "machine"
+    role: dim
+    description: "machine"
+    columns:
+      - name: "Machine_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "machine id"
+        alias: ["machine_id"]
+        sync: false
+      - name: "Making_Year"
+        role: measure
+        type: FLOAT
+        description: "making year"
+        alias: ["making_year"]
+        sync: false
+      - name: "Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "class"
+        alias: ["class"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Machine_series"
+        role: dimension
+        type: VARCHAR(255)
+        description: "machine series"
+        alias: ["machine_series"]
+        sync: false
+      - name: "value_points"
+        role: dimension
+        type: FLOAT
+        description: "value points"
+        alias: ["value_points"]
+        sync: false
+      - name: "quality_rank"
+        role: dimension
+        type: FLOAT
+        description: "quality rank"
+        alias: ["quality_rank"]
+        sync: false
+  - name: "technician"
+    role: dim
+    description: "technician"
+    columns:
+      - name: "technician_id"
+        role: foreign_key
+        type: FLOAT
+        description: "technician id"
+        alias: ["technician_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Starting_Year"
+        role: measure
+        type: FLOAT
+        description: "starting year"
+        alias: ["starting_year"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "repair_assignment"
+    role: dim
+    description: "repair assignment"
+    columns:
+      - name: "technician_id"
+        role: foreign_key
+        type: FLOAT
+        description: "technician id"
+        alias: ["technician_id"]
+        sync: false
+      - name: "repair_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "repair id"
+        alias: ["repair_id"]
+        sync: false
+      - name: "Machine_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "machine id"
+        alias: ["machine_id"]
+        sync: false
+
+metrics:
+  - name: "machine_making_year"
+    description: making year from machine
+    relevant_columns:
+      - machine.Making_Year
+    alias: [making_year]
+  - name: "technician_starting_year"
+    description: starting year from technician
+    relevant_columns:
+      - technician.Starting_Year
+    alias: [starting_year]

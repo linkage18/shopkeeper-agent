@@ -1,0 +1,150 @@
+tables:
+  - name: "grapes"
+    role: dim
+    description: "grapes"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Grape"
+        role: dimension
+        type: VARCHAR(255)
+        description: "grape"
+        alias: ["grape"]
+        sync: false
+      - name: "Color"
+        role: dimension
+        type: VARCHAR(255)
+        description: "color"
+        alias: ["color"]
+        sync: true
+  - name: "appellations"
+    role: dim
+    description: "appellations"
+    columns:
+      - name: "No"
+        role: dimension
+        type: FLOAT
+        description: "no"
+        alias: ["no"]
+        sync: false
+      - name: "Appelation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "appelation"
+        alias: ["appelation"]
+        sync: false
+      - name: "County"
+        role: dimension
+        type: VARCHAR(255)
+        description: "county"
+        alias: ["county"]
+        sync: false
+      - name: "State"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "Area"
+        role: dimension
+        type: VARCHAR(255)
+        description: "area"
+        alias: ["area"]
+        sync: false
+      - name: "isAVA"
+        role: dimension
+        type: VARCHAR(255)
+        description: "isava"
+        alias: ["isava"]
+        sync: false
+  - name: "wine"
+    role: dim
+    description: "wine"
+    columns:
+      - name: "No"
+        role: dimension
+        type: FLOAT
+        description: "no"
+        alias: ["no"]
+        sync: false
+      - name: "Grape"
+        role: dimension
+        type: VARCHAR(255)
+        description: "grape"
+        alias: ["grape"]
+        sync: false
+      - name: "Winery"
+        role: dimension
+        type: VARCHAR(255)
+        description: "winery"
+        alias: ["winery"]
+        sync: false
+      - name: "Appelation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "appelation"
+        alias: ["appelation"]
+        sync: false
+      - name: "State"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Price"
+        role: measure
+        type: FLOAT
+        description: "price"
+        alias: ["price"]
+        sync: false
+      - name: "Score"
+        role: measure
+        type: FLOAT
+        description: "score"
+        alias: ["score"]
+        sync: false
+      - name: "Cases"
+        role: dimension
+        type: FLOAT
+        description: "cases"
+        alias: ["cases"]
+        sync: false
+      - name: "Drink"
+        role: dimension
+        type: VARCHAR(255)
+        description: "drink"
+        alias: ["drink"]
+        sync: false
+
+metrics:
+  - name: "wine_year"
+    description: year from wine
+    relevant_columns:
+      - wine.Year
+    alias: [year]
+  - name: "wine_price"
+    description: price from wine
+    relevant_columns:
+      - wine.Price
+    alias: [price]
+  - name: "wine_score"
+    description: score from wine
+    relevant_columns:
+      - wine.Score
+    alias: [score]

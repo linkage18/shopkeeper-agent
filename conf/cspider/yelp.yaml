@@ -1,0 +1,279 @@
+tables:
+  - name: "business"
+    role: dim
+    description: "business"
+    columns:
+      - name: "bid"
+        role: primary_key
+        type: FLOAT
+        description: "bid"
+        alias: ["bid"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "full_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "full address"
+        alias: ["full_address"]
+        sync: false
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "latitude"
+        role: dimension
+        type: VARCHAR(255)
+        description: "latitude"
+        alias: ["latitude"]
+        sync: false
+      - name: "longitude"
+        role: dimension
+        type: VARCHAR(255)
+        description: "longitude"
+        alias: ["longitude"]
+        sync: false
+      - name: "review_count"
+        role: measure
+        type: FLOAT
+        description: "review count"
+        alias: ["review_count"]
+        sync: false
+      - name: "is_open"
+        role: dimension
+        type: FLOAT
+        description: "is open"
+        alias: ["is_open"]
+        sync: false
+      - name: "rating"
+        role: dimension
+        type: FLOAT
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+  - name: "category"
+    role: dim
+    description: "category"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "category_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "category name"
+        alias: ["category_name"]
+        sync: true
+  - name: "user"
+    role: dim
+    description: "user"
+    columns:
+      - name: "uid"
+        role: primary_key
+        type: FLOAT
+        description: "uid"
+        alias: ["uid"]
+        sync: false
+      - name: "user_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "user id"
+        alias: ["user_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "checkin"
+    role: dim
+    description: "checkin"
+    columns:
+      - name: "cid"
+        role: primary_key
+        type: FLOAT
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "count"
+        role: measure
+        type: FLOAT
+        description: "count"
+        alias: ["count"]
+        sync: false
+      - name: "day"
+        role: dimension
+        type: VARCHAR(255)
+        description: "day"
+        alias: ["day"]
+        sync: false
+  - name: "neighbourhood"
+    role: dim
+    description: "neighbourhood"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "neighbourhood_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "neighbourhood name"
+        alias: ["neighbourhood_name"]
+        sync: true
+  - name: "review"
+    role: dim
+    description: "review"
+    columns:
+      - name: "rid"
+        role: primary_key
+        type: FLOAT
+        description: "rid"
+        alias: ["rid"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "user_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "user id"
+        alias: ["user_id"]
+        sync: false
+      - name: "rating"
+        role: dimension
+        type: FLOAT
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "text"
+        role: dimension
+        type: VARCHAR(255)
+        description: "text"
+        alias: ["text"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "month"
+        role: dimension
+        type: VARCHAR(255)
+        description: "month"
+        alias: ["month"]
+        sync: false
+  - name: "tip"
+    role: dim
+    description: "tip"
+    columns:
+      - name: "tip_id"
+        role: primary_key
+        type: FLOAT
+        description: "tip id"
+        alias: ["tip_id"]
+        sync: false
+      - name: "business_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "business id"
+        alias: ["business_id"]
+        sync: false
+      - name: "text"
+        role: dimension
+        type: VARCHAR(255)
+        description: "text"
+        alias: ["text"]
+        sync: false
+      - name: "user_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "user id"
+        alias: ["user_id"]
+        sync: false
+      - name: "likes"
+        role: dimension
+        type: FLOAT
+        description: "likes"
+        alias: ["likes"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "month"
+        role: dimension
+        type: VARCHAR(255)
+        description: "month"
+        alias: ["month"]
+        sync: false
+
+metrics:
+  - name: "business_review_count"
+    description: review count from business
+    relevant_columns:
+      - business.review_count
+    alias: [review_count]
+  - name: "checkin_count"
+    description: count from checkin
+    relevant_columns:
+      - checkin.count
+    alias: [count]
+  - name: "review_year"
+    description: year from review
+    relevant_columns:
+      - review.year
+    alias: [year]
+  - name: "tip_year"
+    description: year from tip
+    relevant_columns:
+      - tip.year
+    alias: [year]

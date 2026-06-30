@@ -24,6 +24,13 @@ async def validate_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]
         # 读取 generate_sql 或 correct_sql 写入状态的候选 SQL
         sql = state["sql"]
 
+        # 提前拦截空SQL，提供比数据库报错更清晰的错误信息
+        if not sql or not sql.strip():
+            error_msg = "生成的SQL为空，请根据上下文信息重新生成一条完整的 SELECT 查询语句"
+            logger.warning(f"SQL校验失败：{error_msg}")
+            writer({"type": "progress", "step": step, "status": "success"})
+            return {"error": error_msg}
+
         # SQL 可用性必须交给真实数仓判断，这里从运行时上下文取 DW Repository
         dw_mysql_repository: DWMySQLRepository = runtime.context["dw_mysql_repository"]
 

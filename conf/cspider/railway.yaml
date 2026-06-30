@@ -1,0 +1,149 @@
+tables:
+  - name: "railway"
+    role: dim
+    description: "railway"
+    columns:
+      - name: "Railway_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "railway id"
+        alias: ["railway_id"]
+        sync: false
+      - name: "Railway"
+        role: dimension
+        type: VARCHAR(255)
+        description: "railway"
+        alias: ["railway"]
+        sync: false
+      - name: "Builder"
+        role: dimension
+        type: VARCHAR(255)
+        description: "builder"
+        alias: ["builder"]
+        sync: false
+      - name: "Built"
+        role: dimension
+        type: VARCHAR(255)
+        description: "built"
+        alias: ["built"]
+        sync: false
+      - name: "Wheels"
+        role: dimension
+        type: VARCHAR(255)
+        description: "wheels"
+        alias: ["wheels"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "ObjectNumber"
+        role: dimension
+        type: VARCHAR(255)
+        description: "objectnumber"
+        alias: ["objectnumber"]
+        sync: false
+  - name: "train"
+    role: dim
+    description: "train"
+    columns:
+      - name: "Train_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "train id"
+        alias: ["train_id"]
+        sync: false
+      - name: "Train_Num"
+        role: dimension
+        type: VARCHAR(255)
+        description: "train num"
+        alias: ["train_num"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "From"
+        role: dimension
+        type: VARCHAR(255)
+        description: "from"
+        alias: ["from"]
+        sync: false
+      - name: "Arrival"
+        role: dimension
+        type: VARCHAR(255)
+        description: "arrival"
+        alias: ["arrival"]
+        sync: false
+      - name: "Railway_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "railway id"
+        alias: ["railway_id"]
+        sync: false
+  - name: "manager"
+    role: dim
+    description: "manager"
+    columns:
+      - name: "Manager_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manager id"
+        alias: ["manager_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Working_year_starts"
+        role: dimension
+        type: VARCHAR(255)
+        description: "working year starts"
+        alias: ["working_year_starts"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Level"
+        role: dimension
+        type: FLOAT
+        description: "level"
+        alias: ["level"]
+        sync: false
+  - name: "railway_manage"
+    role: dim
+    description: "railway manage"
+    columns:
+      - name: "Railway_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "railway id"
+        alias: ["railway_id"]
+        sync: false
+      - name: "Manager_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manager id"
+        alias: ["manager_id"]
+        sync: false
+      - name: "From_Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "from year"
+        alias: ["from_year"]
+        sync: false

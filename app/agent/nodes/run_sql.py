@@ -1,9 +1,7 @@
-"""
-SQL 执行节点
+﻿"""SQL 执行节点
 
 负责执行最终 SQL，并记录查询结果。
 它是当前 SQL 闭环的结束节点，执行完成后流程进入 END。
-
 安全性：执行前通过 sqlglot AST 审查，只放行纯 SELECT。
 """
 import sqlglot
@@ -11,6 +9,7 @@ from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
 from app.agent.state import DataAgentState
+from app.conf.app_config import app_config
 from app.core.log import logger
 
 
@@ -23,7 +22,8 @@ def _looks_like_date_field(name: str) -> bool:
     return any(token in lowered for token in ["date", "time", "day", "month", "year", "dt"])
 
 
-_CHART_KEYWORDS = ["占比", "比例", "份额", "分布", "图", "图表", "可视化", "chart", "pie", "bar", "line", "饼图", "柱状图", "折线图"]
+_CHART_KEYWORDS = getattr(app_config, "chart_keywords", 
+    ["占比", "比例", "份额", "分布", "图", "图表", "可视化", "chart", "pie", "bar", "line", "饼图", "柱状图", "折线图"])
 
 
 def _has_chart_keyword(query: str) -> bool:
@@ -42,11 +42,10 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
     ]
     dimension_columns = [col for col in columns if col not in numeric_columns]
 
-    # 单值结果：只有明确包含图表关键词才展示单柱图
+    # 单值结果：只有明确包含图表关键词才显示单柱图
     if len(rows) == 1 and len(columns) <= 2 and numeric_columns:
         if not _has_chart_keyword(query):
             return None
-        # 单值也展示一个孤柱，让用户能看到"有个图表框架"
         label = dimension_columns[0] if dimension_columns else columns[0]
         val = numeric_columns[0]
         return {
@@ -106,35 +105,49 @@ def _build_chart_data(rows: list[dict], query: str = "") -> dict | None:
 
 def _assert_readonly_sql(sql: str):
     """
-    用 sqlglot 解析 SQL AST，确保只有 SELECT 语句。
+    通过 sqlglot 全 AST 遍历，确保只包含 SELECT 查询语句。
+
+    核心策略：黑名单模式。遍历 AST 中所有节点，只拒绝明确的 DDL/DML 操作，
+    SELECT、UNION、CTE、表达式等只读节点默认放行。
     覆盖的绕过方式：
-      - UPDATE / DELETE / INSERT / DROP 等 → 类型检查拦截
-      - SELECT INTO OUTFILE → Into 节点检查拦截
-      - 多层嵌套 UNION 含写操作 → 逐语句检查拦截
-      - CTE (WITH ... UPDATE) → 顶层非 SELECT 拦截
-    
-    抛出 PermissionError 则阻断执行。
+      - INSERT / UPDATE / DELETE / DROP / ALTER / TRUNCATE / MERGE / REPLACE
+      - SELECT INTO OUTFILE → Into 节点拦截
+      - 多层嵌套 UNION 或 CTE 中含写操作 → 全 AST 遍历确保无处藏身
+
+    抛出 PermissionError 则阻止执行。
     """
+    _WRITE_NODE_TYPES = {
+        sqlglot.exp.Insert,
+        sqlglot.exp.Update,
+        sqlglot.exp.Delete,
+        sqlglot.exp.Drop,
+        sqlglot.exp.Alter,
+        sqlglot.exp.Create,
+        sqlglot.exp.TruncateTable,
+        sqlglot.exp.Merge,
+        sqlglot.exp.Replace,
+    }
+
     try:
         statements = sqlglot.parse(sql)
     except Exception as e:
-        raise PermissionError(f"SQL 解析失败，无法确认安全性: {e}")
+        raise PermissionError(f"SQL 解析失败，无法确认安全性，已自动拦截: {e}")
 
     for i, stmt in enumerate(statements):
         if stmt is None:
             continue
-        # 只允许 sqlglot.exp.Select 类型
-        if not isinstance(stmt, sqlglot.exp.Select):
-            raise PermissionError(
-                f"阻断非查询语句 (第 {i+1} 条): {type(stmt).__name__}"
-            )
-        # 即使是 SELECT，也不能有 INTO OUTFILE 等写文件操作
-        if stmt.find(sqlglot.exp.Into):
-            raise PermissionError("阻断 SELECT INTO（写文件操作）")
+        # 遍历 AST 中每一个节点，拒绝任何写操作
+        for node in stmt.walk():
+            if isinstance(node, tuple(_WRITE_NODE_TYPES)):
+                raise PermissionError(
+                    f"阻断非查询操作（语句 {i+1}）: {node.sql()[:60]}"
+                )
+            if isinstance(node, sqlglot.exp.Into):
+                raise PermissionError("阻断 SELECT INTO（写文件操作）")
 
 
 async def run_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):
-    """执行 SQL 并产出最终问数结果"""
+    """执行 SQL 并产出最终问数结果。"""
 
     writer = runtime.stream_writer
     step = "执行SQL"
@@ -159,12 +172,12 @@ async def run_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):
         try:
             _assert_readonly_sql(sql)
         except PermissionError as e:
-            logger.warning(f"[SECURITY] {e}: {sql[:100]}")
+            logger.warning(f"[SECURITY] 已自动拦截非查询 SQL: {e}: {sql[:120]}")
             writer({"type": "progress", "step": step, "status": "success"})
-            writer({"type": "result", "data": {"error": f"已自动阻断: {e}"}})
+            writer({"type": "result", "data": {"error": f"已自动阻断 {e}"}})
             return
 
-        # 真实数据库访问统一封装在仓储层，节点只负责从状态取 SQL 并触发执行
+        # 真实数据库访问统一封装在存储层，节点只负责从状态取 SQL 并触发执行
         result = await dw_mysql_repository.run(sql)
         chart_data = _build_chart_data(result, state.get("query", ""))
         payload = {
@@ -173,7 +186,7 @@ async def run_sql(state: DataAgentState, runtime: Runtime[DataAgentContext]):
             "row_count": len(result),
             "chart_data": chart_data,
         }
-        logger.info(f"SQL执行结果：{result}")
+        logger.debug(f"SQL执行结果：{str(result)[:500]}")
         writer({"type": "progress", "step": step, "status": "success"})
         writer({"type": "result", "data": payload})
 

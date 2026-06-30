@@ -1,0 +1,108 @@
+tables:
+  - name: "artist"
+    role: dim
+    description: "artist"
+    columns:
+      - name: "Artist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artist id"
+        alias: ["artist_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Year_Join"
+        role: measure
+        type: FLOAT
+        description: "year join"
+        alias: ["year_join"]
+        sync: false
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+  - name: "exhibition"
+    role: dim
+    description: "exhibition"
+    columns:
+      - name: "Exhibition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "exhibition id"
+        alias: ["exhibition_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "theme"
+        alias: ["theme"]
+        sync: false
+      - name: "Artist_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artist id"
+        alias: ["artist_id"]
+        sync: false
+      - name: "Ticket_Price"
+        role: measure
+        type: FLOAT
+        description: "ticket price"
+        alias: ["ticket_price"]
+        sync: false
+  - name: "exhibition_record"
+    role: fact
+    description: "exhibition record"
+    columns:
+      - name: "Exhibition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "exhibition id"
+        alias: ["exhibition_id"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Attendance"
+        role: dimension
+        type: FLOAT
+        description: "attendance"
+        alias: ["attendance"]
+        sync: false
+
+metrics:
+  - name: "artist_year_join"
+    description: year join from artist
+    relevant_columns:
+      - artist.Year_Join
+    alias: [year_join]
+  - name: "exhibition_year"
+    description: year from exhibition
+    relevant_columns:
+      - exhibition.Year
+    alias: [year]
+  - name: "exhibition_ticket_price"
+    description: ticket price from exhibition
+    relevant_columns:
+      - exhibition.Ticket_Price
+    alias: [ticket_price]

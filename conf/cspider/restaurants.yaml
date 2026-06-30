@@ -1,0 +1,92 @@
+tables:
+  - name: "GEOGRAPHIC"
+    role: dim
+    description: "geographic"
+    columns:
+      - name: "CITY_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city name"
+        alias: ["city_name"]
+        sync: true
+      - name: "COUNTY"
+        role: dimension
+        type: VARCHAR(255)
+        description: "county"
+        alias: ["county"]
+        sync: false
+      - name: "REGION"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region"
+        alias: ["region"]
+        sync: false
+  - name: "RESTAURANT"
+    role: dim
+    description: "restaurant"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "FOOD_TYPE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "food type"
+        alias: ["food_type"]
+        sync: true
+      - name: "CITY_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city name"
+        alias: ["city_name"]
+        sync: true
+      - name: "RATING"
+        role: dimension
+        type: FLOAT
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+  - name: "LOCATION"
+    role: dim
+    description: "location"
+    columns:
+      - name: "RESTAURANT_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "restaurant id"
+        alias: ["restaurant_id"]
+        sync: false
+      - name: "HOUSE_NUMBER"
+        role: measure
+        type: FLOAT
+        description: "house number"
+        alias: ["house_number"]
+        sync: false
+      - name: "STREET_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "street name"
+        alias: ["street_name"]
+        sync: true
+      - name: "CITY_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city name"
+        alias: ["city_name"]
+        sync: true
+
+metrics:
+  - name: "location_house_number"
+    description: house number from location
+    relevant_columns:
+      - LOCATION.HOUSE_NUMBER
+    alias: [house_number]

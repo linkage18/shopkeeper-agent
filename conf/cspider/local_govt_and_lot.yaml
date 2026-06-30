@@ -1,0 +1,333 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "customer_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer details"
+        alias: ["customer_details"]
+        sync: false
+  - name: "Properties"
+    role: dim
+    description: "properties"
+    columns:
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "property_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property type code"
+        alias: ["property_type_code"]
+        sync: true
+      - name: "property_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "property address"
+        alias: ["property_address"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Residents"
+    role: dim
+    description: "residents"
+    columns:
+      - name: "resident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "resident id"
+        alias: ["resident_id"]
+        sync: false
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "date_moved_in"
+        role: dimension
+        type: DATETIME
+        description: "date moved in"
+        alias: ["date_moved_in"]
+        sync: false
+      - name: "date_moved_out"
+        role: dimension
+        type: DATETIME
+        description: "date moved out"
+        alias: ["date_moved_out"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Organizations"
+    role: dim
+    description: "organizations"
+    columns:
+      - name: "organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organization id"
+        alias: ["organization_id"]
+        sync: false
+      - name: "parent_organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "parent organization id"
+        alias: ["parent_organization_id"]
+        sync: false
+      - name: "organization_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "organization details"
+        alias: ["organization_details"]
+        sync: false
+  - name: "Services"
+    role: dim
+    description: "services"
+    columns:
+      - name: "service_id"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organization id"
+        alias: ["organization_id"]
+        sync: false
+      - name: "service_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "service_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service details"
+        alias: ["service_details"]
+        sync: false
+  - name: "Residents_Services"
+    role: dim
+    description: "residents services"
+    columns:
+      - name: "resident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "resident id"
+        alias: ["resident_id"]
+        sync: false
+      - name: "service_id"
+        role: foreign_key
+        type: FLOAT
+        description: "service id"
+        alias: ["service_id"]
+        sync: false
+      - name: "date_moved_in"
+        role: dimension
+        type: DATETIME
+        description: "date moved in"
+        alias: ["date_moved_in"]
+        sync: false
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "date_requested"
+        role: dimension
+        type: DATETIME
+        description: "date requested"
+        alias: ["date_requested"]
+        sync: false
+      - name: "date_provided"
+        role: dimension
+        type: DATETIME
+        description: "date provided"
+        alias: ["date_provided"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Things"
+    role: dim
+    description: "things"
+    columns:
+      - name: "thing_id"
+        role: foreign_key
+        type: FLOAT
+        description: "thing id"
+        alias: ["thing_id"]
+        sync: false
+      - name: "organization_id"
+        role: foreign_key
+        type: FLOAT
+        description: "organization id"
+        alias: ["organization_id"]
+        sync: false
+      - name: "Type_of_Thing_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type of thing code"
+        alias: ["type_of_thing_code"]
+        sync: true
+      - name: "service_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "service_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service details"
+        alias: ["service_details"]
+        sync: false
+  - name: "Customer_Events"
+    role: dim
+    description: "customer events"
+    columns:
+      - name: "Customer_Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer event id"
+        alias: ["customer_event_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "date_moved_in"
+        role: dimension
+        type: DATETIME
+        description: "date moved in"
+        alias: ["date_moved_in"]
+        sync: false
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "resident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "resident id"
+        alias: ["resident_id"]
+        sync: false
+      - name: "thing_id"
+        role: foreign_key
+        type: FLOAT
+        description: "thing id"
+        alias: ["thing_id"]
+        sync: false
+  - name: "Customer_Event_Notes"
+    role: dim
+    description: "customer event notes"
+    columns:
+      - name: "Customer_Event_Note_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer event note id"
+        alias: ["customer_event_note_id"]
+        sync: false
+      - name: "Customer_Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer event id"
+        alias: ["customer_event_id"]
+        sync: false
+      - name: "service_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "service type code"
+        alias: ["service_type_code"]
+        sync: true
+      - name: "resident_id"
+        role: foreign_key
+        type: FLOAT
+        description: "resident id"
+        alias: ["resident_id"]
+        sync: false
+      - name: "property_id"
+        role: foreign_key
+        type: FLOAT
+        description: "property id"
+        alias: ["property_id"]
+        sync: false
+      - name: "date_moved_in"
+        role: dimension
+        type: DATETIME
+        description: "date moved in"
+        alias: ["date_moved_in"]
+        sync: false
+  - name: "Timed_Status_of_Things"
+    role: dim
+    description: "timed status of things"
+    columns:
+      - name: "thing_id"
+        role: foreign_key
+        type: FLOAT
+        description: "thing id"
+        alias: ["thing_id"]
+        sync: false
+      - name: "Date_and_Date"
+        role: dimension
+        type: DATETIME
+        description: "date and date"
+        alias: ["date_and_date"]
+        sync: false
+      - name: "Status_of_Thing_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status of thing code"
+        alias: ["status_of_thing_code"]
+        sync: true
+  - name: "Timed_Locations_of_Things"
+    role: dim
+    description: "timed locations of things"
+    columns:
+      - name: "thing_id"
+        role: foreign_key
+        type: FLOAT
+        description: "thing id"
+        alias: ["thing_id"]
+        sync: false
+      - name: "Date_and_Time"
+        role: dimension
+        type: DATETIME
+        description: "date and time"
+        alias: ["date_and_time"]
+        sync: false
+      - name: "Location_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location code"
+        alias: ["location_code"]
+        sync: true

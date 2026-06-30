@@ -1,0 +1,529 @@
+tables:
+  - name: "Player_Attributes"
+    role: dim
+    description: "player attributes"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "player_fifa_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player fifa api id"
+        alias: ["player_fifa_api_id"]
+        sync: false
+      - name: "player_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player api id"
+        alias: ["player_api_id"]
+        sync: false
+      - name: "date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "overall_rating"
+        role: dimension
+        type: FLOAT
+        description: "overall rating"
+        alias: ["overall_rating"]
+        sync: false
+      - name: "potential"
+        role: dimension
+        type: FLOAT
+        description: "potential"
+        alias: ["potential"]
+        sync: false
+      - name: "preferred_foot"
+        role: dimension
+        type: VARCHAR(255)
+        description: "preferred foot"
+        alias: ["preferred_foot"]
+        sync: false
+      - name: "attacking_work_rate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "attacking work rate"
+        alias: ["attacking_work_rate"]
+        sync: false
+      - name: "defensive_work_rate"
+        role: dimension
+        type: VARCHAR(255)
+        description: "defensive work rate"
+        alias: ["defensive_work_rate"]
+        sync: false
+      - name: "crossing"
+        role: dimension
+        type: FLOAT
+        description: "crossing"
+        alias: ["crossing"]
+        sync: false
+      - name: "finishing"
+        role: dimension
+        type: FLOAT
+        description: "finishing"
+        alias: ["finishing"]
+        sync: false
+      - name: "heading_accuracy"
+        role: dimension
+        type: FLOAT
+        description: "heading accuracy"
+        alias: ["heading_accuracy"]
+        sync: false
+      - name: "short_passing"
+        role: dimension
+        type: FLOAT
+        description: "short passing"
+        alias: ["short_passing"]
+        sync: false
+      - name: "volleys"
+        role: dimension
+        type: FLOAT
+        description: "volleys"
+        alias: ["volleys"]
+        sync: false
+      - name: "dribbling"
+        role: dimension
+        type: FLOAT
+        description: "dribbling"
+        alias: ["dribbling"]
+        sync: false
+      - name: "curve"
+        role: dimension
+        type: FLOAT
+        description: "curve"
+        alias: ["curve"]
+        sync: false
+      - name: "free_kick_accuracy"
+        role: dimension
+        type: FLOAT
+        description: "free kick accuracy"
+        alias: ["free_kick_accuracy"]
+        sync: false
+      - name: "long_passing"
+        role: dimension
+        type: FLOAT
+        description: "long passing"
+        alias: ["long_passing"]
+        sync: false
+      - name: "ball_control"
+        role: dimension
+        type: FLOAT
+        description: "ball control"
+        alias: ["ball_control"]
+        sync: false
+      - name: "acceleration"
+        role: dimension
+        type: FLOAT
+        description: "acceleration"
+        alias: ["acceleration"]
+        sync: false
+      - name: "sprint_speed"
+        role: dimension
+        type: FLOAT
+        description: "sprint speed"
+        alias: ["sprint_speed"]
+        sync: false
+      - name: "agility"
+        role: dimension
+        type: FLOAT
+        description: "agility"
+        alias: ["agility"]
+        sync: false
+      - name: "reactions"
+        role: dimension
+        type: FLOAT
+        description: "reactions"
+        alias: ["reactions"]
+        sync: false
+      - name: "balance"
+        role: dimension
+        type: FLOAT
+        description: "balance"
+        alias: ["balance"]
+        sync: false
+      - name: "shot_power"
+        role: dimension
+        type: FLOAT
+        description: "shot power"
+        alias: ["shot_power"]
+        sync: false
+      - name: "jumping"
+        role: dimension
+        type: FLOAT
+        description: "jumping"
+        alias: ["jumping"]
+        sync: false
+      - name: "stamina"
+        role: dimension
+        type: FLOAT
+        description: "stamina"
+        alias: ["stamina"]
+        sync: false
+      - name: "strength"
+        role: dimension
+        type: FLOAT
+        description: "strength"
+        alias: ["strength"]
+        sync: false
+      - name: "long_shots"
+        role: dimension
+        type: FLOAT
+        description: "long shots"
+        alias: ["long_shots"]
+        sync: false
+      - name: "aggression"
+        role: dimension
+        type: FLOAT
+        description: "aggression"
+        alias: ["aggression"]
+        sync: false
+      - name: "interceptions"
+        role: dimension
+        type: FLOAT
+        description: "interceptions"
+        alias: ["interceptions"]
+        sync: false
+      - name: "positioning"
+        role: dimension
+        type: FLOAT
+        description: "positioning"
+        alias: ["positioning"]
+        sync: false
+      - name: "vision"
+        role: dimension
+        type: FLOAT
+        description: "vision"
+        alias: ["vision"]
+        sync: false
+      - name: "penalties"
+        role: dimension
+        type: FLOAT
+        description: "penalties"
+        alias: ["penalties"]
+        sync: false
+      - name: "marking"
+        role: dimension
+        type: FLOAT
+        description: "marking"
+        alias: ["marking"]
+        sync: false
+      - name: "standing_tackle"
+        role: dimension
+        type: FLOAT
+        description: "standing tackle"
+        alias: ["standing_tackle"]
+        sync: false
+      - name: "sliding_tackle"
+        role: dimension
+        type: FLOAT
+        description: "sliding tackle"
+        alias: ["sliding_tackle"]
+        sync: false
+      - name: "gk_diving"
+        role: dimension
+        type: FLOAT
+        description: "gk diving"
+        alias: ["gk_diving"]
+        sync: false
+      - name: "gk_handling"
+        role: dimension
+        type: FLOAT
+        description: "gk handling"
+        alias: ["gk_handling"]
+        sync: false
+      - name: "gk_kicking"
+        role: dimension
+        type: FLOAT
+        description: "gk kicking"
+        alias: ["gk_kicking"]
+        sync: false
+      - name: "gk_positioning"
+        role: dimension
+        type: FLOAT
+        description: "gk positioning"
+        alias: ["gk_positioning"]
+        sync: false
+      - name: "gk_reflexes"
+        role: dimension
+        type: FLOAT
+        description: "gk reflexes"
+        alias: ["gk_reflexes"]
+        sync: false
+  - name: "Player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "player_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player api id"
+        alias: ["player_api_id"]
+        sync: false
+      - name: "player_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "player name"
+        alias: ["player_name"]
+        sync: true
+      - name: "player_fifa_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "player fifa api id"
+        alias: ["player_fifa_api_id"]
+        sync: false
+      - name: "birthday"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birthday"
+        alias: ["birthday"]
+        sync: false
+      - name: "height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+  - name: "League"
+    role: dim
+    description: "league"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "country_id"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Country"
+    role: dim
+    description: "country"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Team"
+    role: dim
+    description: "team"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "team_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "team api id"
+        alias: ["team_api_id"]
+        sync: false
+      - name: "team_fifa_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "team fifa api id"
+        alias: ["team_fifa_api_id"]
+        sync: false
+      - name: "team_long_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team long name"
+        alias: ["team_long_name"]
+        sync: true
+      - name: "team_short_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team short name"
+        alias: ["team_short_name"]
+        sync: true
+  - name: "Team_Attributes"
+    role: dim
+    description: "team attributes"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "team_fifa_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "team fifa api id"
+        alias: ["team_fifa_api_id"]
+        sync: false
+      - name: "team_api_id"
+        role: foreign_key
+        type: FLOAT
+        description: "team api id"
+        alias: ["team_api_id"]
+        sync: false
+      - name: "date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "buildUpPlaySpeed"
+        role: dimension
+        type: FLOAT
+        description: "buildupplayspeed"
+        alias: ["buildupplayspeed"]
+        sync: false
+      - name: "buildUpPlaySpeedClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "buildupplayspeedclass"
+        alias: ["buildupplayspeedclass"]
+        sync: false
+      - name: "buildUpPlayDribbling"
+        role: dimension
+        type: FLOAT
+        description: "buildupplaydribbling"
+        alias: ["buildupplaydribbling"]
+        sync: false
+      - name: "buildUpPlayDribblingClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "buildupplaydribblingclass"
+        alias: ["buildupplaydribblingclass"]
+        sync: false
+      - name: "buildUpPlayPassing"
+        role: dimension
+        type: FLOAT
+        description: "buildupplaypassing"
+        alias: ["buildupplaypassing"]
+        sync: false
+      - name: "buildUpPlayPassingClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "buildupplaypassingclass"
+        alias: ["buildupplaypassingclass"]
+        sync: false
+      - name: "buildUpPlayPositioningClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "buildupplaypositioningclass"
+        alias: ["buildupplaypositioningclass"]
+        sync: false
+      - name: "chanceCreationPassing"
+        role: dimension
+        type: FLOAT
+        description: "chancecreationpassing"
+        alias: ["chancecreationpassing"]
+        sync: false
+      - name: "chanceCreationPassingClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chancecreationpassingclass"
+        alias: ["chancecreationpassingclass"]
+        sync: false
+      - name: "chanceCreationCrossing"
+        role: dimension
+        type: FLOAT
+        description: "chancecreationcrossing"
+        alias: ["chancecreationcrossing"]
+        sync: false
+      - name: "chanceCreationCrossingClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chancecreationcrossingclass"
+        alias: ["chancecreationcrossingclass"]
+        sync: false
+      - name: "chanceCreationShooting"
+        role: dimension
+        type: FLOAT
+        description: "chancecreationshooting"
+        alias: ["chancecreationshooting"]
+        sync: false
+      - name: "chanceCreationShootingClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chancecreationshootingclass"
+        alias: ["chancecreationshootingclass"]
+        sync: false
+      - name: "chanceCreationPositioningClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chancecreationpositioningclass"
+        alias: ["chancecreationpositioningclass"]
+        sync: false
+      - name: "defencePressure"
+        role: dimension
+        type: FLOAT
+        description: "defencepressure"
+        alias: ["defencepressure"]
+        sync: false
+      - name: "defencePressureClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "defencepressureclass"
+        alias: ["defencepressureclass"]
+        sync: false
+      - name: "defenceAggression"
+        role: dimension
+        type: FLOAT
+        description: "defenceaggression"
+        alias: ["defenceaggression"]
+        sync: false
+      - name: "defenceAggressionClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "defenceaggressionclass"
+        alias: ["defenceaggressionclass"]
+        sync: false
+      - name: "defenceTeamWidth"
+        role: dimension
+        type: FLOAT
+        description: "defenceteamwidth"
+        alias: ["defenceteamwidth"]
+        sync: false
+      - name: "defenceTeamWidthClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "defenceteamwidthclass"
+        alias: ["defenceteamwidthclass"]
+        sync: false
+      - name: "defenceDefenderLineClass"
+        role: dimension
+        type: VARCHAR(255)
+        description: "defencedefenderlineclass"
+        alias: ["defencedefenderlineclass"]
+        sync: false

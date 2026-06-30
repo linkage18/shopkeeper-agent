@@ -1,0 +1,405 @@
+tables:
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "address_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address details"
+        alias: ["address_details"]
+        sync: false
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "staff_gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff gender"
+        alias: ["staff_gender"]
+        sync: true
+      - name: "staff_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff name"
+        alias: ["staff_name"]
+        sync: true
+  - name: "Suppliers"
+    role: dim
+    description: "suppliers"
+    columns:
+      - name: "supplier_id"
+        role: foreign_key
+        type: FLOAT
+        description: "supplier id"
+        alias: ["supplier_id"]
+        sync: false
+      - name: "supplier_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "supplier name"
+        alias: ["supplier_name"]
+        sync: true
+      - name: "supplier_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "supplier phone"
+        alias: ["supplier_phone"]
+        sync: false
+  - name: "Department_Store_Chain"
+    role: dim
+    description: "department store chain"
+    columns:
+      - name: "dept_store_chain_id"
+        role: foreign_key
+        type: FLOAT
+        description: "dept store chain id"
+        alias: ["dept_store_chain_id"]
+        sync: false
+      - name: "dept_store_chain_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept store chain name"
+        alias: ["dept_store_chain_name"]
+        sync: true
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "payment_method_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "customer_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer code"
+        alias: ["customer_code"]
+        sync: true
+      - name: "customer_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer name"
+        alias: ["customer_name"]
+        sync: true
+      - name: "customer_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer address"
+        alias: ["customer_address"]
+        sync: false
+      - name: "customer_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer phone"
+        alias: ["customer_phone"]
+        sync: false
+      - name: "customer_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer email"
+        alias: ["customer_email"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product type code"
+        alias: ["product_type_code"]
+        sync: true
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_price"
+        role: measure
+        type: FLOAT
+        description: "product price"
+        alias: ["product_price"]
+        sync: false
+  - name: "Supplier_Addresses"
+    role: dim
+    description: "supplier addresses"
+    columns:
+      - name: "supplier_id"
+        role: foreign_key
+        type: FLOAT
+        description: "supplier id"
+        alias: ["supplier_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "date_from"
+        role: dimension
+        type: DATETIME
+        description: "date from"
+        alias: ["date_from"]
+        sync: false
+      - name: "date_to"
+        role: dimension
+        type: DATETIME
+        description: "date to"
+        alias: ["date_to"]
+        sync: false
+  - name: "Customer_Addresses"
+    role: dim
+    description: "customer addresses"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "date_from"
+        role: dimension
+        type: DATETIME
+        description: "date from"
+        alias: ["date_from"]
+        sync: false
+      - name: "date_to"
+        role: dimension
+        type: DATETIME
+        description: "date to"
+        alias: ["date_to"]
+        sync: false
+  - name: "Customer_Orders"
+    role: fact
+    description: "customer orders"
+    columns:
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "order_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "order status code"
+        alias: ["order_status_code"]
+        sync: true
+      - name: "order_date"
+        role: dimension
+        type: DATETIME
+        description: "order date"
+        alias: ["order_date"]
+        sync: false
+  - name: "Department_Stores"
+    role: dim
+    description: "department stores"
+    columns:
+      - name: "dept_store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "dept store id"
+        alias: ["dept_store_id"]
+        sync: false
+      - name: "dept_store_chain_id"
+        role: foreign_key
+        type: FLOAT
+        description: "dept store chain id"
+        alias: ["dept_store_chain_id"]
+        sync: false
+      - name: "store_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store name"
+        alias: ["store_name"]
+        sync: true
+      - name: "store_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store address"
+        alias: ["store_address"]
+        sync: false
+      - name: "store_phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store phone"
+        alias: ["store_phone"]
+        sync: false
+      - name: "store_email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "store email"
+        alias: ["store_email"]
+        sync: false
+  - name: "Departments"
+    role: dim
+    description: "departments"
+    columns:
+      - name: "department_id"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "dept_store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "dept store id"
+        alias: ["dept_store_id"]
+        sync: false
+      - name: "department_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "department name"
+        alias: ["department_name"]
+        sync: true
+  - name: "Order_Items"
+    role: fact
+    description: "order items"
+    columns:
+      - name: "order_item_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order item id"
+        alias: ["order_item_id"]
+        sync: false
+      - name: "order_id"
+        role: foreign_key
+        type: FLOAT
+        description: "order id"
+        alias: ["order_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+  - name: "Product_Suppliers"
+    role: dim
+    description: "product suppliers"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "supplier_id"
+        role: foreign_key
+        type: FLOAT
+        description: "supplier id"
+        alias: ["supplier_id"]
+        sync: false
+      - name: "date_supplied_from"
+        role: dimension
+        type: DATETIME
+        description: "date supplied from"
+        alias: ["date_supplied_from"]
+        sync: false
+      - name: "date_supplied_to"
+        role: dimension
+        type: DATETIME
+        description: "date supplied to"
+        alias: ["date_supplied_to"]
+        sync: false
+      - name: "total_amount_purchased"
+        role: dimension
+        type: VARCHAR(255)
+        description: "total amount purchased"
+        alias: ["total_amount_purchased"]
+        sync: false
+      - name: "total_value_purchased"
+        role: measure
+        type: FLOAT
+        description: "total value purchased"
+        alias: ["total_value_purchased"]
+        sync: false
+  - name: "Staff_Department_Assignments"
+    role: dim
+    description: "staff department assignments"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "department_id"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "date_assigned_from"
+        role: dimension
+        type: DATETIME
+        description: "date assigned from"
+        alias: ["date_assigned_from"]
+        sync: false
+      - name: "job_title_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "job title code"
+        alias: ["job_title_code"]
+        sync: true
+      - name: "date_assigned_to"
+        role: dimension
+        type: DATETIME
+        description: "date assigned to"
+        alias: ["date_assigned_to"]
+        sync: false
+
+metrics:
+  - name: "products_product_price"
+    description: product price from products
+    relevant_columns:
+      - Products.product_price
+    alias: [product_price]
+  - name: "product_suppliers_total_value_purchased"
+    description: total value purchased from product_suppliers
+    relevant_columns:
+      - Product_Suppliers.total_value_purchased
+    alias: [total_value_purchased]

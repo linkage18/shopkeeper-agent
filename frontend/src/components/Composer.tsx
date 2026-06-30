@@ -3,7 +3,7 @@
  * 处理问题输入、发送和停止当前流式请求
  */
 import { ArrowUp, Square, WandSparkles } from "lucide-react";
-import { FormEvent, KeyboardEvent, useRef } from "react";
+import React, { FormEvent, KeyboardEvent, useRef } from "react";
 import { cn } from "../lib/format";
 
 type ComposerProps = {
@@ -15,7 +15,7 @@ type ComposerProps = {
     onStop: () => void;
 };
 
-export function Composer({ value, disabled, isStreaming, onChange, onSubmit, onStop }: ComposerProps) {
+export const Composer = React.memo(function Composer({ value, disabled, isStreaming, onChange, onSubmit, onStop }: ComposerProps) {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     const submit = (event: FormEvent) => {
@@ -43,6 +43,7 @@ export function Composer({ value, disabled, isStreaming, onChange, onSubmit, onS
                     onKeyDown={onKeyDown}
                     rows={1}
                     placeholder="输入你的问题..."
+                    aria-label="输入问题"
                     className="max-h-36 min-h-11 flex-1 resize-none bg-transparent px-2 py-3 text-[15px] leading-6 text-gray-900 outline-none placeholder:text-gray-300"
                 />
                 <button
@@ -67,4 +68,4 @@ export function Composer({ value, disabled, isStreaming, onChange, onSubmit, onS
             </div>
         </form>
     );
-}
+});

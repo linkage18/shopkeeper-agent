@@ -1,0 +1,94 @@
+tables:
+  - name: "gymnast"
+    role: dim
+    description: "gymnast"
+    columns:
+      - name: "Gymnast_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "gymnast id"
+        alias: ["gymnast_id"]
+        sync: false
+      - name: "Floor_Exercise_Points"
+        role: dimension
+        type: FLOAT
+        description: "floor exercise points"
+        alias: ["floor_exercise_points"]
+        sync: false
+      - name: "Pommel_Horse_Points"
+        role: dimension
+        type: FLOAT
+        description: "pommel horse points"
+        alias: ["pommel_horse_points"]
+        sync: false
+      - name: "Rings_Points"
+        role: dimension
+        type: FLOAT
+        description: "rings points"
+        alias: ["rings_points"]
+        sync: false
+      - name: "Vault_Points"
+        role: dimension
+        type: FLOAT
+        description: "vault points"
+        alias: ["vault_points"]
+        sync: false
+      - name: "Parallel_Bars_Points"
+        role: dimension
+        type: FLOAT
+        description: "parallel bars points"
+        alias: ["parallel_bars_points"]
+        sync: false
+      - name: "Horizontal_Bar_Points"
+        role: dimension
+        type: FLOAT
+        description: "horizontal bar points"
+        alias: ["horizontal_bar_points"]
+        sync: false
+      - name: "Total_Points"
+        role: measure
+        type: FLOAT
+        description: "total points"
+        alias: ["total_points"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Hometown"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hometown"
+        alias: ["hometown"]
+        sync: false
+
+metrics:
+  - name: "gymnast_total_points"
+    description: total points from gymnast
+    relevant_columns:
+      - gymnast.Total_Points
+    alias: [total_points]

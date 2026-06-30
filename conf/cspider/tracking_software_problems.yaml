@@ -1,0 +1,193 @@
+tables:
+  - name: "Problem_Category_Codes"
+    role: dim
+    description: "problem category codes"
+    columns:
+      - name: "problem_category_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem category code"
+        alias: ["problem_category_code"]
+        sync: true
+      - name: "problem_category_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem category description"
+        alias: ["problem_category_description"]
+        sync: true
+  - name: "Problem_Log"
+    role: fact
+    description: "problem log"
+    columns:
+      - name: "problem_log_id"
+        role: foreign_key
+        type: FLOAT
+        description: "problem log id"
+        alias: ["problem_log_id"]
+        sync: false
+      - name: "assigned_to_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "assigned to staff id"
+        alias: ["assigned_to_staff_id"]
+        sync: false
+      - name: "problem_id"
+        role: foreign_key
+        type: FLOAT
+        description: "problem id"
+        alias: ["problem_id"]
+        sync: false
+      - name: "problem_category_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem category code"
+        alias: ["problem_category_code"]
+        sync: true
+      - name: "problem_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem status code"
+        alias: ["problem_status_code"]
+        sync: true
+      - name: "log_entry_date"
+        role: dimension
+        type: DATETIME
+        description: "log entry date"
+        alias: ["log_entry_date"]
+        sync: false
+      - name: "log_entry_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "log entry description"
+        alias: ["log_entry_description"]
+        sync: false
+      - name: "log_entry_fix"
+        role: dimension
+        type: VARCHAR(255)
+        description: "log entry fix"
+        alias: ["log_entry_fix"]
+        sync: false
+      - name: "other_log_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other log details"
+        alias: ["other_log_details"]
+        sync: false
+  - name: "Problem_Status_Codes"
+    role: dim
+    description: "problem status codes"
+    columns:
+      - name: "problem_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem status code"
+        alias: ["problem_status_code"]
+        sync: true
+      - name: "problem_status_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem status description"
+        alias: ["problem_status_description"]
+        sync: true
+  - name: "Product"
+    role: dim
+    description: "product"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "product_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product details"
+        alias: ["product_details"]
+        sync: false
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "staff_first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff first name"
+        alias: ["staff_first_name"]
+        sync: true
+      - name: "staff_last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff last name"
+        alias: ["staff_last_name"]
+        sync: true
+      - name: "other_staff_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other staff details"
+        alias: ["other_staff_details"]
+        sync: false
+  - name: "Problems"
+    role: dim
+    description: "problems"
+    columns:
+      - name: "problem_id"
+        role: foreign_key
+        type: FLOAT
+        description: "problem id"
+        alias: ["problem_id"]
+        sync: false
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "closure_authorised_by_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "closure authorised by staff id"
+        alias: ["closure_authorised_by_staff_id"]
+        sync: false
+      - name: "reported_by_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "reported by staff id"
+        alias: ["reported_by_staff_id"]
+        sync: false
+      - name: "date_problem_reported"
+        role: dimension
+        type: DATETIME
+        description: "date problem reported"
+        alias: ["date_problem_reported"]
+        sync: false
+      - name: "date_problem_closed"
+        role: dimension
+        type: DATETIME
+        description: "date problem closed"
+        alias: ["date_problem_closed"]
+        sync: false
+      - name: "problem_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "problem description"
+        alias: ["problem_description"]
+        sync: false
+      - name: "other_problem_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other problem details"
+        alias: ["other_problem_details"]
+        sync: false

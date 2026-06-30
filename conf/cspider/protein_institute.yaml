@@ -1,0 +1,152 @@
+tables:
+  - name: "building"
+    role: dim
+    description: "building"
+    columns:
+      - name: "building_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "building id"
+        alias: ["building_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Street_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "street address"
+        alias: ["street_address"]
+        sync: false
+      - name: "Years_as_tallest"
+        role: dimension
+        type: VARCHAR(255)
+        description: "years as tallest"
+        alias: ["years_as_tallest"]
+        sync: false
+      - name: "Height_feet"
+        role: measure
+        type: FLOAT
+        description: "height feet"
+        alias: ["height_feet"]
+        sync: false
+      - name: "Floors"
+        role: dimension
+        type: FLOAT
+        description: "floors"
+        alias: ["floors"]
+        sync: false
+  - name: "Institution"
+    role: dim
+    description: "institution"
+    columns:
+      - name: "Institution_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "institution id"
+        alias: ["institution_id"]
+        sync: false
+      - name: "Institution"
+        role: dimension
+        type: VARCHAR(255)
+        description: "institution"
+        alias: ["institution"]
+        sync: false
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Founded"
+        role: dimension
+        type: FLOAT
+        description: "founded"
+        alias: ["founded"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Enrollment"
+        role: dimension
+        type: FLOAT
+        description: "enrollment"
+        alias: ["enrollment"]
+        sync: false
+      - name: "Team"
+        role: dimension
+        type: VARCHAR(255)
+        description: "team"
+        alias: ["team"]
+        sync: false
+      - name: "Primary_Conference"
+        role: dimension
+        type: VARCHAR(255)
+        description: "primary conference"
+        alias: ["primary_conference"]
+        sync: false
+      - name: "building_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "building id"
+        alias: ["building_id"]
+        sync: false
+  - name: "protein"
+    role: dim
+    description: "protein"
+    columns:
+      - name: "common_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "common name"
+        alias: ["common_name"]
+        sync: true
+      - name: "protein_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "protein name"
+        alias: ["protein_name"]
+        sync: true
+      - name: "divergence_from_human_lineage"
+        role: dimension
+        type: FLOAT
+        description: "divergence from human lineage"
+        alias: ["divergence_from_human_lineage"]
+        sync: false
+      - name: "accession_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "accession number"
+        alias: ["accession_number"]
+        sync: false
+      - name: "sequence_length"
+        role: dimension
+        type: FLOAT
+        description: "sequence length"
+        alias: ["sequence_length"]
+        sync: false
+      - name: "sequence_identity_to_human_protein"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sequence identity to human protein"
+        alias: ["sequence_identity_to_human_protein"]
+        sync: false
+      - name: "Institution_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "institution id"
+        alias: ["institution_id"]
+        sync: false
+
+metrics:
+  - name: "building_height_feet"
+    description: height feet from building
+    relevant_columns:
+      - building.Height_feet
+    alias: [height_feet]

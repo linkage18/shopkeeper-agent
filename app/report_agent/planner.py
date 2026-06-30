@@ -2,7 +2,7 @@
 Report Planner — LLM 根据用户问题和数据库 Schema 规划 SQL + Python 代码
 """
 from datetime import date
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 
 
 async def plan_report(query: str, schema_text: str, current_date: str = "", memory_context: str = "") -> dict:
@@ -23,17 +23,24 @@ async def plan_report(query: str, schema_text: str, current_date: str = "", memo
         '    ... (可以有多条 SQL)\n'
         "  ],\n"
         '  "python_preprocess": "用 pandas 对 SQL 结果做预处理的 Python 代码。可用变量：各 sql_id 对应的 DataFrame。只允许 pandas/numpy/math。",\n'
-        '  "chart_type": "line | bar | pie",\n'
-        '  "chart_title": "图表标题",\n'
+        '  "charts": [\n'
+        '    {\n'
+        '      "sql_id": "对应 sqls 中某个 id",\n'
+        '      "chart_type": "line | bar | pie",\n'
+        '      "chart_title": "该图表标题"\n'
+        '    }\n'
+        "  ],\n"
         '  "report_title": "报告标题"\n'
         "}\n\n"
         "规则：\n"
         "- SQL 只做查询，不修改数据\n"
+        "- 可以为每条 SQL 规划一个图表，也可以只对部分 SQL 规划图表\n"
+        "- 每个图表的 sql_id 必须对应 sqls 中某个 id\n"
         "- Python 只允许 pandas 基本操作（merge/groupby/pivot/value_counts/sort_values）\n"
         "- chart_type 根据数据特点选择最合适的图表类型\n"
         f"- 时间条件必须使用 {current_year} 年，除非用户问题明确指定了其他年份"
     )
-    resp = await llm.ainvoke(prompt)
+    resp = await get_llm().ainvoke(prompt)
     import json
     import re
     text = resp.content.strip()

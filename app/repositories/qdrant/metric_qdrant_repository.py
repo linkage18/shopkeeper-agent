@@ -17,7 +17,7 @@ from app.entities.metric_info import MetricInfo
 class MetricQdrantRepository:
     """负责指标向量集合的创建 写入和基础检索"""
 
-    collection_name = "metric_info_collection"
+    collection_name = app_config.qdrant.metric_collection
 
     def __init__(self, client: AsyncQdrantClient):
         self.client = client
@@ -53,7 +53,7 @@ class MetricQdrantRepository:
             )
 
     async def search(
-        self, embedding: list[float], score_threshold: float = 0.6, limit: int = 20
+        self, embedding: list[float], score_threshold: float = 0.55, limit: int = 25
     ) -> list[MetricInfo]:
         """按向量相似度检索指标元数据，并还原为 MetricInfo 实体"""
 

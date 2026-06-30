@@ -1,0 +1,441 @@
+tables:
+  - name: "Third_Party_Companies"
+    role: dim
+    description: "third party companies"
+    columns:
+      - name: "company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true
+      - name: "company_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company type"
+        alias: ["company_type"]
+        sync: true
+      - name: "company_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company name"
+        alias: ["company_name"]
+        sync: true
+      - name: "company_address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company address"
+        alias: ["company_address"]
+        sync: true
+      - name: "other_company_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other company details"
+        alias: ["other_company_details"]
+        sync: true
+  - name: "Maintenance_Contracts"
+    role: dim
+    description: "maintenance contracts"
+    columns:
+      - name: "maintenance_contract_id"
+        role: foreign_key
+        type: FLOAT
+        description: "maintenance contract id"
+        alias: ["maintenance_contract_id"]
+        sync: false
+      - name: "maintenance_contract_company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "maintenance contract company id"
+        alias: ["maintenance_contract_company_id"]
+        sync: true
+      - name: "contract_start_date"
+        role: dimension
+        type: DATETIME
+        description: "contract start date"
+        alias: ["contract_start_date"]
+        sync: false
+      - name: "contract_end_date"
+        role: dimension
+        type: DATETIME
+        description: "contract end date"
+        alias: ["contract_end_date"]
+        sync: false
+      - name: "other_contract_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other contract details"
+        alias: ["other_contract_details"]
+        sync: false
+  - name: "Parts"
+    role: dim
+    description: "parts"
+    columns:
+      - name: "part_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part id"
+        alias: ["part_id"]
+        sync: false
+      - name: "part_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "part name"
+        alias: ["part_name"]
+        sync: true
+      - name: "chargeable_yn"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chargeable yn"
+        alias: ["chargeable_yn"]
+        sync: false
+      - name: "chargeable_amount"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chargeable amount"
+        alias: ["chargeable_amount"]
+        sync: false
+      - name: "other_part_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other part details"
+        alias: ["other_part_details"]
+        sync: false
+  - name: "Skills"
+    role: dim
+    description: "skills"
+    columns:
+      - name: "skill_id"
+        role: foreign_key
+        type: FLOAT
+        description: "skill id"
+        alias: ["skill_id"]
+        sync: false
+      - name: "skill_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "skill code"
+        alias: ["skill_code"]
+        sync: true
+      - name: "skill_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "skill description"
+        alias: ["skill_description"]
+        sync: false
+  - name: "Staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "staff_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "staff name"
+        alias: ["staff_name"]
+        sync: true
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "other_staff_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other staff details"
+        alias: ["other_staff_details"]
+        sync: false
+  - name: "Assets"
+    role: dim
+    description: "assets"
+    columns:
+      - name: "asset_id"
+        role: foreign_key
+        type: FLOAT
+        description: "asset id"
+        alias: ["asset_id"]
+        sync: false
+      - name: "maintenance_contract_id"
+        role: foreign_key
+        type: FLOAT
+        description: "maintenance contract id"
+        alias: ["maintenance_contract_id"]
+        sync: false
+      - name: "supplier_company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "supplier company id"
+        alias: ["supplier_company_id"]
+        sync: true
+      - name: "asset_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "asset details"
+        alias: ["asset_details"]
+        sync: false
+      - name: "asset_make"
+        role: dimension
+        type: VARCHAR(255)
+        description: "asset make"
+        alias: ["asset_make"]
+        sync: false
+      - name: "asset_model"
+        role: dimension
+        type: VARCHAR(255)
+        description: "asset model"
+        alias: ["asset_model"]
+        sync: false
+      - name: "asset_acquired_date"
+        role: dimension
+        type: DATETIME
+        description: "asset acquired date"
+        alias: ["asset_acquired_date"]
+        sync: false
+      - name: "asset_disposed_date"
+        role: dimension
+        type: DATETIME
+        description: "asset disposed date"
+        alias: ["asset_disposed_date"]
+        sync: false
+      - name: "other_asset_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other asset details"
+        alias: ["other_asset_details"]
+        sync: false
+  - name: "Asset_Parts"
+    role: dim
+    description: "asset parts"
+    columns:
+      - name: "asset_id"
+        role: foreign_key
+        type: FLOAT
+        description: "asset id"
+        alias: ["asset_id"]
+        sync: false
+      - name: "part_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part id"
+        alias: ["part_id"]
+        sync: false
+  - name: "Maintenance_Engineers"
+    role: dim
+    description: "maintenance engineers"
+    columns:
+      - name: "engineer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "engineer id"
+        alias: ["engineer_id"]
+        sync: false
+      - name: "company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Engineer_Skills"
+    role: dim
+    description: "engineer skills"
+    columns:
+      - name: "engineer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "engineer id"
+        alias: ["engineer_id"]
+        sync: false
+      - name: "skill_id"
+        role: foreign_key
+        type: FLOAT
+        description: "skill id"
+        alias: ["skill_id"]
+        sync: false
+  - name: "Fault_Log"
+    role: fact
+    description: "fault log"
+    columns:
+      - name: "fault_log_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "fault log entry id"
+        alias: ["fault_log_entry_id"]
+        sync: false
+      - name: "asset_id"
+        role: foreign_key
+        type: FLOAT
+        description: "asset id"
+        alias: ["asset_id"]
+        sync: false
+      - name: "recorded_by_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "recorded by staff id"
+        alias: ["recorded_by_staff_id"]
+        sync: false
+      - name: "fault_log_entry_datetime"
+        role: dimension
+        type: DATETIME
+        description: "fault log entry datetime"
+        alias: ["fault_log_entry_datetime"]
+        sync: false
+      - name: "fault_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fault description"
+        alias: ["fault_description"]
+        sync: false
+      - name: "other_fault_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other fault details"
+        alias: ["other_fault_details"]
+        sync: false
+  - name: "Engineer_Visits"
+    role: dim
+    description: "engineer visits"
+    columns:
+      - name: "engineer_visit_id"
+        role: foreign_key
+        type: FLOAT
+        description: "engineer visit id"
+        alias: ["engineer_visit_id"]
+        sync: false
+      - name: "contact_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "contact staff id"
+        alias: ["contact_staff_id"]
+        sync: false
+      - name: "engineer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "engineer id"
+        alias: ["engineer_id"]
+        sync: false
+      - name: "fault_log_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "fault log entry id"
+        alias: ["fault_log_entry_id"]
+        sync: false
+      - name: "fault_status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fault status"
+        alias: ["fault_status"]
+        sync: true
+      - name: "visit_start_datetime"
+        role: dimension
+        type: DATETIME
+        description: "visit start datetime"
+        alias: ["visit_start_datetime"]
+        sync: false
+      - name: "visit_end_datetime"
+        role: dimension
+        type: DATETIME
+        description: "visit end datetime"
+        alias: ["visit_end_datetime"]
+        sync: false
+      - name: "other_visit_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other visit details"
+        alias: ["other_visit_details"]
+        sync: false
+  - name: "Part_Faults"
+    role: dim
+    description: "part faults"
+    columns:
+      - name: "part_fault_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part fault id"
+        alias: ["part_fault_id"]
+        sync: false
+      - name: "part_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part id"
+        alias: ["part_id"]
+        sync: false
+      - name: "fault_short_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fault short name"
+        alias: ["fault_short_name"]
+        sync: true
+      - name: "fault_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fault description"
+        alias: ["fault_description"]
+        sync: false
+      - name: "other_fault_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other fault details"
+        alias: ["other_fault_details"]
+        sync: false
+  - name: "Fault_Log_Parts"
+    role: fact
+    description: "fault log parts"
+    columns:
+      - name: "fault_log_entry_id"
+        role: foreign_key
+        type: FLOAT
+        description: "fault log entry id"
+        alias: ["fault_log_entry_id"]
+        sync: false
+      - name: "part_fault_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part fault id"
+        alias: ["part_fault_id"]
+        sync: false
+      - name: "fault_status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fault status"
+        alias: ["fault_status"]
+        sync: true
+  - name: "Skills_Required_To_Fix"
+    role: dim
+    description: "skills required to fix"
+    columns:
+      - name: "part_fault_id"
+        role: foreign_key
+        type: FLOAT
+        description: "part fault id"
+        alias: ["part_fault_id"]
+        sync: false
+      - name: "skill_id"
+        role: foreign_key
+        type: FLOAT
+        description: "skill id"
+        alias: ["skill_id"]
+        sync: false

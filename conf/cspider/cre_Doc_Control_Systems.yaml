@@ -1,0 +1,282 @@
+tables:
+  - name: "Ref_Document_Types"
+    role: dim
+    description: "ref document types"
+    columns:
+      - name: "document_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "document_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type description"
+        alias: ["document_type_description"]
+        sync: true
+  - name: "Roles"
+    role: dim
+    description: "roles"
+    columns:
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "role_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role description"
+        alias: ["role_description"]
+        sync: false
+  - name: "Addresses"
+    role: dim
+    description: "addresses"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "address_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address details"
+        alias: ["address_details"]
+        sync: false
+  - name: "Ref_Document_Status"
+    role: dim
+    description: "ref document status"
+    columns:
+      - name: "document_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document status code"
+        alias: ["document_status_code"]
+        sync: true
+      - name: "document_status_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document status description"
+        alias: ["document_status_description"]
+        sync: true
+  - name: "Ref_Shipping_Agents"
+    role: dim
+    description: "ref shipping agents"
+    columns:
+      - name: "shipping_agent_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipping agent code"
+        alias: ["shipping_agent_code"]
+        sync: true
+      - name: "shipping_agent_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipping agent name"
+        alias: ["shipping_agent_name"]
+        sync: true
+      - name: "shipping_agent_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipping agent description"
+        alias: ["shipping_agent_description"]
+        sync: false
+  - name: "Documents"
+    role: dim
+    description: "documents"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "document_status_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document status code"
+        alias: ["document_status_code"]
+        sync: true
+      - name: "document_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "shipping_agent_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "shipping agent code"
+        alias: ["shipping_agent_code"]
+        sync: true
+      - name: "receipt_date"
+        role: dimension
+        type: DATETIME
+        description: "receipt date"
+        alias: ["receipt_date"]
+        sync: false
+      - name: "receipt_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "receipt number"
+        alias: ["receipt_number"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Employees"
+    role: dim
+    description: "employees"
+    columns:
+      - name: "employee_id"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "employee_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "employee name"
+        alias: ["employee_name"]
+        sync: true
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Document_Drafts"
+    role: dim
+    description: "document drafts"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "draft_number"
+        role: measure
+        type: FLOAT
+        description: "draft number"
+        alias: ["draft_number"]
+        sync: false
+      - name: "draft_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "draft details"
+        alias: ["draft_details"]
+        sync: false
+  - name: "Draft_Copies"
+    role: dim
+    description: "draft copies"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "draft_number"
+        role: measure
+        type: FLOAT
+        description: "draft number"
+        alias: ["draft_number"]
+        sync: false
+      - name: "copy_number"
+        role: measure
+        type: FLOAT
+        description: "copy number"
+        alias: ["copy_number"]
+        sync: false
+  - name: "Circulation_History"
+    role: dim
+    description: "circulation history"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "draft_number"
+        role: measure
+        type: FLOAT
+        description: "draft number"
+        alias: ["draft_number"]
+        sync: false
+      - name: "copy_number"
+        role: measure
+        type: FLOAT
+        description: "copy number"
+        alias: ["copy_number"]
+        sync: false
+      - name: "employee_id"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+  - name: "Documents_Mailed"
+    role: dim
+    description: "documents mailed"
+    columns:
+      - name: "document_id"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "mailed_to_address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "mailed to address id"
+        alias: ["mailed_to_address_id"]
+        sync: false
+      - name: "mailing_date"
+        role: dimension
+        type: DATETIME
+        description: "mailing date"
+        alias: ["mailing_date"]
+        sync: false
+
+metrics:
+  - name: "document_drafts_draft_number"
+    description: draft number from document_drafts
+    relevant_columns:
+      - Document_Drafts.draft_number
+    alias: [draft_number]
+  - name: "draft_copies_draft_number"
+    description: draft number from draft_copies
+    relevant_columns:
+      - Draft_Copies.draft_number
+    alias: [draft_number]
+  - name: "draft_copies_copy_number"
+    description: copy number from draft_copies
+    relevant_columns:
+      - Draft_Copies.copy_number
+    alias: [copy_number]
+  - name: "circulation_history_draft_number"
+    description: draft number from circulation_history
+    relevant_columns:
+      - Circulation_History.draft_number
+    alias: [draft_number]
+  - name: "circulation_history_copy_number"
+    description: copy number from circulation_history
+    relevant_columns:
+      - Circulation_History.copy_number
+    alias: [copy_number]

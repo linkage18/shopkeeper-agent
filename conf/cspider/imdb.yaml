@@ -1,0 +1,493 @@
+tables:
+  - name: "actor"
+    role: dim
+    description: "actor"
+    columns:
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "birth_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth city"
+        alias: ["birth_city"]
+        sync: true
+      - name: "birth_year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+  - name: "copyright"
+    role: dim
+    description: "copyright"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "cid"
+        role: primary_key
+        type: FLOAT
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+  - name: "cast"
+    role: dim
+    description: "cast"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "aid"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "role"
+        role: dimension
+        type: FLOAT
+        description: "role"
+        alias: ["role"]
+        sync: false
+  - name: "genre"
+    role: dim
+    description: "genre"
+    columns:
+      - name: "gid"
+        role: primary_key
+        type: FLOAT
+        description: "gid"
+        alias: ["gid"]
+        sync: false
+      - name: "genre"
+        role: dimension
+        type: VARCHAR(255)
+        description: "genre"
+        alias: ["genre"]
+        sync: true
+  - name: "classification"
+    role: dim
+    description: "classification"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "gid"
+        role: primary_key
+        type: FLOAT
+        description: "gid"
+        alias: ["gid"]
+        sync: false
+  - name: "company"
+    role: dim
+    description: "company"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "country_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country code"
+        alias: ["country_code"]
+        sync: true
+  - name: "director"
+    role: dim
+    description: "director"
+    columns:
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "birth_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth city"
+        alias: ["birth_city"]
+        sync: true
+      - name: "birth_year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+  - name: "producer"
+    role: dim
+    description: "producer"
+    columns:
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "birth_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth city"
+        alias: ["birth_city"]
+        sync: true
+      - name: "birth_year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+  - name: "directed_by"
+    role: dim
+    description: "directed by"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "did"
+        role: primary_key
+        type: FLOAT
+        description: "did"
+        alias: ["did"]
+        sync: false
+  - name: "keyword"
+    role: dim
+    description: "keyword"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "keyword"
+        role: dimension
+        type: VARCHAR(255)
+        description: "keyword"
+        alias: ["keyword"]
+        sync: false
+  - name: "made_by"
+    role: dim
+    description: "made by"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "pid"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+  - name: "movie"
+    role: dim
+    description: "movie"
+    columns:
+      - name: "mid"
+        role: primary_key
+        type: FLOAT
+        description: "mid"
+        alias: ["mid"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "release_year"
+        role: measure
+        type: FLOAT
+        description: "release year"
+        alias: ["release_year"]
+        sync: false
+      - name: "title_aka"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title aka"
+        alias: ["title_aka"]
+        sync: false
+      - name: "budget"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget"
+        alias: ["budget"]
+        sync: false
+  - name: "tags"
+    role: dim
+    description: "tags"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "kid"
+        role: primary_key
+        type: FLOAT
+        description: "kid"
+        alias: ["kid"]
+        sync: false
+  - name: "tv_series"
+    role: dim
+    description: "tv series"
+    columns:
+      - name: "sid"
+        role: primary_key
+        type: FLOAT
+        description: "sid"
+        alias: ["sid"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "release_year"
+        role: measure
+        type: FLOAT
+        description: "release year"
+        alias: ["release_year"]
+        sync: false
+      - name: "num_of_seasons"
+        role: dimension
+        type: FLOAT
+        description: "num of seasons"
+        alias: ["num_of_seasons"]
+        sync: false
+      - name: "num_of_episodes"
+        role: dimension
+        type: FLOAT
+        description: "num of episodes"
+        alias: ["num_of_episodes"]
+        sync: false
+      - name: "title_aka"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title aka"
+        alias: ["title_aka"]
+        sync: false
+      - name: "budget"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget"
+        alias: ["budget"]
+        sync: false
+  - name: "writer"
+    role: dim
+    description: "writer"
+    columns:
+      - name: "wid"
+        role: primary_key
+        type: FLOAT
+        description: "wid"
+        alias: ["wid"]
+        sync: false
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: FLOAT
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "nationality"
+        role: dimension
+        type: FLOAT
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "num_of_episodes"
+        role: dimension
+        type: FLOAT
+        description: "num of episodes"
+        alias: ["num_of_episodes"]
+        sync: false
+      - name: "birth_city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth city"
+        alias: ["birth_city"]
+        sync: true
+      - name: "birth_year"
+        role: measure
+        type: FLOAT
+        description: "birth year"
+        alias: ["birth_year"]
+        sync: false
+  - name: "written_by"
+    role: dim
+    description: "written by"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "msid"
+        role: primary_key
+        type: FLOAT
+        description: "msid"
+        alias: ["msid"]
+        sync: false
+      - name: "wid"
+        role: primary_key
+        type: FLOAT
+        description: "wid"
+        alias: ["wid"]
+        sync: false
+
+metrics:
+  - name: "actor_birth_year"
+    description: birth year from actor
+    relevant_columns:
+      - actor.birth_year
+    alias: [birth_year]
+  - name: "director_birth_year"
+    description: birth year from director
+    relevant_columns:
+      - director.birth_year
+    alias: [birth_year]
+  - name: "producer_birth_year"
+    description: birth year from producer
+    relevant_columns:
+      - producer.birth_year
+    alias: [birth_year]
+  - name: "movie_release_year"
+    description: release year from movie
+    relevant_columns:
+      - movie.release_year
+    alias: [release_year]
+  - name: "tv_series_release_year"
+    description: release year from tv_series
+    relevant_columns:
+      - tv_series.release_year
+    alias: [release_year]
+  - name: "writer_birth_year"
+    description: birth year from writer
+    relevant_columns:
+      - writer.birth_year
+    alias: [birth_year]

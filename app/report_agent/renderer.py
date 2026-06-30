@@ -29,9 +29,15 @@ def build_chart_data(data: list[dict], chart_info: dict) -> dict[str, Any] | Non
     labels = [str(row.get(x_field, "")) for row in data]
     values = [float(row.get(y_field, 0)) for row in data]
 
-    return {
+    result = {
         "chart_type": chart_type,
         "title": title,
         "labels": labels,
         "values": values,
     }
+    # 透传前端需要的标识字段
+    if "chart_id" in chart_info:
+        result["chart_id"] = chart_info["chart_id"]
+    if "chart_name" in chart_info:
+        result["chart_name"] = chart_info["chart_name"]
+    return result

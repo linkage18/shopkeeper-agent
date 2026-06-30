@@ -1,0 +1,256 @@
+tables:
+  - name: "regions"
+    role: dim
+    description: "regions"
+    columns:
+      - name: "REGION_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+      - name: "REGION_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region name"
+        alias: ["region_name"]
+        sync: true
+  - name: "countries"
+    role: dim
+    description: "countries"
+    columns:
+      - name: "COUNTRY_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "COUNTRY_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country name"
+        alias: ["country_name"]
+        sync: true
+      - name: "REGION_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "region id"
+        alias: ["region_id"]
+        sync: false
+  - name: "departments"
+    role: dim
+    description: "departments"
+    columns:
+      - name: "DEPARTMENT_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+      - name: "DEPARTMENT_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "department name"
+        alias: ["department_name"]
+        sync: true
+      - name: "MANAGER_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manager id"
+        alias: ["manager_id"]
+        sync: false
+      - name: "LOCATION_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+  - name: "jobs"
+    role: dim
+    description: "jobs"
+    columns:
+      - name: "JOB_ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "job id"
+        alias: ["job_id"]
+        sync: false
+      - name: "JOB_TITLE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "job title"
+        alias: ["job_title"]
+        sync: false
+      - name: "MIN_SALARY"
+        role: measure
+        type: FLOAT
+        description: "min salary"
+        alias: ["min_salary"]
+        sync: false
+      - name: "MAX_SALARY"
+        role: measure
+        type: FLOAT
+        description: "max salary"
+        alias: ["max_salary"]
+        sync: false
+  - name: "employees"
+    role: dim
+    description: "employees"
+    columns:
+      - name: "EMPLOYEE_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "FIRST_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "LAST_NAME"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "EMAIL"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+      - name: "PHONE_NUMBER"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+      - name: "HIRE_DATE"
+        role: dimension
+        type: DATETIME
+        description: "hire date"
+        alias: ["hire_date"]
+        sync: false
+      - name: "JOB_ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "job id"
+        alias: ["job_id"]
+        sync: false
+      - name: "SALARY"
+        role: measure
+        type: FLOAT
+        description: "salary"
+        alias: ["salary"]
+        sync: false
+      - name: "COMMISSION_PCT"
+        role: dimension
+        type: FLOAT
+        description: "commission pct"
+        alias: ["commission_pct"]
+        sync: false
+      - name: "MANAGER_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "manager id"
+        alias: ["manager_id"]
+        sync: false
+      - name: "DEPARTMENT_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+  - name: "job_history"
+    role: dim
+    description: "job history"
+    columns:
+      - name: "EMPLOYEE_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "START_DATE"
+        role: dimension
+        type: DATETIME
+        description: "start date"
+        alias: ["start_date"]
+        sync: false
+      - name: "END_DATE"
+        role: dimension
+        type: DATETIME
+        description: "end date"
+        alias: ["end_date"]
+        sync: false
+      - name: "JOB_ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "job id"
+        alias: ["job_id"]
+        sync: false
+      - name: "DEPARTMENT_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "department id"
+        alias: ["department_id"]
+        sync: false
+  - name: "locations"
+    role: dim
+    description: "locations"
+    columns:
+      - name: "LOCATION_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "location id"
+        alias: ["location_id"]
+        sync: false
+      - name: "STREET_ADDRESS"
+        role: dimension
+        type: VARCHAR(255)
+        description: "street address"
+        alias: ["street_address"]
+        sync: false
+      - name: "POSTAL_CODE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "postal code"
+        alias: ["postal_code"]
+        sync: true
+      - name: "CITY"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "STATE_PROVINCE"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state province"
+        alias: ["state_province"]
+        sync: true
+      - name: "COUNTRY_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+
+metrics:
+  - name: "jobs_min_salary"
+    description: min salary from jobs
+    relevant_columns:
+      - jobs.MIN_SALARY
+    alias: [min_salary]
+  - name: "jobs_max_salary"
+    description: max salary from jobs
+    relevant_columns:
+      - jobs.MAX_SALARY
+    alias: [max_salary]
+  - name: "employees_salary"
+    description: salary from employees
+    relevant_columns:
+      - employees.SALARY
+    alias: [salary]

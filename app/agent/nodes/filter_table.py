@@ -11,7 +11,7 @@ from langchain_core.prompts import PromptTemplate
 from langgraph.runtime import Runtime
 
 from app.agent.context import DataAgentContext
-from app.agent.llm import llm
+from app.agent.llm import get_llm
 from app.agent.state import DataAgentState, TableInfoState
 from app.core.log import logger
 from app.prompt.prompt_loader import load_prompt
@@ -36,7 +36,7 @@ async def filter_table(state: DataAgentState, runtime: Runtime[DataAgentContext]
         # filter_table_info prompt 要求模型只输出 JSON 对象：表名 -> 字段名列表
         output_parser = JsonOutputParser()
         # LCEL 管道：填充提示词 -> 调用模型 -> 解析 JSON
-        chain = prompt | llm | output_parser
+        chain = prompt | get_llm() | output_parser
 
         result = await chain.ainvoke(
             {
@@ -56,6 +56,11 @@ async def filter_table(state: DataAgentState, runtime: Runtime[DataAgentContext]
                     if column_info["name"] in result[table_info["name"]]
                 ]
                 filtered_table_infos.append(table_info)
+
+        # 如果 LLM 过滤结果为空，保留全部表信息作为兜底，避免下游节点无 schema 可用
+        if not filtered_table_infos:
+            logger.warning(f"过滤表信息结果为空，保留全部 {len(table_infos)} 张候选表作为兜底")
+            filtered_table_infos = table_infos
 
         logger.info(
             f"过滤后的表信息：{[filtered_table_info['name'] for filtered_table_info in filtered_table_infos]}"

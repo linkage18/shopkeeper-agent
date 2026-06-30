@@ -87,8 +87,8 @@ async def generate_viz(req: VizReq, user: Annotated[dict, Depends(require_user)]
                 f"图表类型：{req.chart_type}\n\n"
                 f"输出纯 SQL，不要 markdown 代码块。注意多表 JOIN 和 GROUP BY。"
             )
-            from app.agent.llm import llm
-            raw = await llm.ainvoke(prompt)
+            from app.agent.llm import get_llm
+            raw = await get_llm().ainvoke(prompt)
             sql_text = raw.content.strip().strip("```sql").strip("```").strip()
             _sql_cache[cache_key] = sql_text
             logger.info(f"[VIZ] SQL 生成完成，已缓存")

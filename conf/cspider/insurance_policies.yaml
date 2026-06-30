@@ -1,0 +1,198 @@
+tables:
+  - name: "Customers"
+    role: dim
+    description: "customers"
+    columns:
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Customer_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "customer details"
+        alias: ["customer_details"]
+        sync: false
+  - name: "Customer_Policies"
+    role: dim
+    description: "customer policies"
+    columns:
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Customer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "Policy_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "policy type code"
+        alias: ["policy_type_code"]
+        sync: true
+      - name: "Start_Date"
+        role: dimension
+        type: DATETIME
+        description: "start date"
+        alias: ["start_date"]
+        sync: false
+      - name: "End_Date"
+        role: dimension
+        type: DATETIME
+        description: "end date"
+        alias: ["end_date"]
+        sync: false
+  - name: "Claims"
+    role: dim
+    description: "claims"
+    columns:
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "policy id"
+        alias: ["policy_id"]
+        sync: false
+      - name: "Date_Claim_Made"
+        role: dimension
+        type: DATETIME
+        description: "date claim made"
+        alias: ["date_claim_made"]
+        sync: false
+      - name: "Date_Claim_Settled"
+        role: dimension
+        type: DATETIME
+        description: "date claim settled"
+        alias: ["date_claim_settled"]
+        sync: false
+      - name: "Amount_Claimed"
+        role: measure
+        type: FLOAT
+        description: "amount claimed"
+        alias: ["amount_claimed"]
+        sync: false
+      - name: "Amount_Settled"
+        role: measure
+        type: FLOAT
+        description: "amount settled"
+        alias: ["amount_settled"]
+        sync: false
+  - name: "Settlements"
+    role: dim
+    description: "settlements"
+    columns:
+      - name: "Settlement_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "settlement id"
+        alias: ["settlement_id"]
+        sync: false
+      - name: "Claim_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "claim id"
+        alias: ["claim_id"]
+        sync: false
+      - name: "Date_Claim_Made"
+        role: dimension
+        type: DATETIME
+        description: "date claim made"
+        alias: ["date_claim_made"]
+        sync: false
+      - name: "Date_Claim_Settled"
+        role: dimension
+        type: DATETIME
+        description: "date claim settled"
+        alias: ["date_claim_settled"]
+        sync: false
+      - name: "Amount_Claimed"
+        role: measure
+        type: FLOAT
+        description: "amount claimed"
+        alias: ["amount_claimed"]
+        sync: false
+      - name: "Amount_Settled"
+        role: measure
+        type: FLOAT
+        description: "amount settled"
+        alias: ["amount_settled"]
+        sync: false
+      - name: "Customer_Policy_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "customer policy id"
+        alias: ["customer_policy_id"]
+        sync: false
+  - name: "Payments"
+    role: fact
+    description: "payments"
+    columns:
+      - name: "Payment_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "payment id"
+        alias: ["payment_id"]
+        sync: false
+      - name: "Settlement_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "settlement id"
+        alias: ["settlement_id"]
+        sync: false
+      - name: "Payment_Method_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "payment method code"
+        alias: ["payment_method_code"]
+        sync: true
+      - name: "Date_Payment_Made"
+        role: dimension
+        type: DATETIME
+        description: "date payment made"
+        alias: ["date_payment_made"]
+        sync: false
+      - name: "Amount_Payment"
+        role: measure
+        type: FLOAT
+        description: "amount payment"
+        alias: ["amount_payment"]
+        sync: false
+
+metrics:
+  - name: "claims_amount_claimed"
+    description: amount claimed from claims
+    relevant_columns:
+      - Claims.Amount_Claimed
+    alias: [amount_claimed]
+  - name: "claims_amount_settled"
+    description: amount settled from claims
+    relevant_columns:
+      - Claims.Amount_Settled
+    alias: [amount_settled]
+  - name: "settlements_amount_claimed"
+    description: amount claimed from settlements
+    relevant_columns:
+      - Settlements.Amount_Claimed
+    alias: [amount_claimed]
+  - name: "settlements_amount_settled"
+    description: amount settled from settlements
+    relevant_columns:
+      - Settlements.Amount_Settled
+    alias: [amount_settled]
+  - name: "payments_amount_payment"
+    description: amount payment from payments
+    relevant_columns:
+      - Payments.Amount_Payment
+    alias: [amount_payment]

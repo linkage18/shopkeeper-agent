@@ -1,0 +1,174 @@
+tables:
+  - name: "swimmer"
+    role: dim
+    description: "swimmer"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Nationality"
+        role: dimension
+        type: VARCHAR(255)
+        description: "nationality"
+        alias: ["nationality"]
+        sync: false
+      - name: "meter_100"
+        role: dimension
+        type: FLOAT
+        description: "meter 100"
+        alias: ["meter_100"]
+        sync: false
+      - name: "meter_200"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 200"
+        alias: ["meter_200"]
+        sync: false
+      - name: "meter_300"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 300"
+        alias: ["meter_300"]
+        sync: false
+      - name: "meter_400"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 400"
+        alias: ["meter_400"]
+        sync: false
+      - name: "meter_500"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 500"
+        alias: ["meter_500"]
+        sync: false
+      - name: "meter_600"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 600"
+        alias: ["meter_600"]
+        sync: false
+      - name: "meter_700"
+        role: dimension
+        type: VARCHAR(255)
+        description: "meter 700"
+        alias: ["meter_700"]
+        sync: false
+      - name: "Time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "time"
+        alias: ["time"]
+        sync: false
+  - name: "stadium"
+    role: dim
+    description: "stadium"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Capacity"
+        role: dimension
+        type: FLOAT
+        description: "capacity"
+        alias: ["capacity"]
+        sync: true
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "Opening_year"
+        role: measure
+        type: FLOAT
+        description: "opening year"
+        alias: ["opening_year"]
+        sync: false
+  - name: "event"
+    role: dim
+    description: "event"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Stadium_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "stadium id"
+        alias: ["stadium_id"]
+        sync: false
+      - name: "Year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "record"
+    role: fact
+    description: "record"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+      - name: "Swimmer_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "swimmer id"
+        alias: ["swimmer_id"]
+        sync: false
+      - name: "Event_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "event id"
+        alias: ["event_id"]
+        sync: false
+
+metrics:
+  - name: "stadium_opening_year"
+    description: opening year from stadium
+    relevant_columns:
+      - stadium.Opening_year
+    alias: [opening_year]

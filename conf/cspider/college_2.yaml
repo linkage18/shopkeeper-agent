@@ -1,0 +1,348 @@
+tables:
+  - name: "classroom"
+    role: dim
+    description: "classroom"
+    columns:
+      - name: "building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building"
+        alias: ["building"]
+        sync: false
+      - name: "room_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room number"
+        alias: ["room_number"]
+        sync: false
+      - name: "capacity"
+        role: dimension
+        type: FLOAT
+        description: "capacity"
+        alias: ["capacity"]
+        sync: true
+  - name: "department"
+    role: dim
+    description: "department"
+    columns:
+      - name: "dept_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept name"
+        alias: ["dept_name"]
+        sync: true
+      - name: "building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building"
+        alias: ["building"]
+        sync: false
+      - name: "budget"
+        role: measure
+        type: FLOAT
+        description: "budget"
+        alias: ["budget"]
+        sync: false
+  - name: "course"
+    role: dim
+    description: "course"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "dept_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept name"
+        alias: ["dept_name"]
+        sync: true
+      - name: "credits"
+        role: dimension
+        type: FLOAT
+        description: "credits"
+        alias: ["credits"]
+        sync: false
+  - name: "instructor"
+    role: dim
+    description: "instructor"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "dept_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept name"
+        alias: ["dept_name"]
+        sync: true
+      - name: "salary"
+        role: measure
+        type: FLOAT
+        description: "salary"
+        alias: ["salary"]
+        sync: false
+  - name: "section"
+    role: dim
+    description: "section"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "sec_id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "sec id"
+        alias: ["sec_id"]
+        sync: false
+      - name: "semester"
+        role: dimension
+        type: VARCHAR(255)
+        description: "semester"
+        alias: ["semester"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building"
+        alias: ["building"]
+        sync: false
+      - name: "room_number"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room number"
+        alias: ["room_number"]
+        sync: false
+      - name: "time_slot_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "time slot id"
+        alias: ["time_slot_id"]
+        sync: false
+  - name: "teaches"
+    role: dim
+    description: "teaches"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "sec_id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "sec id"
+        alias: ["sec_id"]
+        sync: false
+      - name: "semester"
+        role: dimension
+        type: VARCHAR(255)
+        description: "semester"
+        alias: ["semester"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+  - name: "student"
+    role: dim
+    description: "student"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "dept_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dept name"
+        alias: ["dept_name"]
+        sync: true
+      - name: "tot_cred"
+        role: dimension
+        type: FLOAT
+        description: "tot cred"
+        alias: ["tot_cred"]
+        sync: false
+  - name: "takes"
+    role: dim
+    description: "takes"
+    columns:
+      - name: "ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "sec_id"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "sec id"
+        alias: ["sec_id"]
+        sync: false
+      - name: "semester"
+        role: dimension
+        type: VARCHAR(255)
+        description: "semester"
+        alias: ["semester"]
+        sync: false
+      - name: "year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "grade"
+        role: dimension
+        type: VARCHAR(255)
+        description: "grade"
+        alias: ["grade"]
+        sync: false
+  - name: "advisor"
+    role: dim
+    description: "advisor"
+    columns:
+      - name: "s_ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "s id"
+        alias: ["s_id"]
+        sync: false
+      - name: "i_ID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "i id"
+        alias: ["i_id"]
+        sync: false
+  - name: "time_slot"
+    role: dim
+    description: "time slot"
+    columns:
+      - name: "time_slot_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "time slot id"
+        alias: ["time_slot_id"]
+        sync: false
+      - name: "day"
+        role: dimension
+        type: VARCHAR(255)
+        description: "day"
+        alias: ["day"]
+        sync: false
+      - name: "start_hr"
+        role: dimension
+        type: FLOAT
+        description: "start hr"
+        alias: ["start_hr"]
+        sync: false
+      - name: "start_min"
+        role: dimension
+        type: FLOAT
+        description: "start min"
+        alias: ["start_min"]
+        sync: false
+      - name: "end_hr"
+        role: dimension
+        type: FLOAT
+        description: "end hr"
+        alias: ["end_hr"]
+        sync: false
+      - name: "end_min"
+        role: dimension
+        type: FLOAT
+        description: "end min"
+        alias: ["end_min"]
+        sync: false
+  - name: "prereq"
+    role: dim
+    description: "prereq"
+    columns:
+      - name: "course_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "course id"
+        alias: ["course_id"]
+        sync: false
+      - name: "prereq_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "prereq id"
+        alias: ["prereq_id"]
+        sync: false
+
+metrics:
+  - name: "department_budget"
+    description: budget from department
+    relevant_columns:
+      - department.budget
+    alias: [budget]
+  - name: "instructor_salary"
+    description: salary from instructor
+    relevant_columns:
+      - instructor.salary
+    alias: [salary]
+  - name: "section_year"
+    description: year from section
+    relevant_columns:
+      - section.year
+    alias: [year]
+  - name: "teaches_year"
+    description: year from teaches
+    relevant_columns:
+      - teaches.year
+    alias: [year]
+  - name: "takes_year"
+    description: year from takes
+    relevant_columns:
+      - takes.year
+    alias: [year]

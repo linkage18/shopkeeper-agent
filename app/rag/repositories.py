@@ -101,7 +101,9 @@ class DocSubChunkQdrantRepository:
             )
             if result:
                 return DocParentChunk(**result[0].payload)
-        except Exception:
+        except Exception as e:
+            from app.core.log import logger
+            logger.warning(f"Failed to get parent by id: {e}")
             return None
         return None
 
@@ -121,7 +123,7 @@ class DocESRepository:
 
     def __init__(self, client: AsyncElasticsearch):
         self.client = client
-        self.index_name = app_config.rag.es.index_name
+        self.index_name = app_config.rag.es.doc_index_name
         self.index_mappings = {
             "dynamic": False,
             "properties": {

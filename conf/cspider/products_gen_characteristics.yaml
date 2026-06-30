@@ -1,0 +1,163 @@
+tables:
+  - name: "Ref_Characteristic_Types"
+    role: dim
+    description: "ref characteristic types"
+    columns:
+      - name: "characteristic_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "characteristic type code"
+        alias: ["characteristic_type_code"]
+        sync: true
+      - name: "characteristic_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "characteristic type description"
+        alias: ["characteristic_type_description"]
+        sync: true
+  - name: "Ref_Colors"
+    role: dim
+    description: "ref colors"
+    columns:
+      - name: "color_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "color code"
+        alias: ["color_code"]
+        sync: true
+      - name: "color_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "color description"
+        alias: ["color_description"]
+        sync: true
+  - name: "Ref_Product_Categories"
+    role: dim
+    description: "ref product categories"
+    columns:
+      - name: "product_category_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category code"
+        alias: ["product_category_code"]
+        sync: true
+      - name: "product_category_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category description"
+        alias: ["product_category_description"]
+        sync: true
+      - name: "unit_of_measure"
+        role: dimension
+        type: VARCHAR(255)
+        description: "unit of measure"
+        alias: ["unit_of_measure"]
+        sync: false
+  - name: "Characteristics"
+    role: dim
+    description: "characteristics"
+    columns:
+      - name: "characteristic_id"
+        role: foreign_key
+        type: FLOAT
+        description: "characteristic id"
+        alias: ["characteristic_id"]
+        sync: false
+      - name: "characteristic_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "characteristic type code"
+        alias: ["characteristic_type_code"]
+        sync: true
+      - name: "characteristic_data_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "characteristic data type"
+        alias: ["characteristic_data_type"]
+        sync: true
+      - name: "characteristic_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "characteristic name"
+        alias: ["characteristic_name"]
+        sync: true
+      - name: "other_characteristic_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other characteristic details"
+        alias: ["other_characteristic_details"]
+        sync: false
+  - name: "Products"
+    role: dim
+    description: "products"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "color_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "color code"
+        alias: ["color_code"]
+        sync: true
+      - name: "product_category_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product category code"
+        alias: ["product_category_code"]
+        sync: true
+      - name: "product_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product name"
+        alias: ["product_name"]
+        sync: true
+      - name: "typical_buying_price"
+        role: dimension
+        type: VARCHAR(255)
+        description: "typical buying price"
+        alias: ["typical_buying_price"]
+        sync: false
+      - name: "typical_selling_price"
+        role: dimension
+        type: VARCHAR(255)
+        description: "typical selling price"
+        alias: ["typical_selling_price"]
+        sync: false
+      - name: "product_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product description"
+        alias: ["product_description"]
+        sync: false
+      - name: "other_product_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other product details"
+        alias: ["other_product_details"]
+        sync: false
+  - name: "Product_Characteristics"
+    role: dim
+    description: "product characteristics"
+    columns:
+      - name: "product_id"
+        role: foreign_key
+        type: FLOAT
+        description: "product id"
+        alias: ["product_id"]
+        sync: false
+      - name: "characteristic_id"
+        role: foreign_key
+        type: FLOAT
+        description: "characteristic id"
+        alias: ["characteristic_id"]
+        sync: false
+      - name: "product_characteristic_value"
+        role: dimension
+        type: VARCHAR(255)
+        description: "product characteristic value"
+        alias: ["product_characteristic_value"]
+        sync: false

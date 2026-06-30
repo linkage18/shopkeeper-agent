@@ -61,7 +61,8 @@ async def merge_retrieved_info(
                             relevant_column
                         )
                     )
-                    retrieved_column_infos_map[relevant_column] = column_info
+                    if column_info is not None:
+                        retrieved_column_infos_map[relevant_column] = column_info
 
         # 3. 把字段取值合并回字段 examples
         # 字段取值召回命中的是 column_id + value，例如 dim_region.region_name.华北。
@@ -73,7 +74,12 @@ async def merge_retrieved_info(
                 column_info: ColumnInfo = (
                     await meta_mysql_repository.get_column_info_by_id(column_id)
                 )
-                retrieved_column_infos_map[column_id] = column_info
+                if column_info is not None:
+                    retrieved_column_infos_map[column_id] = column_info
+                    if value not in column_info.examples:
+                        column_info.examples.append(value)
+                else:
+                    continue
             if value not in retrieved_column_infos_map[column_id].examples:
                 retrieved_column_infos_map[column_id].examples.append(value)
 
@@ -109,6 +115,9 @@ async def merge_retrieved_info(
             table_info: TableInfo = await meta_mysql_repository.get_table_info_by_id(
                 table_id
             )
+            if table_info is None:
+                logger.warning(f"跳过表 {table_id}：元数据库中未找到该表记录")
+                continue
             columns = [
                 ColumnInfoState(
                     name=column_info.name,

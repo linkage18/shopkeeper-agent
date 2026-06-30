@@ -1,0 +1,89 @@
+tables:
+  - name: "AREA_CODE_STATE"
+    role: dim
+    description: "area code state"
+    columns:
+      - name: "area_code"
+        role: measure
+        type: FLOAT
+        description: "area code"
+        alias: ["area_code"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+  - name: "CONTESTANTS"
+    role: dim
+    description: "contestants"
+    columns:
+      - name: "contestant_number"
+        role: measure
+        type: FLOAT
+        description: "contestant number"
+        alias: ["contestant_number"]
+        sync: false
+      - name: "contestant_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "contestant name"
+        alias: ["contestant_name"]
+        sync: true
+  - name: "VOTES"
+    role: dim
+    description: "votes"
+    columns:
+      - name: "vote_id"
+        role: foreign_key
+        type: FLOAT
+        description: "vote id"
+        alias: ["vote_id"]
+        sync: false
+      - name: "phone_number"
+        role: measure
+        type: FLOAT
+        description: "phone number"
+        alias: ["phone_number"]
+        sync: false
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "contestant_number"
+        role: measure
+        type: FLOAT
+        description: "contestant number"
+        alias: ["contestant_number"]
+        sync: false
+      - name: "created"
+        role: dimension
+        type: DATETIME
+        description: "created"
+        alias: ["created"]
+        sync: false
+
+metrics:
+  - name: "area_code_state_area_code"
+    description: area code from area_code_state
+    relevant_columns:
+      - AREA_CODE_STATE.area_code
+    alias: [area_code]
+  - name: "contestants_contestant_number"
+    description: contestant number from contestants
+    relevant_columns:
+      - CONTESTANTS.contestant_number
+    alias: [contestant_number]
+  - name: "votes_phone_number"
+    description: phone number from votes
+    relevant_columns:
+      - VOTES.phone_number
+    alias: [phone_number]
+  - name: "votes_contestant_number"
+    description: contestant number from votes
+    relevant_columns:
+      - VOTES.contestant_number
+    alias: [contestant_number]

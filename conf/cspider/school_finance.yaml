@@ -1,0 +1,154 @@
+tables:
+  - name: "School"
+    role: dim
+    description: "school"
+    columns:
+      - name: "School_id"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "School_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "school name"
+        alias: ["school_name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Mascot"
+        role: dimension
+        type: VARCHAR(255)
+        description: "mascot"
+        alias: ["mascot"]
+        sync: false
+      - name: "Enrollment"
+        role: dimension
+        type: FLOAT
+        description: "enrollment"
+        alias: ["enrollment"]
+        sync: false
+      - name: "IHSAA_Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ihsaa class"
+        alias: ["ihsaa_class"]
+        sync: false
+      - name: "IHSAA_Football_Class"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ihsaa football class"
+        alias: ["ihsaa_football_class"]
+        sync: false
+      - name: "County"
+        role: dimension
+        type: VARCHAR(255)
+        description: "county"
+        alias: ["county"]
+        sync: false
+  - name: "budget"
+    role: dim
+    description: "budget"
+    columns:
+      - name: "School_id"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Budgeted"
+        role: measure
+        type: FLOAT
+        description: "budgeted"
+        alias: ["budgeted"]
+        sync: false
+      - name: "total_budget_percent_budgeted"
+        role: measure
+        type: FLOAT
+        description: "total budget percent budgeted"
+        alias: ["total_budget_percent_budgeted"]
+        sync: false
+      - name: "Invested"
+        role: dimension
+        type: FLOAT
+        description: "invested"
+        alias: ["invested"]
+        sync: false
+      - name: "total_budget_percent_invested"
+        role: measure
+        type: FLOAT
+        description: "total budget percent invested"
+        alias: ["total_budget_percent_invested"]
+        sync: false
+      - name: "Budget_invested_percent"
+        role: dimension
+        type: VARCHAR(255)
+        description: "budget invested percent"
+        alias: ["budget_invested_percent"]
+        sync: false
+  - name: "endowment"
+    role: dim
+    description: "endowment"
+    columns:
+      - name: "endowment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "endowment id"
+        alias: ["endowment_id"]
+        sync: false
+      - name: "School_id"
+        role: foreign_key
+        type: FLOAT
+        description: "school id"
+        alias: ["school_id"]
+        sync: false
+      - name: "donator_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "donator name"
+        alias: ["donator_name"]
+        sync: true
+      - name: "amount"
+        role: measure
+        type: FLOAT
+        description: "amount"
+        alias: ["amount"]
+        sync: false
+
+metrics:
+  - name: "budget_year"
+    description: year from budget
+    relevant_columns:
+      - budget.Year
+    alias: [year]
+  - name: "budget_budgeted"
+    description: budgeted from budget
+    relevant_columns:
+      - budget.Budgeted
+    alias: [budgeted]
+  - name: "budget_total_budget_percent_budgeted"
+    description: total budget percent budgeted from budget
+    relevant_columns:
+      - budget.total_budget_percent_budgeted
+    alias: [total_budget_percent_budgeted]
+  - name: "budget_total_budget_percent_invested"
+    description: total budget percent invested from budget
+    relevant_columns:
+      - budget.total_budget_percent_invested
+    alias: [total_budget_percent_invested]
+  - name: "endowment_amount"
+    description: amount from endowment
+    relevant_columns:
+      - endowment.amount
+    alias: [amount]

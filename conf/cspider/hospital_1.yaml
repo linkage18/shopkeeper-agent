@@ -1,0 +1,481 @@
+tables:
+  - name: "Physician"
+    role: dim
+    description: "physician"
+    columns:
+      - name: "EmployeeID"
+        role: dimension
+        type: FLOAT
+        description: "employeeid"
+        alias: ["employeeid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "SSN"
+        role: dimension
+        type: FLOAT
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+  - name: "Department"
+    role: dim
+    description: "department"
+    columns:
+      - name: "DepartmentID"
+        role: dimension
+        type: FLOAT
+        description: "departmentid"
+        alias: ["departmentid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Head"
+        role: dimension
+        type: FLOAT
+        description: "head"
+        alias: ["head"]
+        sync: false
+  - name: "Affiliated_With"
+    role: dim
+    description: "affiliated with"
+    columns:
+      - name: "Physician"
+        role: dimension
+        type: FLOAT
+        description: "physician"
+        alias: ["physician"]
+        sync: false
+      - name: "Department"
+        role: dimension
+        type: FLOAT
+        description: "department"
+        alias: ["department"]
+        sync: false
+      - name: "PrimaryAffiliation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "primaryaffiliation"
+        alias: ["primaryaffiliation"]
+        sync: false
+  - name: "Procedures"
+    role: dim
+    description: "procedures"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: FLOAT
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Cost"
+        role: measure
+        type: FLOAT
+        description: "cost"
+        alias: ["cost"]
+        sync: false
+  - name: "Trained_In"
+    role: dim
+    description: "trained in"
+    columns:
+      - name: "Physician"
+        role: dimension
+        type: FLOAT
+        description: "physician"
+        alias: ["physician"]
+        sync: false
+      - name: "Treatment"
+        role: dimension
+        type: FLOAT
+        description: "treatment"
+        alias: ["treatment"]
+        sync: false
+      - name: "CertificationDate"
+        role: dimension
+        type: DATETIME
+        description: "certificationdate"
+        alias: ["certificationdate"]
+        sync: false
+      - name: "CertificationExpires"
+        role: dimension
+        type: DATETIME
+        description: "certificationexpires"
+        alias: ["certificationexpires"]
+        sync: false
+  - name: "Patient"
+    role: dim
+    description: "patient"
+    columns:
+      - name: "SSN"
+        role: dimension
+        type: FLOAT
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone"
+        alias: ["phone"]
+        sync: false
+      - name: "InsuranceID"
+        role: dimension
+        type: FLOAT
+        description: "insuranceid"
+        alias: ["insuranceid"]
+        sync: false
+      - name: "PCP"
+        role: dimension
+        type: FLOAT
+        description: "pcp"
+        alias: ["pcp"]
+        sync: false
+  - name: "Nurse"
+    role: dim
+    description: "nurse"
+    columns:
+      - name: "EmployeeID"
+        role: dimension
+        type: FLOAT
+        description: "employeeid"
+        alias: ["employeeid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "Registered"
+        role: dimension
+        type: VARCHAR(255)
+        description: "registered"
+        alias: ["registered"]
+        sync: false
+      - name: "SSN"
+        role: dimension
+        type: FLOAT
+        description: "ssn"
+        alias: ["ssn"]
+        sync: false
+  - name: "Appointment"
+    role: dim
+    description: "appointment"
+    columns:
+      - name: "AppointmentID"
+        role: dimension
+        type: FLOAT
+        description: "appointmentid"
+        alias: ["appointmentid"]
+        sync: false
+      - name: "Patient"
+        role: dimension
+        type: FLOAT
+        description: "patient"
+        alias: ["patient"]
+        sync: false
+      - name: "PrepNurse"
+        role: dimension
+        type: FLOAT
+        description: "prepnurse"
+        alias: ["prepnurse"]
+        sync: false
+      - name: "Physician"
+        role: dimension
+        type: FLOAT
+        description: "physician"
+        alias: ["physician"]
+        sync: false
+      - name: "Start"
+        role: dimension
+        type: DATETIME
+        description: "start"
+        alias: ["start"]
+        sync: false
+      - name: "End"
+        role: dimension
+        type: DATETIME
+        description: "end"
+        alias: ["end"]
+        sync: false
+      - name: "ExaminationRoom"
+        role: dimension
+        type: VARCHAR(255)
+        description: "examinationroom"
+        alias: ["examinationroom"]
+        sync: false
+  - name: "Medication"
+    role: dim
+    description: "medication"
+    columns:
+      - name: "Code"
+        role: dimension
+        type: FLOAT
+        description: "code"
+        alias: ["code"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Brand"
+        role: dimension
+        type: VARCHAR(255)
+        description: "brand"
+        alias: ["brand"]
+        sync: false
+      - name: "Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+  - name: "Prescribes"
+    role: dim
+    description: "prescribes"
+    columns:
+      - name: "Physician"
+        role: dimension
+        type: FLOAT
+        description: "physician"
+        alias: ["physician"]
+        sync: false
+      - name: "Patient"
+        role: dimension
+        type: FLOAT
+        description: "patient"
+        alias: ["patient"]
+        sync: false
+      - name: "Medication"
+        role: dimension
+        type: FLOAT
+        description: "medication"
+        alias: ["medication"]
+        sync: false
+      - name: "Date"
+        role: dimension
+        type: DATETIME
+        description: "date"
+        alias: ["date"]
+        sync: false
+      - name: "Appointment"
+        role: dimension
+        type: FLOAT
+        description: "appointment"
+        alias: ["appointment"]
+        sync: false
+      - name: "Dose"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dose"
+        alias: ["dose"]
+        sync: false
+  - name: "Block"
+    role: dim
+    description: "block"
+    columns:
+      - name: "BlockFloor"
+        role: dimension
+        type: FLOAT
+        description: "blockfloor"
+        alias: ["blockfloor"]
+        sync: false
+      - name: "BlockCode"
+        role: dimension
+        type: FLOAT
+        description: "blockcode"
+        alias: ["blockcode"]
+        sync: true
+  - name: "Room"
+    role: dim
+    description: "room"
+    columns:
+      - name: "RoomNumber"
+        role: measure
+        type: FLOAT
+        description: "roomnumber"
+        alias: ["roomnumber"]
+        sync: false
+      - name: "RoomType"
+        role: dimension
+        type: VARCHAR(255)
+        description: "roomtype"
+        alias: ["roomtype"]
+        sync: true
+      - name: "BlockFloor"
+        role: dimension
+        type: FLOAT
+        description: "blockfloor"
+        alias: ["blockfloor"]
+        sync: false
+      - name: "BlockCode"
+        role: dimension
+        type: FLOAT
+        description: "blockcode"
+        alias: ["blockcode"]
+        sync: true
+      - name: "Unavailable"
+        role: dimension
+        type: VARCHAR(255)
+        description: "unavailable"
+        alias: ["unavailable"]
+        sync: false
+  - name: "On_Call"
+    role: dim
+    description: "on call"
+    columns:
+      - name: "Nurse"
+        role: dimension
+        type: FLOAT
+        description: "nurse"
+        alias: ["nurse"]
+        sync: false
+      - name: "BlockFloor"
+        role: dimension
+        type: FLOAT
+        description: "blockfloor"
+        alias: ["blockfloor"]
+        sync: false
+      - name: "BlockCode"
+        role: dimension
+        type: FLOAT
+        description: "blockcode"
+        alias: ["blockcode"]
+        sync: true
+      - name: "OnCallStart"
+        role: dimension
+        type: DATETIME
+        description: "oncallstart"
+        alias: ["oncallstart"]
+        sync: false
+      - name: "OnCallEnd"
+        role: dimension
+        type: DATETIME
+        description: "oncallend"
+        alias: ["oncallend"]
+        sync: false
+  - name: "Stay"
+    role: dim
+    description: "stay"
+    columns:
+      - name: "StayID"
+        role: primary_key
+        type: FLOAT
+        description: "stayid"
+        alias: ["stayid"]
+        sync: false
+      - name: "Patient"
+        role: dimension
+        type: FLOAT
+        description: "patient"
+        alias: ["patient"]
+        sync: false
+      - name: "Room"
+        role: dimension
+        type: FLOAT
+        description: "room"
+        alias: ["room"]
+        sync: false
+      - name: "StayStart"
+        role: dimension
+        type: DATETIME
+        description: "staystart"
+        alias: ["staystart"]
+        sync: false
+      - name: "StayEnd"
+        role: dimension
+        type: DATETIME
+        description: "stayend"
+        alias: ["stayend"]
+        sync: false
+  - name: "Undergoes"
+    role: dim
+    description: "undergoes"
+    columns:
+      - name: "Patient"
+        role: dimension
+        type: FLOAT
+        description: "patient"
+        alias: ["patient"]
+        sync: false
+      - name: "Procedures"
+        role: dimension
+        type: FLOAT
+        description: "procedures"
+        alias: ["procedures"]
+        sync: false
+      - name: "Stay"
+        role: dimension
+        type: FLOAT
+        description: "stay"
+        alias: ["stay"]
+        sync: false
+      - name: "DateUndergoes"
+        role: dimension
+        type: DATETIME
+        description: "dateundergoes"
+        alias: ["dateundergoes"]
+        sync: false
+      - name: "Physician"
+        role: dimension
+        type: FLOAT
+        description: "physician"
+        alias: ["physician"]
+        sync: false
+      - name: "AssistingNurse"
+        role: dimension
+        type: FLOAT
+        description: "assistingnurse"
+        alias: ["assistingnurse"]
+        sync: false
+
+metrics:
+  - name: "procedures_cost"
+    description: cost from procedures
+    relevant_columns:
+      - Procedures.Cost
+    alias: [cost]
+  - name: "room_roomnumber"
+    description: roomnumber from room
+    relevant_columns:
+      - Room.RoomNumber
+    alias: [roomnumber]

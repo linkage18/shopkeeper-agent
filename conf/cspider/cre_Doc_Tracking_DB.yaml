@@ -1,0 +1,238 @@
+tables:
+  - name: "Ref_Document_Types"
+    role: dim
+    description: "ref document types"
+    columns:
+      - name: "Document_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "Document_Type_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type name"
+        alias: ["document_type_name"]
+        sync: true
+      - name: "Document_Type_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type description"
+        alias: ["document_type_description"]
+        sync: true
+  - name: "Ref_Calendar"
+    role: dim
+    description: "ref calendar"
+    columns:
+      - name: "Calendar_Date"
+        role: dimension
+        type: DATETIME
+        description: "calendar date"
+        alias: ["calendar_date"]
+        sync: false
+      - name: "Day_Number"
+        role: measure
+        type: FLOAT
+        description: "day number"
+        alias: ["day_number"]
+        sync: false
+  - name: "Ref_Locations"
+    role: dim
+    description: "ref locations"
+    columns:
+      - name: "Location_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location code"
+        alias: ["location_code"]
+        sync: true
+      - name: "Location_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location name"
+        alias: ["location_name"]
+        sync: true
+      - name: "Location_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location description"
+        alias: ["location_description"]
+        sync: false
+  - name: "Roles"
+    role: dim
+    description: "roles"
+    columns:
+      - name: "Role_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "Role_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role name"
+        alias: ["role_name"]
+        sync: true
+      - name: "Role_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role description"
+        alias: ["role_description"]
+        sync: false
+  - name: "All_Documents"
+    role: dim
+    description: "all documents"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Date_Stored"
+        role: dimension
+        type: DATETIME
+        description: "date stored"
+        alias: ["date_stored"]
+        sync: false
+      - name: "Document_Type_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "Document_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document name"
+        alias: ["document_name"]
+        sync: true
+      - name: "Document_Description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document description"
+        alias: ["document_description"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Employees"
+    role: dim
+    description: "employees"
+    columns:
+      - name: "Employee_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "Role_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "Employee_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "employee name"
+        alias: ["employee_name"]
+        sync: true
+      - name: "Gender_MFU"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender mfu"
+        alias: ["gender_mfu"]
+        sync: true
+      - name: "Date_of_Birth"
+        role: dimension
+        type: DATETIME
+        description: "date of birth"
+        alias: ["date_of_birth"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Document_Locations"
+    role: dim
+    description: "document locations"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Location_Code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location code"
+        alias: ["location_code"]
+        sync: true
+      - name: "Date_in_Location_From"
+        role: dimension
+        type: DATETIME
+        description: "date in location from"
+        alias: ["date_in_location_from"]
+        sync: false
+      - name: "Date_in_Locaton_To"
+        role: dimension
+        type: DATETIME
+        description: "date in locaton to"
+        alias: ["date_in_locaton_to"]
+        sync: false
+  - name: "Documents_to_be_Destroyed"
+    role: dim
+    description: "documents to be destroyed"
+    columns:
+      - name: "Document_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "document id"
+        alias: ["document_id"]
+        sync: false
+      - name: "Destruction_Authorised_by_Employee_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "destruction authorised by employee id"
+        alias: ["destruction_authorised_by_employee_id"]
+        sync: false
+      - name: "Destroyed_by_Employee_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "destroyed by employee id"
+        alias: ["destroyed_by_employee_id"]
+        sync: false
+      - name: "Planned_Destruction_Date"
+        role: dimension
+        type: DATETIME
+        description: "planned destruction date"
+        alias: ["planned_destruction_date"]
+        sync: false
+      - name: "Actual_Destruction_Date"
+        role: dimension
+        type: DATETIME
+        description: "actual destruction date"
+        alias: ["actual_destruction_date"]
+        sync: false
+      - name: "Other_Details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+
+metrics:
+  - name: "ref_calendar_day_number"
+    description: day number from ref_calendar
+    relevant_columns:
+      - Ref_Calendar.Day_Number
+    alias: [day_number]

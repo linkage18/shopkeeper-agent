@@ -1,0 +1,461 @@
+tables:
+  - name: "Album"
+    role: dim
+    description: "album"
+    columns:
+      - name: "AlbumId"
+        role: dimension
+        type: FLOAT
+        description: "albumid"
+        alias: ["albumid"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "ArtistId"
+        role: dimension
+        type: FLOAT
+        description: "artistid"
+        alias: ["artistid"]
+        sync: false
+  - name: "Artist"
+    role: dim
+    description: "artist"
+    columns:
+      - name: "ArtistId"
+        role: dimension
+        type: FLOAT
+        description: "artistid"
+        alias: ["artistid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Customer"
+    role: dim
+    description: "customer"
+    columns:
+      - name: "CustomerId"
+        role: dimension
+        type: FLOAT
+        description: "customerid"
+        alias: ["customerid"]
+        sync: false
+      - name: "FirstName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "LastName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+      - name: "Company"
+        role: dimension
+        type: VARCHAR(255)
+        description: "company"
+        alias: ["company"]
+        sync: true
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "State"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "PostalCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "postalcode"
+        alias: ["postalcode"]
+        sync: true
+      - name: "Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone"
+        alias: ["phone"]
+        sync: false
+      - name: "Fax"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fax"
+        alias: ["fax"]
+        sync: false
+      - name: "Email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+      - name: "SupportRepId"
+        role: dimension
+        type: FLOAT
+        description: "supportrepid"
+        alias: ["supportrepid"]
+        sync: false
+  - name: "Employee"
+    role: dim
+    description: "employee"
+    columns:
+      - name: "EmployeeId"
+        role: dimension
+        type: FLOAT
+        description: "employeeid"
+        alias: ["employeeid"]
+        sync: false
+      - name: "LastName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+      - name: "FirstName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "ReportsTo"
+        role: dimension
+        type: FLOAT
+        description: "reportsto"
+        alias: ["reportsto"]
+        sync: false
+      - name: "BirthDate"
+        role: dimension
+        type: DATETIME
+        description: "birthdate"
+        alias: ["birthdate"]
+        sync: false
+      - name: "HireDate"
+        role: dimension
+        type: DATETIME
+        description: "hiredate"
+        alias: ["hiredate"]
+        sync: false
+      - name: "Address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "State"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "PostalCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "postalcode"
+        alias: ["postalcode"]
+        sync: true
+      - name: "Phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone"
+        alias: ["phone"]
+        sync: false
+      - name: "Fax"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fax"
+        alias: ["fax"]
+        sync: false
+      - name: "Email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+  - name: "Genre"
+    role: dim
+    description: "genre"
+    columns:
+      - name: "GenreId"
+        role: dimension
+        type: FLOAT
+        description: "genreid"
+        alias: ["genreid"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Invoice"
+    role: fact
+    description: "invoice"
+    columns:
+      - name: "InvoiceId"
+        role: dimension
+        type: FLOAT
+        description: "invoiceid"
+        alias: ["invoiceid"]
+        sync: false
+      - name: "CustomerId"
+        role: dimension
+        type: FLOAT
+        description: "customerid"
+        alias: ["customerid"]
+        sync: false
+      - name: "InvoiceDate"
+        role: dimension
+        type: DATETIME
+        description: "invoicedate"
+        alias: ["invoicedate"]
+        sync: false
+      - name: "BillingAddress"
+        role: dimension
+        type: VARCHAR(255)
+        description: "billingaddress"
+        alias: ["billingaddress"]
+        sync: false
+      - name: "BillingCity"
+        role: dimension
+        type: VARCHAR(255)
+        description: "billingcity"
+        alias: ["billingcity"]
+        sync: true
+      - name: "BillingState"
+        role: dimension
+        type: VARCHAR(255)
+        description: "billingstate"
+        alias: ["billingstate"]
+        sync: true
+      - name: "BillingCountry"
+        role: dimension
+        type: VARCHAR(255)
+        description: "billingcountry"
+        alias: ["billingcountry"]
+        sync: true
+      - name: "BillingPostalCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "billingpostalcode"
+        alias: ["billingpostalcode"]
+        sync: true
+      - name: "Total"
+        role: measure
+        type: FLOAT
+        description: "total"
+        alias: ["total"]
+        sync: false
+  - name: "InvoiceLine"
+    role: fact
+    description: "invoiceline"
+    columns:
+      - name: "InvoiceLineId"
+        role: dimension
+        type: FLOAT
+        description: "invoicelineid"
+        alias: ["invoicelineid"]
+        sync: false
+      - name: "InvoiceId"
+        role: dimension
+        type: FLOAT
+        description: "invoiceid"
+        alias: ["invoiceid"]
+        sync: false
+      - name: "TrackId"
+        role: dimension
+        type: FLOAT
+        description: "trackid"
+        alias: ["trackid"]
+        sync: false
+      - name: "UnitPrice"
+        role: measure
+        type: FLOAT
+        description: "unitprice"
+        alias: ["unitprice"]
+        sync: false
+      - name: "Quantity"
+        role: measure
+        type: FLOAT
+        description: "quantity"
+        alias: ["quantity"]
+        sync: false
+  - name: "MediaType"
+    role: dim
+    description: "mediatype"
+    columns:
+      - name: "MediaTypeId"
+        role: dimension
+        type: FLOAT
+        description: "mediatypeid"
+        alias: ["mediatypeid"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "Playlist"
+    role: dim
+    description: "playlist"
+    columns:
+      - name: "PlaylistId"
+        role: dimension
+        type: FLOAT
+        description: "playlistid"
+        alias: ["playlistid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "PlaylistTrack"
+    role: dim
+    description: "playlisttrack"
+    columns:
+      - name: "PlaylistId"
+        role: dimension
+        type: FLOAT
+        description: "playlistid"
+        alias: ["playlistid"]
+        sync: false
+      - name: "TrackId"
+        role: dimension
+        type: FLOAT
+        description: "trackid"
+        alias: ["trackid"]
+        sync: false
+  - name: "Track"
+    role: dim
+    description: "track"
+    columns:
+      - name: "TrackId"
+        role: dimension
+        type: FLOAT
+        description: "trackid"
+        alias: ["trackid"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "AlbumId"
+        role: dimension
+        type: FLOAT
+        description: "albumid"
+        alias: ["albumid"]
+        sync: false
+      - name: "MediaTypeId"
+        role: dimension
+        type: FLOAT
+        description: "mediatypeid"
+        alias: ["mediatypeid"]
+        sync: true
+      - name: "GenreId"
+        role: dimension
+        type: FLOAT
+        description: "genreid"
+        alias: ["genreid"]
+        sync: true
+      - name: "Composer"
+        role: dimension
+        type: VARCHAR(255)
+        description: "composer"
+        alias: ["composer"]
+        sync: false
+      - name: "Milliseconds"
+        role: measure
+        type: FLOAT
+        description: "milliseconds"
+        alias: ["milliseconds"]
+        sync: false
+      - name: "Bytes"
+        role: measure
+        type: FLOAT
+        description: "bytes"
+        alias: ["bytes"]
+        sync: false
+      - name: "UnitPrice"
+        role: measure
+        type: FLOAT
+        description: "unitprice"
+        alias: ["unitprice"]
+        sync: false
+
+metrics:
+  - name: "invoice_total"
+    description: total from invoice
+    relevant_columns:
+      - Invoice.Total
+    alias: [total]
+  - name: "invoiceline_unitprice"
+    description: unitprice from invoiceline
+    relevant_columns:
+      - InvoiceLine.UnitPrice
+    alias: [unitprice]
+  - name: "invoiceline_quantity"
+    description: quantity from invoiceline
+    relevant_columns:
+      - InvoiceLine.Quantity
+    alias: [quantity]
+  - name: "track_milliseconds"
+    description: milliseconds from track
+    relevant_columns:
+      - Track.Milliseconds
+    alias: [milliseconds]
+  - name: "track_bytes"
+    description: bytes from track
+    relevant_columns:
+      - Track.Bytes
+    alias: [bytes]
+  - name: "track_unitprice"
+    description: unitprice from track
+    relevant_columns:
+      - Track.UnitPrice
+    alias: [unitprice]

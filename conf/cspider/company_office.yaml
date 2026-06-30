@@ -1,0 +1,122 @@
+tables:
+  - name: "buildings"
+    role: dim
+    description: "buildings"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Stories"
+        role: dimension
+        type: FLOAT
+        description: "stories"
+        alias: ["stories"]
+        sync: false
+      - name: "Status"
+        role: dimension
+        type: VARCHAR(255)
+        description: "status"
+        alias: ["status"]
+        sync: true
+  - name: "Companies"
+    role: dim
+    description: "companies"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Headquarters"
+        role: dimension
+        type: VARCHAR(255)
+        description: "headquarters"
+        alias: ["headquarters"]
+        sync: false
+      - name: "Industry"
+        role: dimension
+        type: VARCHAR(255)
+        description: "industry"
+        alias: ["industry"]
+        sync: false
+      - name: "Sales_billion"
+        role: dimension
+        type: FLOAT
+        description: "sales billion"
+        alias: ["sales_billion"]
+        sync: false
+      - name: "Profits_billion"
+        role: dimension
+        type: FLOAT
+        description: "profits billion"
+        alias: ["profits_billion"]
+        sync: false
+      - name: "Assets_billion"
+        role: dimension
+        type: FLOAT
+        description: "assets billion"
+        alias: ["assets_billion"]
+        sync: false
+      - name: "Market_Value_billion"
+        role: dimension
+        type: VARCHAR(255)
+        description: "market value billion"
+        alias: ["market_value_billion"]
+        sync: false
+  - name: "Office_locations"
+    role: dim
+    description: "office locations"
+    columns:
+      - name: "building_id"
+        role: foreign_key
+        type: FLOAT
+        description: "building id"
+        alias: ["building_id"]
+        sync: false
+      - name: "company_id"
+        role: foreign_key
+        type: FLOAT
+        description: "company id"
+        alias: ["company_id"]
+        sync: true
+      - name: "move_in_year"
+        role: measure
+        type: FLOAT
+        description: "move in year"
+        alias: ["move_in_year"]
+        sync: false
+
+metrics:
+  - name: "office_locations_move_in_year"
+    description: move in year from office_locations
+    relevant_columns:
+      - Office_locations.move_in_year
+    alias: [move_in_year]

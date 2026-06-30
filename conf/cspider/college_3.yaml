@@ -1,0 +1,267 @@
+tables:
+  - name: "Student"
+    role: dim
+    description: "student"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "LName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "Fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Major"
+        role: dimension
+        type: FLOAT
+        description: "major"
+        alias: ["major"]
+        sync: false
+      - name: "Advisor"
+        role: dimension
+        type: FLOAT
+        description: "advisor"
+        alias: ["advisor"]
+        sync: false
+      - name: "city_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city code"
+        alias: ["city_code"]
+        sync: true
+  - name: "Faculty"
+    role: dim
+    description: "faculty"
+    columns:
+      - name: "FacID"
+        role: primary_key
+        type: FLOAT
+        description: "facid"
+        alias: ["facid"]
+        sync: false
+      - name: "Lname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lname"
+        alias: ["lname"]
+        sync: true
+      - name: "Fname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "fname"
+        alias: ["fname"]
+        sync: true
+      - name: "Rank"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "Sex"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sex"
+        alias: ["sex"]
+        sync: false
+      - name: "Phone"
+        role: dimension
+        type: FLOAT
+        description: "phone"
+        alias: ["phone"]
+        sync: false
+      - name: "Room"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room"
+        alias: ["room"]
+        sync: false
+      - name: "Building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building"
+        alias: ["building"]
+        sync: false
+  - name: "Department"
+    role: dim
+    description: "department"
+    columns:
+      - name: "DNO"
+        role: dimension
+        type: FLOAT
+        description: "dno"
+        alias: ["dno"]
+        sync: false
+      - name: "Division"
+        role: dimension
+        type: VARCHAR(255)
+        description: "division"
+        alias: ["division"]
+        sync: false
+      - name: "DName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "dname"
+        alias: ["dname"]
+        sync: true
+      - name: "Room"
+        role: dimension
+        type: VARCHAR(255)
+        description: "room"
+        alias: ["room"]
+        sync: false
+      - name: "Building"
+        role: dimension
+        type: VARCHAR(255)
+        description: "building"
+        alias: ["building"]
+        sync: false
+      - name: "DPhone"
+        role: dimension
+        type: FLOAT
+        description: "dphone"
+        alias: ["dphone"]
+        sync: false
+  - name: "Member_of"
+    role: dim
+    description: "member of"
+    columns:
+      - name: "FacID"
+        role: primary_key
+        type: FLOAT
+        description: "facid"
+        alias: ["facid"]
+        sync: false
+      - name: "DNO"
+        role: dimension
+        type: FLOAT
+        description: "dno"
+        alias: ["dno"]
+        sync: false
+      - name: "Appt_Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "appt type"
+        alias: ["appt_type"]
+        sync: true
+  - name: "Course"
+    role: dim
+    description: "course"
+    columns:
+      - name: "CID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "CName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cname"
+        alias: ["cname"]
+        sync: true
+      - name: "Credits"
+        role: dimension
+        type: FLOAT
+        description: "credits"
+        alias: ["credits"]
+        sync: false
+      - name: "Instructor"
+        role: dimension
+        type: FLOAT
+        description: "instructor"
+        alias: ["instructor"]
+        sync: false
+      - name: "Days"
+        role: dimension
+        type: VARCHAR(255)
+        description: "days"
+        alias: ["days"]
+        sync: false
+      - name: "Hours"
+        role: dimension
+        type: VARCHAR(255)
+        description: "hours"
+        alias: ["hours"]
+        sync: false
+      - name: "DNO"
+        role: dimension
+        type: FLOAT
+        description: "dno"
+        alias: ["dno"]
+        sync: false
+  - name: "Minor_in"
+    role: dim
+    description: "minor in"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "DNO"
+        role: dimension
+        type: FLOAT
+        description: "dno"
+        alias: ["dno"]
+        sync: false
+  - name: "Enrolled_in"
+    role: dim
+    description: "enrolled in"
+    columns:
+      - name: "StuID"
+        role: primary_key
+        type: FLOAT
+        description: "stuid"
+        alias: ["stuid"]
+        sync: false
+      - name: "CID"
+        role: primary_key
+        type: VARCHAR(255)
+        description: "cid"
+        alias: ["cid"]
+        sync: false
+      - name: "Grade"
+        role: dimension
+        type: VARCHAR(255)
+        description: "grade"
+        alias: ["grade"]
+        sync: false
+  - name: "Gradeconversion"
+    role: dim
+    description: "gradeconversion"
+    columns:
+      - name: "lettergrade"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lettergrade"
+        alias: ["lettergrade"]
+        sync: false
+      - name: "gradepoint"
+        role: dimension
+        type: FLOAT
+        description: "gradepoint"
+        alias: ["gradepoint"]
+        sync: false

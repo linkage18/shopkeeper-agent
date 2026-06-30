@@ -1,0 +1,168 @@
+tables:
+  - name: "Songs"
+    role: dim
+    description: "songs"
+    columns:
+      - name: "SongId"
+        role: primary_key
+        type: FLOAT
+        description: "songid"
+        alias: ["songid"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+  - name: "Albums"
+    role: dim
+    description: "albums"
+    columns:
+      - name: "AId"
+        role: primary_key
+        type: FLOAT
+        description: "aid"
+        alias: ["aid"]
+        sync: false
+      - name: "Title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Label"
+        role: dimension
+        type: VARCHAR(255)
+        description: "label"
+        alias: ["label"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+  - name: "Band"
+    role: dim
+    description: "band"
+    columns:
+      - name: "Id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "Firstname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "Lastname"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+  - name: "Instruments"
+    role: dim
+    description: "instruments"
+    columns:
+      - name: "SongId"
+        role: primary_key
+        type: FLOAT
+        description: "songid"
+        alias: ["songid"]
+        sync: false
+      - name: "BandmateId"
+        role: dimension
+        type: FLOAT
+        description: "bandmateid"
+        alias: ["bandmateid"]
+        sync: false
+      - name: "Instrument"
+        role: dimension
+        type: VARCHAR(255)
+        description: "instrument"
+        alias: ["instrument"]
+        sync: false
+  - name: "Performance"
+    role: dim
+    description: "performance"
+    columns:
+      - name: "SongId"
+        role: primary_key
+        type: FLOAT
+        description: "songid"
+        alias: ["songid"]
+        sync: false
+      - name: "Bandmate"
+        role: dimension
+        type: FLOAT
+        description: "bandmate"
+        alias: ["bandmate"]
+        sync: false
+      - name: "StagePosition"
+        role: dimension
+        type: VARCHAR(255)
+        description: "stageposition"
+        alias: ["stageposition"]
+        sync: false
+  - name: "Tracklists"
+    role: dim
+    description: "tracklists"
+    columns:
+      - name: "AlbumId"
+        role: dimension
+        type: FLOAT
+        description: "albumid"
+        alias: ["albumid"]
+        sync: false
+      - name: "Position"
+        role: dimension
+        type: FLOAT
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "SongId"
+        role: primary_key
+        type: FLOAT
+        description: "songid"
+        alias: ["songid"]
+        sync: false
+  - name: "Vocals"
+    role: dim
+    description: "vocals"
+    columns:
+      - name: "SongId"
+        role: primary_key
+        type: FLOAT
+        description: "songid"
+        alias: ["songid"]
+        sync: false
+      - name: "Bandmate"
+        role: dimension
+        type: FLOAT
+        description: "bandmate"
+        alias: ["bandmate"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+
+metrics:
+  - name: "albums_year"
+    description: year from albums
+    relevant_columns:
+      - Albums.Year
+    alias: [year]

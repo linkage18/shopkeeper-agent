@@ -1,0 +1,79 @@
+tables:
+  - name: "College"
+    role: dim
+    description: "college"
+    columns:
+      - name: "cName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cname"
+        alias: ["cname"]
+        sync: true
+      - name: "state"
+        role: dimension
+        type: VARCHAR(255)
+        description: "state"
+        alias: ["state"]
+        sync: true
+      - name: "enr"
+        role: dimension
+        type: FLOAT
+        description: "enr"
+        alias: ["enr"]
+        sync: false
+  - name: "Player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "pID"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+      - name: "pName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "pname"
+        alias: ["pname"]
+        sync: true
+      - name: "yCard"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ycard"
+        alias: ["ycard"]
+        sync: false
+      - name: "HS"
+        role: dimension
+        type: FLOAT
+        description: "hs"
+        alias: ["hs"]
+        sync: false
+  - name: "Tryout"
+    role: dim
+    description: "tryout"
+    columns:
+      - name: "pID"
+        role: primary_key
+        type: FLOAT
+        description: "pid"
+        alias: ["pid"]
+        sync: false
+      - name: "cName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "cname"
+        alias: ["cname"]
+        sync: true
+      - name: "pPos"
+        role: dimension
+        type: VARCHAR(255)
+        description: "ppos"
+        alias: ["ppos"]
+        sync: false
+      - name: "decision"
+        role: dimension
+        type: VARCHAR(255)
+        description: "decision"
+        alias: ["decision"]
+        sync: false

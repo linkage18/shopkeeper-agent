@@ -1,0 +1,126 @@
+tables:
+  - name: "employee"
+    role: dim
+    description: "employee"
+    columns:
+      - name: "Employee_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Age"
+        role: dimension
+        type: FLOAT
+        description: "age"
+        alias: ["age"]
+        sync: false
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+  - name: "shop"
+    role: dim
+    description: "shop"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "District"
+        role: dimension
+        type: VARCHAR(255)
+        description: "district"
+        alias: ["district"]
+        sync: false
+      - name: "Number_products"
+        role: measure
+        type: FLOAT
+        description: "number products"
+        alias: ["number_products"]
+        sync: false
+      - name: "Manager_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "manager name"
+        alias: ["manager_name"]
+        sync: true
+  - name: "hiring"
+    role: dim
+    description: "hiring"
+    columns:
+      - name: "Shop_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "shop id"
+        alias: ["shop_id"]
+        sync: false
+      - name: "Employee_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "Start_from"
+        role: dimension
+        type: VARCHAR(255)
+        description: "start from"
+        alias: ["start_from"]
+        sync: false
+      - name: "Is_full_time"
+        role: dimension
+        type: VARCHAR(255)
+        description: "is full time"
+        alias: ["is_full_time"]
+        sync: false
+  - name: "evaluation"
+    role: dim
+    description: "evaluation"
+    columns:
+      - name: "Employee_ID"
+        role: foreign_key
+        type: VARCHAR(255)
+        description: "employee id"
+        alias: ["employee_id"]
+        sync: false
+      - name: "Year_awarded"
+        role: dimension
+        type: VARCHAR(255)
+        description: "year awarded"
+        alias: ["year_awarded"]
+        sync: false
+      - name: "Bonus"
+        role: dimension
+        type: FLOAT
+        description: "bonus"
+        alias: ["bonus"]
+        sync: false
+
+metrics:
+  - name: "shop_number_products"
+    description: number products from shop
+    relevant_columns:
+      - shop.Number_products
+    alias: [number_products]

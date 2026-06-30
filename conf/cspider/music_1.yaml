@@ -1,0 +1,143 @@
+tables:
+  - name: "genre"
+    role: dim
+    description: "genre"
+    columns:
+      - name: "g_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "g name"
+        alias: ["g_name"]
+        sync: true
+      - name: "rating"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "most_popular_in"
+        role: dimension
+        type: VARCHAR(255)
+        description: "most popular in"
+        alias: ["most_popular_in"]
+        sync: false
+  - name: "artist"
+    role: dim
+    description: "artist"
+    columns:
+      - name: "artist_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "artist name"
+        alias: ["artist_name"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "gender"
+        role: dimension
+        type: VARCHAR(255)
+        description: "gender"
+        alias: ["gender"]
+        sync: true
+      - name: "preferred_genre"
+        role: dimension
+        type: VARCHAR(255)
+        description: "preferred genre"
+        alias: ["preferred_genre"]
+        sync: true
+  - name: "files"
+    role: dim
+    description: "files"
+    columns:
+      - name: "f_id"
+        role: primary_key
+        type: FLOAT
+        description: "f id"
+        alias: ["f_id"]
+        sync: false
+      - name: "artist_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "artist name"
+        alias: ["artist_name"]
+        sync: true
+      - name: "file_size"
+        role: dimension
+        type: VARCHAR(255)
+        description: "file size"
+        alias: ["file_size"]
+        sync: false
+      - name: "duration"
+        role: dimension
+        type: VARCHAR(255)
+        description: "duration"
+        alias: ["duration"]
+        sync: false
+      - name: "formats"
+        role: dimension
+        type: VARCHAR(255)
+        description: "formats"
+        alias: ["formats"]
+        sync: false
+  - name: "song"
+    role: dim
+    description: "song"
+    columns:
+      - name: "song_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "song name"
+        alias: ["song_name"]
+        sync: true
+      - name: "artist_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "artist name"
+        alias: ["artist_name"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "f_id"
+        role: primary_key
+        type: FLOAT
+        description: "f id"
+        alias: ["f_id"]
+        sync: false
+      - name: "genre_is"
+        role: dimension
+        type: VARCHAR(255)
+        description: "genre is"
+        alias: ["genre_is"]
+        sync: true
+      - name: "rating"
+        role: dimension
+        type: FLOAT
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "languages"
+        role: dimension
+        type: VARCHAR(255)
+        description: "languages"
+        alias: ["languages"]
+        sync: true
+      - name: "releasedate"
+        role: dimension
+        type: DATETIME
+        description: "releasedate"
+        alias: ["releasedate"]
+        sync: false
+      - name: "resolution"
+        role: dimension
+        type: FLOAT
+        description: "resolution"
+        alias: ["resolution"]
+        sync: false

@@ -22,6 +22,10 @@
 5. 默认只生成一条SQL，不可生成多条SQL。
 6. SELECT 中的聚合字段、计算字段和函数表达式必须使用 AS 指定清晰、稳定的结果列别名，优先使用用户问题中的业务名称或指标名称，避免返回 `SUM(...)` 这类表达式列名。
 7. 输出必须仅包含一条完整 SQL 语句的纯文本，严禁使用```、```sql 等 Markdown代码块或任何格式化符号。
+8. WHERE 条件中的值（如 'Rock', '周杰伦'）必须与数据库中实际存储的值完全一致。如果用户用中文描述（如"摇滚风格"），但数据表中存的是英文值（如 'Rock'），请使用数据库实际存储的值。
+9. 仔细区分涉及"专辑"的问题与涉及"曲目"的问题：问专辑数量用 albums JOIN artists，不要用 tracks 表；问订单数量用 invoices JOIN customers 并加客户过滤，不要只查 invoices 表。
+10. 对于包含多个表的 JOIN 查询，注意 JOIN 方向：如果问题问的是"A 的 B"，A 是主表。例如"曲目名称"→ FROM tracks JOIN genres，"专辑标题"→ FROM albums JOIN artists。
+11. 【重要】表名和字段名必须严格使用 {table_infos} 中提供的名称（如 employees.first_name 而非 employees.FirstName），不得修改大小写或命名风格。数据库使用 MySQL，字段名格式为小写加下划线（snake_case）。
 
 用户查询如下：
 {query}

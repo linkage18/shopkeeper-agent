@@ -1,0 +1,79 @@
+tables:
+  - name: "follows"
+    role: dim
+    description: "follows"
+    columns:
+      - name: "f1"
+        role: dimension
+        type: FLOAT
+        description: "f1"
+        alias: ["f1"]
+        sync: false
+      - name: "f2"
+        role: dimension
+        type: FLOAT
+        description: "f2"
+        alias: ["f2"]
+        sync: false
+  - name: "tweets"
+    role: dim
+    description: "tweets"
+    columns:
+      - name: "id"
+        role: primary_key
+        type: FLOAT
+        description: "id"
+        alias: ["id"]
+        sync: false
+      - name: "uid"
+        role: primary_key
+        type: FLOAT
+        description: "uid"
+        alias: ["uid"]
+        sync: false
+      - name: "text"
+        role: dimension
+        type: VARCHAR(255)
+        description: "text"
+        alias: ["text"]
+        sync: false
+      - name: "createdate"
+        role: dimension
+        type: DATETIME
+        description: "createdate"
+        alias: ["createdate"]
+        sync: false
+  - name: "user_profiles"
+    role: dim
+    description: "user profiles"
+    columns:
+      - name: "uid"
+        role: primary_key
+        type: FLOAT
+        description: "uid"
+        alias: ["uid"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+      - name: "partitionid"
+        role: dimension
+        type: FLOAT
+        description: "partitionid"
+        alias: ["partitionid"]
+        sync: false
+      - name: "followers"
+        role: dimension
+        type: FLOAT
+        description: "followers"
+        alias: ["followers"]
+        sync: false

@@ -1,0 +1,82 @@
+tables:
+  - name: "body_builder"
+    role: dim
+    description: "body builder"
+    columns:
+      - name: "Body_Builder_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "body builder id"
+        alias: ["body_builder_id"]
+        sync: false
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Snatch"
+        role: dimension
+        type: FLOAT
+        description: "snatch"
+        alias: ["snatch"]
+        sync: false
+      - name: "Clean_Jerk"
+        role: dimension
+        type: FLOAT
+        description: "clean jerk"
+        alias: ["clean_jerk"]
+        sync: false
+      - name: "Total"
+        role: measure
+        type: FLOAT
+        description: "total"
+        alias: ["total"]
+        sync: false
+  - name: "people"
+    role: dim
+    description: "people"
+    columns:
+      - name: "People_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "people id"
+        alias: ["people_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Height"
+        role: dimension
+        type: FLOAT
+        description: "height"
+        alias: ["height"]
+        sync: false
+      - name: "Weight"
+        role: dimension
+        type: FLOAT
+        description: "weight"
+        alias: ["weight"]
+        sync: false
+      - name: "Birth_Date"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth date"
+        alias: ["birth_date"]
+        sync: false
+      - name: "Birth_Place"
+        role: dimension
+        type: VARCHAR(255)
+        description: "birth place"
+        alias: ["birth_place"]
+        sync: false
+
+metrics:
+  - name: "body_builder_total"
+    description: total from body_builder
+    relevant_columns:
+      - body_builder.Total
+    alias: [total]

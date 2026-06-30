@@ -1,0 +1,616 @@
+tables:
+  - name: "actor"
+    role: dim
+    description: "actor"
+    columns:
+      - name: "actor_id"
+        role: foreign_key
+        type: FLOAT
+        description: "actor id"
+        alias: ["actor_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "address"
+    role: dim
+    description: "address"
+    columns:
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "address"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address"
+        alias: ["address"]
+        sync: false
+      - name: "address2"
+        role: dimension
+        type: VARCHAR(255)
+        description: "address2"
+        alias: ["address2"]
+        sync: false
+      - name: "district"
+        role: dimension
+        type: VARCHAR(255)
+        description: "district"
+        alias: ["district"]
+        sync: false
+      - name: "city_id"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "postal_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "postal code"
+        alias: ["postal_code"]
+        sync: true
+      - name: "phone"
+        role: dimension
+        type: VARCHAR(255)
+        description: "phone"
+        alias: ["phone"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "category"
+    role: dim
+    description: "category"
+    columns:
+      - name: "category_id"
+        role: foreign_key
+        type: FLOAT
+        description: "category id"
+        alias: ["category_id"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "city"
+    role: dim
+    description: "city"
+    columns:
+      - name: "city_id"
+        role: foreign_key
+        type: FLOAT
+        description: "city id"
+        alias: ["city_id"]
+        sync: true
+      - name: "city"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "country_id"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "country"
+    role: dim
+    description: "country"
+    columns:
+      - name: "country_id"
+        role: foreign_key
+        type: FLOAT
+        description: "country id"
+        alias: ["country_id"]
+        sync: true
+      - name: "country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "customer"
+    role: dim
+    description: "customer"
+    columns:
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "active"
+        role: dimension
+        type: VARCHAR(255)
+        description: "active"
+        alias: ["active"]
+        sync: false
+      - name: "create_date"
+        role: dimension
+        type: DATETIME
+        description: "create date"
+        alias: ["create_date"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "film"
+    role: dim
+    description: "film"
+    columns:
+      - name: "film_id"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+      - name: "release_year"
+        role: dimension
+        type: DATETIME
+        description: "release year"
+        alias: ["release_year"]
+        sync: false
+      - name: "language_id"
+        role: foreign_key
+        type: FLOAT
+        description: "language id"
+        alias: ["language_id"]
+        sync: true
+      - name: "original_language_id"
+        role: foreign_key
+        type: FLOAT
+        description: "original language id"
+        alias: ["original_language_id"]
+        sync: true
+      - name: "rental_duration"
+        role: dimension
+        type: FLOAT
+        description: "rental duration"
+        alias: ["rental_duration"]
+        sync: false
+      - name: "rental_rate"
+        role: measure
+        type: FLOAT
+        description: "rental rate"
+        alias: ["rental_rate"]
+        sync: false
+      - name: "length"
+        role: dimension
+        type: FLOAT
+        description: "length"
+        alias: ["length"]
+        sync: false
+      - name: "replacement_cost"
+        role: measure
+        type: FLOAT
+        description: "replacement cost"
+        alias: ["replacement_cost"]
+        sync: false
+      - name: "rating"
+        role: dimension
+        type: VARCHAR(255)
+        description: "rating"
+        alias: ["rating"]
+        sync: false
+      - name: "special_features"
+        role: dimension
+        type: VARCHAR(255)
+        description: "special features"
+        alias: ["special_features"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "film_actor"
+    role: dim
+    description: "film actor"
+    columns:
+      - name: "actor_id"
+        role: foreign_key
+        type: FLOAT
+        description: "actor id"
+        alias: ["actor_id"]
+        sync: false
+      - name: "film_id"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "film_category"
+    role: dim
+    description: "film category"
+    columns:
+      - name: "film_id"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "category_id"
+        role: foreign_key
+        type: FLOAT
+        description: "category id"
+        alias: ["category_id"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "film_text"
+    role: dim
+    description: "film text"
+    columns:
+      - name: "film_id"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "title"
+        alias: ["title"]
+        sync: false
+      - name: "description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "description"
+        alias: ["description"]
+        sync: false
+  - name: "inventory"
+    role: dim
+    description: "inventory"
+    columns:
+      - name: "inventory_id"
+        role: foreign_key
+        type: FLOAT
+        description: "inventory id"
+        alias: ["inventory_id"]
+        sync: false
+      - name: "film_id"
+        role: foreign_key
+        type: FLOAT
+        description: "film id"
+        alias: ["film_id"]
+        sync: false
+      - name: "store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "language"
+    role: dim
+    description: "language"
+    columns:
+      - name: "language_id"
+        role: foreign_key
+        type: FLOAT
+        description: "language id"
+        alias: ["language_id"]
+        sync: true
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "payment"
+    role: fact
+    description: "payment"
+    columns:
+      - name: "payment_id"
+        role: foreign_key
+        type: FLOAT
+        description: "payment id"
+        alias: ["payment_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "rental_id"
+        role: foreign_key
+        type: FLOAT
+        description: "rental id"
+        alias: ["rental_id"]
+        sync: false
+      - name: "amount"
+        role: measure
+        type: FLOAT
+        description: "amount"
+        alias: ["amount"]
+        sync: false
+      - name: "payment_date"
+        role: dimension
+        type: DATETIME
+        description: "payment date"
+        alias: ["payment_date"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "rental"
+    role: fact
+    description: "rental"
+    columns:
+      - name: "rental_id"
+        role: foreign_key
+        type: FLOAT
+        description: "rental id"
+        alias: ["rental_id"]
+        sync: false
+      - name: "rental_date"
+        role: dimension
+        type: DATETIME
+        description: "rental date"
+        alias: ["rental_date"]
+        sync: false
+      - name: "inventory_id"
+        role: foreign_key
+        type: FLOAT
+        description: "inventory id"
+        alias: ["inventory_id"]
+        sync: false
+      - name: "customer_id"
+        role: foreign_key
+        type: FLOAT
+        description: "customer id"
+        alias: ["customer_id"]
+        sync: false
+      - name: "return_date"
+        role: dimension
+        type: DATETIME
+        description: "return date"
+        alias: ["return_date"]
+        sync: false
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "staff"
+    role: dim
+    description: "staff"
+    columns:
+      - name: "staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "staff id"
+        alias: ["staff_id"]
+        sync: false
+      - name: "first_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "first name"
+        alias: ["first_name"]
+        sync: true
+      - name: "last_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "last name"
+        alias: ["last_name"]
+        sync: true
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "picture"
+        role: dimension
+        type: VARCHAR(255)
+        description: "picture"
+        alias: ["picture"]
+        sync: false
+      - name: "email"
+        role: dimension
+        type: VARCHAR(255)
+        description: "email"
+        alias: ["email"]
+        sync: false
+      - name: "store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "active"
+        role: dimension
+        type: VARCHAR(255)
+        description: "active"
+        alias: ["active"]
+        sync: false
+      - name: "username"
+        role: dimension
+        type: VARCHAR(255)
+        description: "username"
+        alias: ["username"]
+        sync: true
+      - name: "password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "password"
+        alias: ["password"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+  - name: "store"
+    role: dim
+    description: "store"
+    columns:
+      - name: "store_id"
+        role: foreign_key
+        type: FLOAT
+        description: "store id"
+        alias: ["store_id"]
+        sync: false
+      - name: "manager_staff_id"
+        role: foreign_key
+        type: FLOAT
+        description: "manager staff id"
+        alias: ["manager_staff_id"]
+        sync: false
+      - name: "address_id"
+        role: foreign_key
+        type: FLOAT
+        description: "address id"
+        alias: ["address_id"]
+        sync: false
+      - name: "last_update"
+        role: dimension
+        type: DATETIME
+        description: "last update"
+        alias: ["last_update"]
+        sync: false
+
+metrics:
+  - name: "film_rental_rate"
+    description: rental rate from film
+    relevant_columns:
+      - film.rental_rate
+    alias: [rental_rate]
+  - name: "film_replacement_cost"
+    description: replacement cost from film
+    relevant_columns:
+      - film.replacement_cost
+    alias: [replacement_cost]
+  - name: "payment_amount"
+    description: amount from payment
+    relevant_columns:
+      - payment.amount
+    alias: [amount]

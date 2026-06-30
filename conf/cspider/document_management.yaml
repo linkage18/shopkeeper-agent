@@ -1,0 +1,230 @@
+tables:
+  - name: "Roles"
+    role: dim
+    description: "roles"
+    columns:
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "role_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role description"
+        alias: ["role_description"]
+        sync: false
+  - name: "Users"
+    role: dim
+    description: "users"
+    columns:
+      - name: "user_id"
+        role: foreign_key
+        type: FLOAT
+        description: "user id"
+        alias: ["user_id"]
+        sync: false
+      - name: "role_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "role code"
+        alias: ["role_code"]
+        sync: true
+      - name: "user_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "user name"
+        alias: ["user_name"]
+        sync: true
+      - name: "user_login"
+        role: dimension
+        type: VARCHAR(255)
+        description: "user login"
+        alias: ["user_login"]
+        sync: false
+      - name: "password"
+        role: dimension
+        type: VARCHAR(255)
+        description: "password"
+        alias: ["password"]
+        sync: false
+  - name: "Document_Structures"
+    role: dim
+    description: "document structures"
+    columns:
+      - name: "document_structure_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document structure code"
+        alias: ["document_structure_code"]
+        sync: true
+      - name: "parent_document_structure_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "parent document structure code"
+        alias: ["parent_document_structure_code"]
+        sync: true
+      - name: "document_structure_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document structure description"
+        alias: ["document_structure_description"]
+        sync: false
+  - name: "Functional_Areas"
+    role: dim
+    description: "functional areas"
+    columns:
+      - name: "functional_area_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "functional area code"
+        alias: ["functional_area_code"]
+        sync: true
+      - name: "parent_functional_area_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "parent functional area code"
+        alias: ["parent_functional_area_code"]
+        sync: true
+      - name: "functional_area_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "functional area description"
+        alias: ["functional_area_description"]
+        sync: false
+  - name: "Images"
+    role: dim
+    description: "images"
+    columns:
+      - name: "image_id"
+        role: foreign_key
+        type: FLOAT
+        description: "image id"
+        alias: ["image_id"]
+        sync: false
+      - name: "image_alt_text"
+        role: dimension
+        type: VARCHAR(255)
+        description: "image alt text"
+        alias: ["image_alt_text"]
+        sync: false
+      - name: "image_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "image name"
+        alias: ["image_name"]
+        sync: true
+      - name: "image_url"
+        role: dimension
+        type: VARCHAR(255)
+        description: "image url"
+        alias: ["image_url"]
+        sync: false
+  - name: "Documents"
+    role: dim
+    description: "documents"
+    columns:
+      - name: "document_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document code"
+        alias: ["document_code"]
+        sync: true
+      - name: "document_structure_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document structure code"
+        alias: ["document_structure_code"]
+        sync: true
+      - name: "document_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document type code"
+        alias: ["document_type_code"]
+        sync: true
+      - name: "access_count"
+        role: measure
+        type: FLOAT
+        description: "access count"
+        alias: ["access_count"]
+        sync: false
+      - name: "document_name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document name"
+        alias: ["document_name"]
+        sync: true
+  - name: "Document_Functional_Areas"
+    role: dim
+    description: "document functional areas"
+    columns:
+      - name: "document_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document code"
+        alias: ["document_code"]
+        sync: true
+      - name: "functional_area_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "functional area code"
+        alias: ["functional_area_code"]
+        sync: true
+  - name: "Document_Sections"
+    role: dim
+    description: "document sections"
+    columns:
+      - name: "section_id"
+        role: foreign_key
+        type: FLOAT
+        description: "section id"
+        alias: ["section_id"]
+        sync: false
+      - name: "document_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "document code"
+        alias: ["document_code"]
+        sync: true
+      - name: "section_sequence"
+        role: dimension
+        type: FLOAT
+        description: "section sequence"
+        alias: ["section_sequence"]
+        sync: false
+      - name: "section_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "section code"
+        alias: ["section_code"]
+        sync: true
+      - name: "section_title"
+        role: dimension
+        type: VARCHAR(255)
+        description: "section title"
+        alias: ["section_title"]
+        sync: false
+  - name: "Document_Sections_Images"
+    role: dim
+    description: "document sections images"
+    columns:
+      - name: "section_id"
+        role: foreign_key
+        type: FLOAT
+        description: "section id"
+        alias: ["section_id"]
+        sync: false
+      - name: "image_id"
+        role: foreign_key
+        type: FLOAT
+        description: "image id"
+        alias: ["image_id"]
+        sync: false
+
+metrics:
+  - name: "documents_access_count"
+    description: access count from documents
+    relevant_columns:
+      - Documents.access_count
+    alias: [access_count]

@@ -1,0 +1,156 @@
+tables:
+  - name: "Investors"
+    role: dim
+    description: "investors"
+    columns:
+      - name: "investor_id"
+        role: foreign_key
+        type: FLOAT
+        description: "investor id"
+        alias: ["investor_id"]
+        sync: false
+      - name: "Investor_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "investor details"
+        alias: ["investor_details"]
+        sync: false
+  - name: "Lots"
+    role: dim
+    description: "lots"
+    columns:
+      - name: "lot_id"
+        role: primary_key
+        type: FLOAT
+        description: "lot id"
+        alias: ["lot_id"]
+        sync: false
+      - name: "investor_id"
+        role: foreign_key
+        type: FLOAT
+        description: "investor id"
+        alias: ["investor_id"]
+        sync: false
+      - name: "lot_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lot details"
+        alias: ["lot_details"]
+        sync: false
+  - name: "Ref_Transaction_Types"
+    role: fact
+    description: "ref transaction types"
+    columns:
+      - name: "transaction_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction type code"
+        alias: ["transaction_type_code"]
+        sync: true
+      - name: "transaction_type_description"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction type description"
+        alias: ["transaction_type_description"]
+        sync: true
+  - name: "Transactions"
+    role: fact
+    description: "transactions"
+    columns:
+      - name: "transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transaction id"
+        alias: ["transaction_id"]
+        sync: false
+      - name: "investor_id"
+        role: foreign_key
+        type: FLOAT
+        description: "investor id"
+        alias: ["investor_id"]
+        sync: false
+      - name: "transaction_type_code"
+        role: dimension
+        type: VARCHAR(255)
+        description: "transaction type code"
+        alias: ["transaction_type_code"]
+        sync: true
+      - name: "date_of_transaction"
+        role: dimension
+        type: DATETIME
+        description: "date of transaction"
+        alias: ["date_of_transaction"]
+        sync: false
+      - name: "amount_of_transaction"
+        role: measure
+        type: FLOAT
+        description: "amount of transaction"
+        alias: ["amount_of_transaction"]
+        sync: false
+      - name: "share_count"
+        role: dimension
+        type: VARCHAR(255)
+        description: "share count"
+        alias: ["share_count"]
+        sync: false
+      - name: "other_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "other details"
+        alias: ["other_details"]
+        sync: false
+  - name: "Sales"
+    role: fact
+    description: "sales"
+    columns:
+      - name: "sales_transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "sales transaction id"
+        alias: ["sales_transaction_id"]
+        sync: false
+      - name: "sales_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sales details"
+        alias: ["sales_details"]
+        sync: false
+  - name: "Purchases"
+    role: fact
+    description: "purchases"
+    columns:
+      - name: "purchase_transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "purchase transaction id"
+        alias: ["purchase_transaction_id"]
+        sync: false
+      - name: "purchase_details"
+        role: dimension
+        type: VARCHAR(255)
+        description: "purchase details"
+        alias: ["purchase_details"]
+        sync: false
+  - name: "Transactions_Lots"
+    role: fact
+    description: "transactions lots"
+    columns:
+      - name: "transaction_id"
+        role: foreign_key
+        type: FLOAT
+        description: "transaction id"
+        alias: ["transaction_id"]
+        sync: false
+      - name: "lot_id"
+        role: primary_key
+        type: FLOAT
+        description: "lot id"
+        alias: ["lot_id"]
+        sync: false
+
+metrics:
+  - name: "transactions_amount_of_transaction"
+    description: amount of transaction from transactions
+    relevant_columns:
+      - Transactions.amount_of_transaction
+    alias: [amount_of_transaction]

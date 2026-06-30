@@ -124,13 +124,18 @@ async def rag_query(req: RagQuerySchema):
 async def rag_upload(file: UploadFile):
     """上传文档到知识库"""
 
+    # 文件大小限制（50MB）
+    max_size = 50 * 1024 * 1024
+    if file.size and file.size > max_size:
+        raise HTTPException(status_code=400, detail=f"文件过大: {file.size / 1024 / 1024:.1f}MB，最大 50MB")
+
     # 支持格式
     supported = {".md", ".txt", ".pdf", ".docx", ".html"}
     suffix = Path(file.filename).suffix.lower()
     if suffix not in supported:
         raise HTTPException(
             status_code=400,
-            detail=f"不支持的文件格式: {suffix}，支持: {supported}",
+            detail=f"不支持的文件格式: {suffix}，支持: {sorted(supported)}",
         )
 
     # 保存到临时目录

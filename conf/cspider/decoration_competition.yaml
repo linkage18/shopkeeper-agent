@@ -1,0 +1,85 @@
+tables:
+  - name: "college"
+    role: dim
+    description: "college"
+    columns:
+      - name: "College_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "college id"
+        alias: ["college_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Leader_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "leader name"
+        alias: ["leader_name"]
+        sync: true
+      - name: "College_Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "college location"
+        alias: ["college_location"]
+        sync: false
+  - name: "member"
+    role: dim
+    description: "member"
+    columns:
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "College_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "college id"
+        alias: ["college_id"]
+        sync: false
+  - name: "round"
+    role: dim
+    description: "round"
+    columns:
+      - name: "Round_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "round id"
+        alias: ["round_id"]
+        sync: false
+      - name: "Member_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "member id"
+        alias: ["member_id"]
+        sync: false
+      - name: "Decoration_Theme"
+        role: dimension
+        type: VARCHAR(255)
+        description: "decoration theme"
+        alias: ["decoration_theme"]
+        sync: false
+      - name: "Rank_in_Round"
+        role: dimension
+        type: FLOAT
+        description: "rank in round"
+        alias: ["rank_in_round"]
+        sync: false

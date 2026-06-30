@@ -1,0 +1,189 @@
+tables:
+  - name: "club"
+    role: dim
+    description: "club"
+    columns:
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Region"
+        role: dimension
+        type: VARCHAR(255)
+        description: "region"
+        alias: ["region"]
+        sync: false
+      - name: "Start_year"
+        role: dimension
+        type: VARCHAR(255)
+        description: "start year"
+        alias: ["start_year"]
+        sync: false
+  - name: "club_rank"
+    role: dim
+    description: "club rank"
+    columns:
+      - name: "Rank"
+        role: dimension
+        type: FLOAT
+        description: "rank"
+        alias: ["rank"]
+        sync: false
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "Gold"
+        role: dimension
+        type: FLOAT
+        description: "gold"
+        alias: ["gold"]
+        sync: false
+      - name: "Silver"
+        role: dimension
+        type: FLOAT
+        description: "silver"
+        alias: ["silver"]
+        sync: false
+      - name: "Bronze"
+        role: dimension
+        type: FLOAT
+        description: "bronze"
+        alias: ["bronze"]
+        sync: false
+      - name: "Total"
+        role: measure
+        type: FLOAT
+        description: "total"
+        alias: ["total"]
+        sync: false
+  - name: "player"
+    role: dim
+    description: "player"
+    columns:
+      - name: "Player_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "player id"
+        alias: ["player_id"]
+        sync: false
+      - name: "name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+      - name: "Position"
+        role: dimension
+        type: VARCHAR(255)
+        description: "position"
+        alias: ["position"]
+        sync: false
+      - name: "Club_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "club id"
+        alias: ["club_id"]
+        sync: false
+      - name: "Apps"
+        role: dimension
+        type: FLOAT
+        description: "apps"
+        alias: ["apps"]
+        sync: false
+      - name: "Tries"
+        role: dimension
+        type: FLOAT
+        description: "tries"
+        alias: ["tries"]
+        sync: false
+      - name: "Goals"
+        role: dimension
+        type: VARCHAR(255)
+        description: "goals"
+        alias: ["goals"]
+        sync: false
+      - name: "Points"
+        role: dimension
+        type: FLOAT
+        description: "points"
+        alias: ["points"]
+        sync: false
+  - name: "competition"
+    role: dim
+    description: "competition"
+    columns:
+      - name: "Competition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "competition id"
+        alias: ["competition_id"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Competition_type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "competition type"
+        alias: ["competition_type"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "competition_result"
+    role: dim
+    description: "competition result"
+    columns:
+      - name: "Competition_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "competition id"
+        alias: ["competition_id"]
+        sync: false
+      - name: "Club_ID_1"
+        role: dimension
+        type: FLOAT
+        description: "club id 1"
+        alias: ["club_id_1"]
+        sync: false
+      - name: "Club_ID_2"
+        role: dimension
+        type: FLOAT
+        description: "club id 2"
+        alias: ["club_id_2"]
+        sync: false
+      - name: "Score"
+        role: dimension
+        type: VARCHAR(255)
+        description: "score"
+        alias: ["score"]
+        sync: false
+
+metrics:
+  - name: "club_rank_total"
+    description: total from club_rank
+    relevant_columns:
+      - club_rank.Total
+    alias: [total]
+  - name: "competition_year"
+    description: year from competition
+    relevant_columns:
+      - competition.Year
+    alias: [year]

@@ -1,0 +1,92 @@
+tables:
+  - name: "festival_detail"
+    role: dim
+    description: "festival detail"
+    columns:
+      - name: "Festival_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "festival id"
+        alias: ["festival_id"]
+        sync: false
+      - name: "Festival_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "festival name"
+        alias: ["festival_name"]
+        sync: true
+      - name: "Chair_Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "chair name"
+        alias: ["chair_name"]
+        sync: true
+      - name: "Location"
+        role: dimension
+        type: VARCHAR(255)
+        description: "location"
+        alias: ["location"]
+        sync: false
+      - name: "Year"
+        role: measure
+        type: FLOAT
+        description: "year"
+        alias: ["year"]
+        sync: false
+      - name: "Num_of_Audience"
+        role: dimension
+        type: FLOAT
+        description: "num of audience"
+        alias: ["num_of_audience"]
+        sync: false
+  - name: "artwork"
+    role: dim
+    description: "artwork"
+    columns:
+      - name: "Artwork_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artwork id"
+        alias: ["artwork_id"]
+        sync: false
+      - name: "Type"
+        role: dimension
+        type: VARCHAR(255)
+        description: "type"
+        alias: ["type"]
+        sync: true
+      - name: "Name"
+        role: dimension
+        type: VARCHAR(255)
+        description: "name"
+        alias: ["name"]
+        sync: true
+  - name: "nomination"
+    role: dim
+    description: "nomination"
+    columns:
+      - name: "Artwork_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "artwork id"
+        alias: ["artwork_id"]
+        sync: false
+      - name: "Festival_ID"
+        role: foreign_key
+        type: FLOAT
+        description: "festival id"
+        alias: ["festival_id"]
+        sync: false
+      - name: "Result"
+        role: dimension
+        type: VARCHAR(255)
+        description: "result"
+        alias: ["result"]
+        sync: false
+
+metrics:
+  - name: "festival_detail_year"
+    description: year from festival_detail
+    relevant_columns:
+      - festival_detail.Year
+    alias: [year]

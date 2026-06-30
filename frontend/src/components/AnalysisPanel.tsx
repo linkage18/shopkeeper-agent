@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { apiGet, apiPost } from "../lib/authApi";
 import { InteractiveChart } from "./InteractiveChart";
-
-/* 动态可视化面板 — 从 Schema 自动生成可选维度和指标 */
-let schemaCache: any = null;
-let schemaCacheAt = 0;
-const SCHEMA_CACHE_MS = 10 * 60 * 1000;
 
 export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onBack?: () => void }) {
   const [schema, setSchema] = useState<any>(null);
@@ -17,15 +12,17 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
   const [sql, setSql] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const schemaCacheRef = useRef<{ data: any; at: number } | null>(null);
+  const SCHEMA_CACHE_MS = 10 * 60 * 1000;
 
   useEffect(() => {
     let cancelled = false;
     const now = Date.now();
-    if (schemaCache && now - schemaCacheAt < SCHEMA_CACHE_MS) {
-      setSchema(schemaCache);
+    const cached = schemaCacheRef.current;
+    if (cached && now - cached.at < SCHEMA_CACHE_MS) {
+      setSchema(cached.data);
       return;
     }
-    // 4 秒快速超时：如果 schema 还没加载，显示错误
     const fastTimer = setTimeout(() => {
       if (!cancelled && !schema) {
         setError("数据库结构加载超时，请确认后端已启动（端口 8002）");
@@ -34,8 +31,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
     apiGet("/api/schema")
       .then((d) => {
         clearTimeout(fastTimer);
-        schemaCache = d;
-        schemaCacheAt = Date.now();
+        schemaCacheRef.current = { data: d, at: Date.now() };
         if (!cancelled) setSchema(d);
       })
       .catch((e) => {
@@ -50,8 +46,7 @@ export const AnalysisPanel = React.memo(function AnalysisPanel({ onBack }: { onB
     setSchema(null);
     try {
       const d = await apiGet("/api/schema?refresh=true");
-      schemaCache = d;
-      schemaCacheAt = Date.now();
+      schemaCacheRef.current = { data: d, at: Date.now() };
       setSchema(d);
     } catch (e: any) {
       setError(e.message || "加载数据库结构失败");

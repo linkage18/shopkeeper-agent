@@ -1,0 +1,91 @@
+tables:
+  - name: "airlines"
+    role: fact
+    description: "airlines"
+    columns:
+      - name: "uid"
+        role: primary_key
+        type: FLOAT
+        description: "uid"
+        alias: ["uid"]
+        sync: false
+      - name: "Airline"
+        role: dimension
+        type: VARCHAR(255)
+        description: "airline"
+        alias: ["airline"]
+        sync: false
+      - name: "Abbreviation"
+        role: dimension
+        type: VARCHAR(255)
+        description: "abbreviation"
+        alias: ["abbreviation"]
+        sync: false
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+  - name: "airports"
+    role: dim
+    description: "airports"
+    columns:
+      - name: "City"
+        role: dimension
+        type: VARCHAR(255)
+        description: "city"
+        alias: ["city"]
+        sync: true
+      - name: "AirportCode"
+        role: dimension
+        type: VARCHAR(255)
+        description: "airportcode"
+        alias: ["airportcode"]
+        sync: true
+      - name: "AirportName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "airportname"
+        alias: ["airportname"]
+        sync: true
+      - name: "Country"
+        role: dimension
+        type: VARCHAR(255)
+        description: "country"
+        alias: ["country"]
+        sync: true
+      - name: "CountryAbbrev"
+        role: dimension
+        type: VARCHAR(255)
+        description: "countryabbrev"
+        alias: ["countryabbrev"]
+        sync: true
+  - name: "flights"
+    role: dim
+    description: "flights"
+    columns:
+      - name: "Airline"
+        role: dimension
+        type: FLOAT
+        description: "airline"
+        alias: ["airline"]
+        sync: false
+      - name: "FlightNo"
+        role: dimension
+        type: FLOAT
+        description: "flightno"
+        alias: ["flightno"]
+        sync: false
+      - name: "SourceAirport"
+        role: dimension
+        type: VARCHAR(255)
+        description: "sourceairport"
+        alias: ["sourceairport"]
+        sync: false
+      - name: "DestAirport"
+        role: dimension
+        type: VARCHAR(255)
+        description: "destairport"
+        alias: ["destairport"]
+        sync: false

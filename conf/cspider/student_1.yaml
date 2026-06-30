@@ -1,0 +1,51 @@
+tables:
+  - name: "list"
+    role: dim
+    description: "list"
+    columns:
+      - name: "LastName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+      - name: "FirstName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "Grade"
+        role: dimension
+        type: FLOAT
+        description: "grade"
+        alias: ["grade"]
+        sync: false
+      - name: "Classroom"
+        role: dimension
+        type: FLOAT
+        description: "classroom"
+        alias: ["classroom"]
+        sync: false
+  - name: "teachers"
+    role: dim
+    description: "teachers"
+    columns:
+      - name: "LastName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "lastname"
+        alias: ["lastname"]
+        sync: true
+      - name: "FirstName"
+        role: dimension
+        type: VARCHAR(255)
+        description: "firstname"
+        alias: ["firstname"]
+        sync: true
+      - name: "Classroom"
+        role: dimension
+        type: FLOAT
+        description: "classroom"
+        alias: ["classroom"]
+        sync: false
